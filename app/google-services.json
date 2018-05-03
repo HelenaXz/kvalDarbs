@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "779092838044",
+    "firebase_url": "https://kvaldarbs-4d914.firebaseio.com",
+    "project_id": "kvaldarbs-4d914",
+    "storage_bucket": "kvaldarbs-4d914.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:779092838044:android:8d37a95905b9f113",
+        "android_client_info": {
+          "package_name": "com.hz.kvalifdarbs"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "779092838044-sk8n9pa42tfri4ch20imchat3ve86sd6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hz.kvalifdarbs",
+            "certificate_hash": "4610955cf476b24e9bfa9e20c4f8444d8064fbea"
+          }
+        },
+        {
+          "client_id": "779092838044-m9nga0gfesqa60hjg2c51f3q39k9o01p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAKiUptPvea3ijD7IuDLdPndKAzUaVfMo0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "779092838044-m9nga0gfesqa60hjg2c51f3q39k9o01p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
