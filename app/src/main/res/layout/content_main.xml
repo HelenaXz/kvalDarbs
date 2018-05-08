@@ -17,11 +17,9 @@
             android:id="@+id/addDBBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
             android:layout_marginEnd="5dp"
             android:layout_marginStart="5dp"
-            android:layout_marginTop="5dp"
-            android:background="@color/colorPrimaryLight"
+            android:backgroundTint="@color/colorPrimaryLight"
             android:elevation="5dp"
             android:text="Add to DB Test" />
 
@@ -29,11 +27,9 @@
             android:id="@+id/btnAddDoctor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
             android:layout_marginEnd="5dp"
             android:layout_marginStart="5dp"
-            android:layout_marginTop="5dp"
-            android:background="@color/colorPrimaryLight"
+            android:backgroundTint="@color/colorPrimaryLight"
             android:elevation="5dp"
             android:text="Add Doctor" />
 
@@ -41,11 +37,9 @@
             android:id="@+id/btnAddPatient"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
             android:layout_marginEnd="5dp"
             android:layout_marginStart="5dp"
-            android:layout_marginTop="5dp"
-            android:background="@color/colorPrimaryLight"
+            android:backgroundTint="@color/colorPrimaryLight"
             android:elevation="5dp"
             android:text="Add Patient" />
 
@@ -53,11 +47,9 @@
             android:id="@+id/btnViewPatients"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
             android:layout_marginEnd="5dp"
             android:layout_marginStart="5dp"
-            android:layout_marginTop="5dp"
-            android:background="@color/colorPrimaryLight"
+            android:backgroundTint="@color/colorPrimaryLight"
             android:elevation="5dp"
             android:text="View patient list" />
     </LinearLayout>

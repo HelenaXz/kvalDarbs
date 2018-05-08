@@ -32,6 +32,7 @@
             android:layout_marginTop="5dp"
             android:gravity="center_horizontal"
             android:text="Patient ID"
+            android:textColor="@color/colorAccent"
             android:textSize="20sp" />
 
         <LinearLayout
@@ -171,7 +172,9 @@
                 android:id="@+id/button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Add new" />
+                android:backgroundTint="@color/colorPrimaryDark"
+                android:text="Add new"
+                android:textColor="@color/white" />
 
             <ScrollView
                 android:layout_width="match_parent"

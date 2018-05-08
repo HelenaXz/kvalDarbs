@@ -29,9 +29,10 @@ import java.util.Calendar;
 public class AddPatientActivity extends AppCompatActivity {
 
     DatabaseReference rootRef, patientRef;
-    EditText name, surname, id, phone, pass, passRepeat;
+    EditText name, surname, id, phone, pass, passRepeat, roomNr;
+    String nameString, idString,surnameString, phoneString, birthDate, roomString;
     TextView dateOfBirth;
-    int passEncrypt;
+    Integer passEncrypt, phoneNum;
     DatePickerDialog.OnDateSetListener mDataSetListener;
     int year, month, day;
     @Override
@@ -64,6 +65,7 @@ public class AddPatientActivity extends AppCompatActivity {
         pass = findViewById(R.id.password);
         passRepeat = findViewById(R.id.passwordRepeat);
         dateOfBirth = findViewById(R.id.birthYear);
+        roomNr = findViewById(R.id.roomNr);
 
         dateOfBirth.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -95,16 +97,17 @@ public class AddPatientActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(validate()){
-                    String nameString = name.getText().toString();
-                    String surnameString = surname.getText().toString();
-                    String idString = id.getText().toString();
-                    String phoneString = phone.getText().toString();
-                    String birthDate= dateOfBirth.getText().toString();
-                    Integer phoneNum = Integer.parseInt(phoneString);
+                    nameString = name.getText().toString();
+                    surnameString = surname.getText().toString();
+                    idString = id.getText().toString();
+                    phoneString = phone.getText().toString();
+                    birthDate= dateOfBirth.getText().toString();
+                    phoneNum = Integer.parseInt(phoneString);
                     passEncrypt = pass.getText().toString().hashCode();
+                    roomString = roomNr.getText().toString();
 
                     patientRef = rootRef.child(idString);
-                    Patient newPatient = new Patient(nameString, surnameString, idString, passEncrypt, phoneNum, birthDate );
+                    Patient newPatient = new Patient(nameString, surnameString, idString, passEncrypt, phoneNum, birthDate, roomString);
                     patientRef.setValue(newPatient);
 
                     Context context = getApplicationContext();

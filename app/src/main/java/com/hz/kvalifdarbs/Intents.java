@@ -10,6 +10,7 @@ public class Intents extends AppCompatActivity {
     Intent addPatient;
     Intent patientList;
     Intent patientView;
+    Intent loginView;
 
 
     Intents(Context thisContext) {
@@ -18,6 +19,7 @@ public class Intents extends AppCompatActivity {
         this.addPatient = new Intent(thisContext, AddPatientActivity.class);
         this.patientList =  new Intent(thisContext, PatientListActivity.class);
         this.patientView = new Intent(thisContext, ViewPatientActivity.class);
+        this.loginView = new Intent(thisContext, LoginActivity.class);
 
     }
 }
