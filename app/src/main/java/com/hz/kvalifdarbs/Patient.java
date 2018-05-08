@@ -1,37 +1,80 @@
 package com.hz.kvalifdarbs;
 
+import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
-public class Patient {
-    public String name;
-    public String surname;
-    public String ID;
-    public String password;
-    public Integer phone;
-    public String birthDate;
-    public Date addetToSystem;
+public class Patient implements Serializable {
+    private String Id;
+    private String addedToSystem;
+    private String birthDate;
+    private String name;
+    private Integer phone;
+    private String surname;
+    private Integer password;
+
+
 
     public Patient(){
 
     }
 
-    public Patient(String name, String surname, String ID, String password, Integer phone, String birthDate){
-        this.name = name;
-        this.surname = surname;
-        this.ID = ID;
-        this.phone = phone;
-        this.birthDate= birthDate;
-        Date currentTime = Calendar.getInstance().getTime();
-        this.addetToSystem = currentTime;
-        //TODO before storing password encrypt it
-//        String passwordEncript = encript(password);
-
+    public Patient(String name, String surname, String Id, Integer password, Integer phone, String birthDate){
+        setName(name);
+        setSurname(surname);
+        setId(Id);
+        setPhone(phone);
+        setBirthDate(birthDate);
+        setAddedToSystem();
+        setPassword(password);
     }
 
-//    public String encript(String password){
-//        String result;
-//        //TODO method which encripts the password
-//        return result;
-//    }
+    public void setName(String name){
+        this.name = name;
+    }
+    public String getName(){
+        return this.name;
+    }
+    public void setAddedToSystem(){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+02:00"));
+        String currentDateTime = dateFormat.format(new Date());
+        this.addedToSystem = currentDateTime;
+    }
+    public String getAddedToSystem() {
+        return addedToSystem;
+    }
+    public void setId(String Id){
+        this.Id = Id;
+    }
+    public String getId() {
+        return Id;
+    }
+    public void setBirthDate(String birthDate){
+        this.birthDate = birthDate;
+    }
+    public String getBirthDate() {
+        return birthDate;
+    }
+    public void setPhone(Integer phone) {
+        this.phone = phone;
+    }
+    public Integer getPhone() {
+        return phone;
+    }
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+    public String getSurname() {
+        return surname;
+    }
+    public void setPassword(Integer password){
+        this.password = password;
+    }
+    public Integer getPassword(){
+        return password;
+    }
+
 }

@@ -34,13 +34,14 @@ public class MainActivity extends AppCompatActivity {
         Button addToDB = findViewById(R.id.addDBBtn);
         Button addDoctorBtn = findViewById(R.id.btnAddDoctor);
         Button addPatientBtn = findViewById(R.id.btnAddPatient);
+        Button viewPatientList = findViewById(R.id.btnViewPatients);
 
         addToDB.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
 
-                demoRef = rootRef.child("User2");
-                Doctor testDoc = new Doctor("Andris", "Cielava", "pac@inbox.lv", "parole1234", 12345568);
-                demoRef.setValue(testDoc);
+//                demoRef = rootRef.child("User2");
+//                Doctor testDoc = new Doctor("Andris", "Cielava", "parole1234", 12345568);
+//                demoRef.setValue(testDoc);
 
                 Context context = getApplicationContext();
                 CharSequence text = "Doc added to DB!";
@@ -63,6 +64,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        viewPatientList.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v) {
+                startActivity(intents.patientList);
+            }
+        });
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -77,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater()
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
