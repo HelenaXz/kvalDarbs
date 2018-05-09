@@ -18,26 +18,26 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class AddDoctorActivity extends AppCompatActivity {
+public class AddAdminActivity extends AppCompatActivity {
 
-    DatabaseReference rootRef, docRef;
+    DatabaseReference rootRef, adminRef;
     EditText name, surname, id, phone, pass, passRepeat;
     Integer passEncrypt;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_doctor);
+        setContentView(R.layout.activity_add_admin);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         final Intents intents = new Intents(this);
-        rootRef = FirebaseDatabase.getInstance().getReference("Doctors");
+        rootRef = FirebaseDatabase.getInstance().getReference("Admins");
 
         //Buttons
         Button submitForm = findViewById(R.id.submitBtn);
         //Text fields
         name = findViewById(R.id.name);
         surname = findViewById(R.id.surname);
-        id = findViewById(R.id.doctorID);
+        id = findViewById(R.id.adminID);
         phone = findViewById(R.id.phone);
         pass = findViewById(R.id.password);
         passRepeat = findViewById(R.id.passwordRepeat);
@@ -53,12 +53,12 @@ public class AddDoctorActivity extends AppCompatActivity {
                     Integer phoneNum = Integer.parseInt(phoneString);
                     passEncrypt = pass.getText().toString().hashCode();
 
-                    docRef = rootRef.child(idString);
-                    Doctor newDoctor = new Doctor(idString, nameString, passEncrypt, phoneNum, surnameString);
-                    docRef.setValue(newDoctor);
+                    adminRef = rootRef.child(idString);
+                    Admin newAdmin = new Admin(idString, nameString, passEncrypt, phoneNum, surnameString);
+                    adminRef.setValue(newAdmin);
 
                     Context context = getApplicationContext();
-                    CharSequence text = "Doctor added to DB";
+                    CharSequence text = "Administrator added to DB";
                     int duration = Toast.LENGTH_SHORT;
                     Toast toast = Toast.makeText(context, text, duration);
                     toast.show();
@@ -72,16 +72,16 @@ public class AddDoctorActivity extends AppCompatActivity {
     public boolean validate(){
         int valid = 0;
         if(TextUtils.isEmpty(name.getText().toString().trim())){
-            name.setError("Please enter doctors name");
+            name.setError("Please enter name");
         } else {valid = valid + 1;}
         if(TextUtils.isEmpty(surname.getText().toString().trim())){
-            surname.setError("Please enter doctors surname");
+            surname.setError("Please enter surname");
         } else {valid = valid + 1;}
         if(TextUtils.isEmpty(id.getText().toString().trim())){
-            id.setError("Please enter doctors ID number");
+            id.setError("Please enter ID number");
         } else {valid = valid + 1;}
         if(TextUtils.isEmpty(phone.getText().toString().trim())){
-            phone.setError("Please enter doctors phone number");
+            phone.setError("Please enter phone number");
         } else {valid = valid + 1;}
         if(TextUtils.isEmpty(pass.getText().toString().trim())){
             pass.setError("Please enter password");

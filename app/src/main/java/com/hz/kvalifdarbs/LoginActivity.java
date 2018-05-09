@@ -60,7 +60,7 @@ public class LoginActivity extends AppCompatActivity {
                     childRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            if (dataSnapshot.hasChild(userIdString)) {
+                            if (dataSnapshot.hasChild(userIdString) && !userIdString.isEmpty()) {
                                 userRef = dataSnapshot.child(userIdString);
                                 passFromDB = Integer.parseInt(userRef.child("password").getValue().toString());
 
@@ -74,8 +74,13 @@ public class LoginActivity extends AppCompatActivity {
                                 }
 
                             } else {
-                                Toast toast = Toast.makeText(getApplicationContext(), "Doctor not found!", Toast.LENGTH_SHORT);
-                                toast.show();
+                                if(userIdString.isEmpty()){
+                                    Toast toast = Toast.makeText(getApplicationContext(), "Enter user ID", Toast.LENGTH_SHORT);
+                                    toast.show();
+                                } else {
+                                    Toast toast = Toast.makeText(getApplicationContext(), "Admin not found!", Toast.LENGTH_SHORT);
+                                    toast.show();
+                                }
                             }
                         }
                         @Override
@@ -89,7 +94,7 @@ public class LoginActivity extends AppCompatActivity {
                     childRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            if (dataSnapshot.hasChild(userIdString)) {
+                            if (dataSnapshot.hasChild(userIdString) && !userIdString.isEmpty()) {
                                 userRef = dataSnapshot.child(userIdString);
                                 passFromDB = Integer.parseInt(userRef.child("password").getValue().toString());
 
@@ -103,8 +108,49 @@ public class LoginActivity extends AppCompatActivity {
                                 }
 
                             } else {
-                                Toast toast = Toast.makeText(getApplicationContext(), "Patient not found!", Toast.LENGTH_SHORT);
-                                toast.show();
+                                if(userIdString.isEmpty()){
+                                    Toast toast = Toast.makeText(getApplicationContext(), "Enter user ID", Toast.LENGTH_SHORT);
+                                    toast.show();
+                                } else {
+                                    Toast toast = Toast.makeText(getApplicationContext(), "Admin not found!", Toast.LENGTH_SHORT);
+                                    toast.show();
+                                }
+                            }
+                        }
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                        }
+                    });
+                }
+
+                if(thisUserType.equals("Administrator")){
+                    childRef = rootRef.child("Admins");
+                    childRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.hasChild(userIdString) && !userIdString.isEmpty()) {
+                                userRef = dataSnapshot.child(userIdString);
+                                passFromDB = Integer.parseInt(userRef.child("password").getValue().toString());
+
+                                passEncrypt = userPassString.hashCode();
+                                if(passFromDB.toString().equals(passEncrypt.toString())){
+                                    Toast toast = Toast.makeText(getApplicationContext(), "Login Succesful", Toast.LENGTH_SHORT);
+                                    toast.show();
+                                    startActivity(intents.mainMenu);
+                                } else {
+                                    Toast toast = Toast.makeText(getApplicationContext(), "Password incorect!", Toast.LENGTH_SHORT);
+                                    toast.show();
+                                }
+
+                            } else {
+                                if(userIdString.isEmpty()){
+                                    Toast toast = Toast.makeText(getApplicationContext(), "Enter user ID", Toast.LENGTH_SHORT);
+                                    toast.show();
+                                } else {
+                                    Toast toast = Toast.makeText(getApplicationContext(), "Admin not found!", Toast.LENGTH_SHORT);
+                                    toast.show();
+                                }
+
                             }
                         }
                         @Override

@@ -31,26 +31,12 @@ public class MainActivity extends AppCompatActivity {
 
         rootRef = FirebaseDatabase.getInstance().getReference("TestUsers");
         //Buttons
-        Button addToDB = findViewById(R.id.addDBBtn);
         Button addDoctorBtn = findViewById(R.id.btnAddDoctor);
         Button addPatientBtn = findViewById(R.id.btnAddPatient);
         Button viewPatientList = findViewById(R.id.btnViewPatients);
+        Button addAdminBtn = findViewById(R.id.btnAddAdmin);
 
-        addToDB.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
 
-//                demoRef = rootRef.child("User2");
-//                Doctor testDoc = new Doctor("Andris", "Cielava", "parole1234", 12345568);
-//                demoRef.setValue(testDoc);
-
-                Context context = getApplicationContext();
-                CharSequence text = "Doc added to DB!";
-                int duration = Toast.LENGTH_SHORT;
-
-                Toast toast = Toast.makeText(context, text, duration);
-                toast.show();
-            }
-        });
 
         addDoctorBtn.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
@@ -61,6 +47,12 @@ public class MainActivity extends AppCompatActivity {
         addPatientBtn.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 startActivity(intents.addPatient);
+            }
+        });
+
+        addAdminBtn.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                startActivity(intents.addAdmin);
             }
         });
 

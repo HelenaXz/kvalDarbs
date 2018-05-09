@@ -11,12 +11,14 @@ public class Intents extends AppCompatActivity {
     Intent patientList;
     Intent patientView;
     Intent loginView;
+    Intent addAdmin;
 
 
     Intents(Context thisContext) {
         this.mainMenu = new Intent(thisContext, MainActivity.class);
         this.addDoctor = new Intent(thisContext, AddDoctorActivity.class);
         this.addPatient = new Intent(thisContext, AddPatientActivity.class);
+        this.addAdmin = new Intent(thisContext, AddAdminActivity.class);
         this.patientList =  new Intent(thisContext, PatientListActivity.class);
         this.patientView = new Intent(thisContext, ViewPatientActivity.class);
         this.loginView = new Intent(thisContext, LoginActivity.class);

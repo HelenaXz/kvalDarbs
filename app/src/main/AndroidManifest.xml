@@ -18,16 +18,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AddDoctorActivity"
+        <activity android:name=".AddAdminActivity"
             android:label="Add doctor"/>
         <activity android:name=".AddPatientActivity"
             android:label="Add patient"/>
+        <activity android:name=".AddDoctorActivity"
+            android:label="Add administrator">
+        </activity>
         <activity android:name=".ViewPatientActivity"
             android:label="Patient"/>
         <activity android:name=".PatientListActivity"
             android:label="All patients"/>
         <activity android:name=".MainActivity"
-            android:label="Hello"/>
+            android:label="Hello" >
+        </activity>
         <activity android:name=".LoginActivity"
             android:label="Login" />
     </application>
