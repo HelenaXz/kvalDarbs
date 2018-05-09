@@ -21,9 +21,9 @@ import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.hz.kvalifdarbs.Objects.Patient;
 
 import java.text.DateFormat;
-import java.util.Calendar;
 
 
 public class AddPatientActivity extends AppCompatActivity {
@@ -51,7 +51,7 @@ public class AddPatientActivity extends AppCompatActivity {
         //set up spinners
         Spinner genderSpinner = findViewById(R.id.genderSpinner);
         ArrayAdapter<CharSequence> genderAdapter = ArrayAdapter.createFromResource(this,
-                R.array.gender_list, android.R.layout.simple_spinner_item);
+        R.array.gender_list, android.R.layout.simple_spinner_item);
         genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         genderSpinner.setAdapter(genderAdapter);
 

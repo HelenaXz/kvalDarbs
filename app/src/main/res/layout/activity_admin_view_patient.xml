@@ -156,6 +156,42 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:layout_marginStart="20dp">
+
+                <TextView
+                    android:id="@+id/textView10"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:paddingBottom="5dp"
+                    android:paddingTop="5dp"
+                    android:text="Doctors:"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/doctorList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:paddingBottom="5dp"
+                    android:paddingTop="5dp"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btnAddDoc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:layout_marginStart="20dp"
+                android:backgroundTint="@color/colorPrimaryDark"
+                android:text="Add Doctor"
+                android:textColor="@color/white" />
 
 
         </LinearLayout>
@@ -173,15 +209,7 @@
                 android:gravity="center_horizontal"
                 android:text="Examinations" />
 
-            <Button
-                android:id="@+id/button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="20dp"
-                android:layout_marginStart="20dp"
-                android:backgroundTint="@color/colorPrimaryDark"
-                android:text="Add new"
-                android:textColor="@color/white" />
+
 
             <ScrollView
                 android:layout_width="match_parent"

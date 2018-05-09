@@ -1,4 +1,4 @@
-package com.hz.kvalifdarbs;
+package com.hz.kvalifdarbs.Objects;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;

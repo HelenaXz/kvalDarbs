@@ -5,15 +5,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.hz.kvalifdarbs.Objects.Patient;
+
 import java.util.ArrayList;
 
-class UserAdapter extends ArrayAdapter<Patient> {
+class PatientAdapter extends ArrayAdapter<Patient> {
 
-    public UserAdapter(Context context, ArrayList<Patient> allPatients) {
+    public PatientAdapter(Context context, ArrayList<Patient> allPatients) {
         super(context, 0, allPatients);
     }
 
@@ -23,7 +24,7 @@ class UserAdapter extends ArrayAdapter<Patient> {
         Patient patient = getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.custom_list, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.all_patient_list, parent, false);
         }
         // Lookup view for data population
         LinearLayout main = convertView.findViewById(R.id.body);

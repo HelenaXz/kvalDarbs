@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
         viewPatientList.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
-                startActivity(intents.patientList);
+                startActivity(intents.allPatientList);
             }
         });
 

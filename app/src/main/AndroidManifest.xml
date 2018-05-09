@@ -25,15 +25,17 @@
         <activity android:name=".AddDoctorActivity"
             android:label="Add administrator">
         </activity>
-        <activity android:name=".ViewPatientActivity"
+        <activity android:name=".DoctorViewPatientActivity"
             android:label="Patient"/>
-        <activity android:name=".PatientListActivity"
+        <activity android:name=".AllPatientListActivity"
             android:label="All patients"/>
         <activity android:name=".MainActivity"
             android:label="Hello" >
         </activity>
         <activity android:name=".LoginActivity"
             android:label="Login" />
+        <activity android:name=".AdminViewPatientActivity"/>
+        <activity android:name=".AllDoctorListActivity"/>
     </application>
 
 </manifest>

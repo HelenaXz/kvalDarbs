@@ -1,6 +1,6 @@
-package com.hz.kvalifdarbs;
+package com.hz.kvalifdarbs.Objects;
 
-public class Admin {
+public class Doctor {
 
     private String Id;
     private String name;
@@ -9,16 +9,15 @@ public class Admin {
     private String surname;
 
 
-    public Admin(){
+    public Doctor(){
     }
 
-    public Admin(String Id, String name, Integer password,  Integer phone, String surname ){
+    public Doctor(String Id, String name, Integer password,  Integer phone, String surname ){
         setId(Id);
         setName(name);
         setPassword(password);
         setPhone(phone);
         setSurname(surname);
-
     }
     public String getName() {
         return name;

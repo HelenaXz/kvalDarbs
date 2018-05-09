@@ -8,8 +8,10 @@ public class Intents extends AppCompatActivity {
     Intent mainMenu;
     Intent addDoctor;
     Intent addPatient;
-    Intent patientList;
-    Intent patientView;
+    Intent allPatientList;
+    Intent allDoctorList;
+    Intent adminPatientView;
+    Intent doctorPatientView;
     Intent loginView;
     Intent addAdmin;
 
@@ -19,8 +21,9 @@ public class Intents extends AppCompatActivity {
         this.addDoctor = new Intent(thisContext, AddDoctorActivity.class);
         this.addPatient = new Intent(thisContext, AddPatientActivity.class);
         this.addAdmin = new Intent(thisContext, AddAdminActivity.class);
-        this.patientList =  new Intent(thisContext, PatientListActivity.class);
-        this.patientView = new Intent(thisContext, ViewPatientActivity.class);
+        this.allPatientList =  new Intent(thisContext, AllPatientListActivity.class);
+        this.allDoctorList =  new Intent(thisContext, AllDoctorListActivity.class);
+        this.adminPatientView = new Intent(thisContext, AdminViewPatientActivity.class);
         this.loginView = new Intent(thisContext, LoginActivity.class);
 
     }
