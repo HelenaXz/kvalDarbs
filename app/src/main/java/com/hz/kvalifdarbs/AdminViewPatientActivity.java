@@ -1,25 +1,41 @@
 package com.hz.kvalifdarbs;
 
+        import android.content.Context;
+        import android.content.DialogInterface;
         import android.content.Intent;
         import android.os.Bundle;
         import android.support.annotation.Nullable;
+        import android.support.v7.app.AlertDialog;
         import android.support.v7.app.AppCompatActivity;
         import android.support.v7.widget.Toolbar;
         import android.view.View;
+        import android.widget.AdapterView;
         import android.widget.Button;
         import android.widget.ListView;
         import android.widget.TextView;
+        import android.widget.Toast;
 
+        import com.google.firebase.database.ChildEventListener;
+        import com.google.firebase.database.DataSnapshot;
+        import com.google.firebase.database.DatabaseError;
         import com.google.firebase.database.DatabaseReference;
+        import com.google.firebase.database.FirebaseDatabase;
+        import com.hz.kvalifdarbs.Objects.Doctor;
         import com.hz.kvalifdarbs.Objects.Patient;
+
+        import java.util.ArrayList;
 
 
 public class AdminViewPatientActivity extends AppCompatActivity {
     TextView name_surname, room, brought_in, birthDate, patientId;
-    ListView patientExams;
+    ListView patientExams, patientDoctors;
     Button addDoctorTo;
     Patient thisPatient;
     String fullName, patientIdString;
+    DatabaseReference rootRef, patientRef, doctorRef;
+    PatientDoctorAdapter testAdapter;
+    ArrayList<String> doctorIds;
+    Context context;
 
 
     @Override
@@ -28,7 +44,10 @@ public class AdminViewPatientActivity extends AppCompatActivity {
         setContentView(R.layout.activity_admin_view_patient);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setDisplayShowHomeEnabled(true);
         final Intents intents = new Intents(this);
+        context = getApplicationContext();
 
         Intent i = getIntent();
         thisPatient = (Patient)i.getSerializableExtra("thisPatient");
@@ -46,8 +65,11 @@ public class AdminViewPatientActivity extends AppCompatActivity {
         birthDate.setText(thisPatient.getBirthDate());
         patientIdString = "Patient nr. "+ thisPatient.getId();
         patientId.setText(patientIdString);
+        room.setText(thisPatient.getRoom());
 
         patientExams = findViewById(R.id.patientExamList); //ListView
+        patientDoctors = findViewById(R.id.patientDoctorList); //ListView
+
 
 
         addDoctorTo.setOnClickListener(new View.OnClickListener() {
@@ -59,7 +81,81 @@ public class AdminViewPatientActivity extends AppCompatActivity {
             }
         });
         //TODO get doctors that are assigned to this patient
+        rootRef = FirebaseDatabase.getInstance().getReference();
+        patientRef = rootRef.child("Patients").child(thisPatient.getId());
 
 
+        testAdapter = new PatientDoctorAdapter(this);
+        patientDoctors.setAdapter(testAdapter);
+        patientDoctors.invalidateViews();
+
+        patientDoctors.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                final String clicked =  parent.getItemAtPosition(position).toString();
+//                Toast toast = Toast.makeText(context, clicked.toString(), Toast.LENGTH_SHORT);
+//                toast.show();
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(AdminViewPatientActivity.this);
+                builder.setMessage("Delete doctor from patient?").setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast toast = Toast.makeText(context, "Later the doctor will be removed", Toast.LENGTH_SHORT);
+                        toast.show();
+                        // patient reference
+                        String docId = clicked;
+                        patientRef.child("Doctors").child(docId).removeValue();
+                        //doctor reference
+                        doctorRef = rootRef.child("Doctors").child(docId);
+                        doctorRef.child("Patients").child(thisPatient.getId()).removeValue();
+                        testAdapter.remove(testAdapter.getItem(position));
+                        testAdapter.notifyDataSetChanged();
+                    }
+                }).setNegativeButton("Cancel", null);
+
+                AlertDialog deleteAlert = builder.create();
+                deleteAlert.show();
+            }
+        });
+
+        patientRef.child("Doctors").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                String doctorId = dataSnapshot.getKey();
+//                Doctor doctorObj = dataSnapshot.getValue(Doctor.class);
+//                doctorIds.add(doctor);
+                testAdapter.add(doctorId);
+//                testAdapter.add(doctorName);
+                testAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // perform whatever you want on back arrow click
+                finish();
+            }
+        });
     }
 }

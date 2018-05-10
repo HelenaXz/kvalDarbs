@@ -2,7 +2,8 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:descendantFocusability="blocksDescendants">
 
     <LinearLayout
         android:id="@+id/body"
@@ -23,22 +24,30 @@
                 android:id="@+id/doctorFullName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
                 android:text="Full Name"
                 android:textSize="18sp"
                 tools:layout_editor_absoluteX="384dp" />
 
         </LinearLayout>
 
-        <Button
+        <TextView
             android:id="@+id/addBtn"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="5"
-            android:backgroundTint="@color/ok"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="7"
+            android:background="@color/ok"
+            android:gravity="center_vertical|center_horizontal"
             android:text="+"
-            android:textSize="24sp" />
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
         <!--<Button-->
         <!--android:id="@+id/room"-->
@@ -50,4 +59,6 @@
 
     </LinearLayout>
 
+
 </android.support.constraint.ConstraintLayout>
+

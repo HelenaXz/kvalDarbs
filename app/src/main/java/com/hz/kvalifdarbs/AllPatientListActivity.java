@@ -1,5 +1,6 @@
 package com.hz.kvalifdarbs;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -23,6 +24,7 @@ public class AllPatientListActivity extends AppCompatActivity {
     ArrayList<Patient> allPatients;
     private ListView listView;
     PatientAdapter testAdapter;
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,11 +32,14 @@ public class AllPatientListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_all_patient_list);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         final Intents intents = new Intents(this);
         listView = findViewById(R.id.allPatients);
         allPatients = new ArrayList<>();
 //        patientArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, allPatients);
         testAdapter = new PatientAdapter(this, allPatients);
+
+        context = getApplicationContext();
 
 
         rootRef = FirebaseDatabase.getInstance().getReference();
@@ -83,13 +88,20 @@ public class AllPatientListActivity extends AppCompatActivity {
 
                 Patient clicked = ((Patient) parent.getItemAtPosition(position));
 
-                Toast toast = Toast.makeText(getApplicationContext(), clicked.getId(), Toast.LENGTH_SHORT);
-                toast.show();
+//                Toast toast = Toast.makeText(getApplicationContext(), clicked.getId(), Toast.LENGTH_SHORT);
+//                toast.show();
                 Intent seePatient = intents.adminPatientView;
                 seePatient.putExtra("thisPatient", clicked);
                 startActivity(seePatient);
             }
         });
 
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // perform whatever you want on back arrow click
+                finish();
+            }
+        });
     }
 }

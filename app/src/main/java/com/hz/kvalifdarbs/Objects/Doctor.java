@@ -49,4 +49,8 @@ public class Doctor {
     public void setPassword(Integer password) {
         this.password = password;
     }
+    public String getFullName(){
+        String fullName = this.name + " " +  this.surname;
+        return fullName;
+    }
 }

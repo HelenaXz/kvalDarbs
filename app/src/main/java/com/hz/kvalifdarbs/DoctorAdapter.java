@@ -38,8 +38,11 @@ class DoctorAdapter extends ArrayAdapter<Doctor> {
         this.thisPatient = thisPatient;
     }
 
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+
+        //TODO Don't show the doctors in the list that the patient has
         // Get the data item for this position
         doctor = getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
@@ -47,32 +50,22 @@ class DoctorAdapter extends ArrayAdapter<Doctor> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.all_doctor_list_add_button, parent, false);
         }
         // Lookup view for data population
-        TextView fullName = (TextView) convertView.findViewById(R.id.doctorFullName);
-        Button addDoctor = convertView.findViewById(R.id.addBtn);
+        TextView fullName =  convertView.findViewById(R.id.doctorFullName);
+        TextView addDoctor = convertView.findViewById(R.id.addBtn);
 //        Button roomField = convertView.findViewById(R.id.room);
 //        Populate the data into the template view using the data object
-//        roomField.setText(patient.getBirthDate());
+
         String fullNameString = doctor.getName() + " " + doctor.getSurname();
         fullName.setText(fullNameString);
         addDoctor.setFocusable(false);
+        addDoctor.setClickable(false);
 
 
         addDoctor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO Add doctor Id to the selected patient doctor list
-                //TODO Add patient Id to the selected doctor patient list
                 //1.find patient by Id the the database
-                patientRef = rootRef.getReference("Patients").child(thisPatient.getId());
-                doctorRef = rootRef.getReference("Doctors").child(doctor.getId());
-                patientRef.child("Doctors").child(doctor.getId()).setValue(doctor.getName()+ " " +doctor.getSurname());
-                doctorRef.child("Patients").child(thisPatient.getId()).setValue(thisPatient.getId());
-//                context.startActivity(intents.adminPatientView);
-                Intent patientView = intents.adminPatientView;
-                patientView.putExtra("thisPatient", thisPatient);
-                context.startActivity(patientView);
-                Toast toast = Toast.makeText(context, "Doctor added to patient", Toast.LENGTH_SHORT);
-                toast.show();
+
 
             }
         });
