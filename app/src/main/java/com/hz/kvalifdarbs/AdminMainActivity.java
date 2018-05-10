@@ -18,7 +18,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 
-public class MainActivity extends AppCompatActivity {
+public class AdminMainActivity extends AppCompatActivity {
         DatabaseReference rootRef, demoRef;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
         Button addPatientBtn = findViewById(R.id.btnAddPatient);
         Button viewPatientList = findViewById(R.id.btnViewPatients);
         Button addAdminBtn = findViewById(R.id.btnAddAdmin);
+        Button viewDoctorList = findViewById(R.id.btnViewDoctors);
 
 
 
@@ -61,8 +62,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intents.allPatientList);
             }
         });
+         viewDoctorList.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 startActivity(intents.allDoctorList);
+             }
+         });
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab =  findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

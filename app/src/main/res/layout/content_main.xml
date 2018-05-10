@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".MainActivity"
+    tools:context=".AdminMainActivity"
     tools:showIn="@layout/activity_main">
 
     <LinearLayout
@@ -52,5 +52,15 @@
             android:backgroundTint="@color/colorPrimaryLight"
             android:elevation="5dp"
             android:text="View patient list" />
+
+        <Button
+            android:id="@+id/btnViewDoctors"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:layout_marginStart="5dp"
+            android:backgroundTint="@color/colorPrimaryLight"
+            android:elevation="5dp"
+            android:text="View Doctor list" />
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

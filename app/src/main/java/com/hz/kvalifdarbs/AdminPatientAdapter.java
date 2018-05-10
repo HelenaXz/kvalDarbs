@@ -12,9 +12,9 @@ import com.hz.kvalifdarbs.Objects.Patient;
 
 import java.util.ArrayList;
 
-class PatientAdapter extends ArrayAdapter<Patient> {
+class AdminPatientAdapter extends ArrayAdapter<Patient> {
 
-    public PatientAdapter(Context context, ArrayList<Patient> allPatients) {
+    public AdminPatientAdapter(Context context, ArrayList<Patient> allPatients) {
         super(context, 0, allPatients);
     }
 

@@ -8,7 +8,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -23,7 +22,7 @@ public class AllPatientListActivity extends AppCompatActivity {
     DatabaseReference rootRef, childRef;
     ArrayList<Patient> allPatients;
     private ListView listView;
-    PatientAdapter testAdapter;
+    AdminPatientAdapter testAdapter;
     Context context;
 
     @Override
@@ -37,7 +36,7 @@ public class AllPatientListActivity extends AppCompatActivity {
         listView = findViewById(R.id.allPatients);
         allPatients = new ArrayList<>();
 //        patientArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, allPatients);
-        testAdapter = new PatientAdapter(this, allPatients);
+        testAdapter = new AdminPatientAdapter(this, allPatients);
 
         context = getApplicationContext();
 
@@ -100,6 +99,7 @@ public class AllPatientListActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // perform whatever you want on back arrow click
+                startActivity(intents.adminMainMenu);
                 finish();
             }
         });

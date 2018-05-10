@@ -19,7 +19,7 @@ import com.hz.kvalifdarbs.Objects.Patient;
 import java.io.Console;
 import java.util.ArrayList;
 
-class DoctorAdapter extends ArrayAdapter<Doctor> {
+class AvaiableDoctorAdapter extends ArrayAdapter<Doctor> {
     Context context;
     String patientId;
     Doctor doctor;
@@ -27,10 +27,10 @@ class DoctorAdapter extends ArrayAdapter<Doctor> {
     FirebaseDatabase rootRef;
     Intents intents;
     Intent i;
-    Patient thisPatient;
+    private Patient thisPatient;
 
 
-    public DoctorAdapter(Context context, ArrayList<Doctor> allDoctors, Patient thisPatient) {
+    public AvaiableDoctorAdapter(Context context, ArrayList<Doctor> allDoctors, Patient thisPatient) {
         super(context, 0, allDoctors);
         this.context = context;
         rootRef = FirebaseDatabase.getInstance();
@@ -47,7 +47,7 @@ class DoctorAdapter extends ArrayAdapter<Doctor> {
         doctor = getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.all_doctor_list_add_button, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.avaiable_doctor_list_add_button, parent, false);
         }
         // Lookup view for data population
         TextView fullName =  convertView.findViewById(R.id.doctorFullName);

@@ -102,11 +102,9 @@ public class AdminViewPatientActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         Toast toast = Toast.makeText(context, "Later the doctor will be removed", Toast.LENGTH_SHORT);
                         toast.show();
-                        // patient reference
-                        String docId = clicked;
-                        patientRef.child("Doctors").child(docId).removeValue();
+                        patientRef.child("Doctors").child(clicked).removeValue();
                         //doctor reference
-                        doctorRef = rootRef.child("Doctors").child(docId);
+                        doctorRef = rootRef.child("Doctors").child(clicked);
                         doctorRef.child("Patients").child(thisPatient.getId()).removeValue();
                         testAdapter.remove(testAdapter.getItem(position));
                         testAdapter.notifyDataSetChanged();
@@ -154,7 +152,8 @@ public class AdminViewPatientActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // perform whatever you want on back arrow click
-                finish();
+                startActivity(intents.allPatientList);
+//                finish();
             }
         });
     }

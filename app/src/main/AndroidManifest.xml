@@ -29,12 +29,15 @@
             android:label="Patient"/>
         <activity android:name=".AllPatientListActivity"
             android:label="All patients"/>
-        <activity android:name=".MainActivity"
+        <activity android:name=".AdminMainActivity"
             android:label="Hello" >
         </activity>
         <activity android:name=".LoginActivity"
             android:label="Login" />
         <activity android:name=".AdminViewPatientActivity"/>
+        <activity android:name=".AvaiableDoctorListActivity"/>
+        <activity android:name=".DoctorMainActivity"/>
+        <activity android:name=".DoctorPatientListActivity"/>
         <activity android:name=".AllDoctorListActivity"/>
     </application>
 

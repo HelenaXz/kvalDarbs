@@ -68,6 +68,9 @@ public class LoginActivity extends AppCompatActivity {
                                 if(passFromDB.toString().equals(passEncrypt.toString())){
                                     Toast toast = Toast.makeText(getApplicationContext(), "Login Succesful", Toast.LENGTH_SHORT);
                                     toast.show();
+                                    Intent intent = intents.doctorMainMenu;
+                                    intent.putExtra("doctorId", userIdString);
+                                    startActivity(intent);
                                 } else {
                                     Toast toast = Toast.makeText(getApplicationContext(), "Password incorect!", Toast.LENGTH_SHORT);
                                     toast.show();
@@ -136,7 +139,7 @@ public class LoginActivity extends AppCompatActivity {
                                 if(passFromDB.toString().equals(passEncrypt.toString())){
                                     Toast toast = Toast.makeText(getApplicationContext(), "Login Succesful", Toast.LENGTH_SHORT);
                                     toast.show();
-                                    startActivity(intents.mainMenu);
+                                    startActivity(intents.adminMainMenu);
                                 } else {
                                     Toast toast = Toast.makeText(getApplicationContext(), "Password incorect!", Toast.LENGTH_SHORT);
                                     toast.show();
