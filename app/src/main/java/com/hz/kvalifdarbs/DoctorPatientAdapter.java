@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class DoctorPatientAdapter extends ArrayAdapter<Object> {
 
-    private DoctorPatientAdapter(Context context, ArrayList<String> myPatients) {
+    public DoctorPatientAdapter(Context context, ArrayList<String> myPatients) {
         super(context, 0);
 
     }
@@ -25,7 +25,7 @@ public class DoctorPatientAdapter extends ArrayAdapter<Object> {
 //        Doctor doctorName = (Doctor) getItem(position);
 //        String doctorId = getItem(position);
         if (convertView == null){
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.doctor_patient_list, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.doctor_patient_list_adaptor, parent, false);
         }
 
         TextView patientId = convertView.findViewById(R.id.patientId);

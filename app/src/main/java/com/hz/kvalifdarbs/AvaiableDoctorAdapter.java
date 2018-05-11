@@ -6,17 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.hz.kvalifdarbs.Objects.Doctor;
 import com.hz.kvalifdarbs.Objects.Patient;
 
-import java.io.Console;
 import java.util.ArrayList;
 
 class AvaiableDoctorAdapter extends ArrayAdapter<Doctor> {
@@ -47,7 +43,7 @@ class AvaiableDoctorAdapter extends ArrayAdapter<Doctor> {
         doctor = getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.avaiable_doctor_list_add_button, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.avaiable_doctor_list_adaptor, parent, false);
         }
         // Lookup view for data population
         TextView fullName =  convertView.findViewById(R.id.doctorFullName);

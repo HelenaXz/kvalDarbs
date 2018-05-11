@@ -75,7 +75,7 @@ public class AdminViewPatientActivity extends AppCompatActivity {
         addDoctorTo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent allDocList = intents.allDoctorList;
+                Intent allDocList = intents.avaiableDoctorList;
                 allDocList.putExtra("thisPatient", thisPatient);
                 startActivity(allDocList);
             }

@@ -13,7 +13,7 @@ public class UserSelectActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.select_user_type);
+        setContentView(R.layout.activity_user_select);
         final Intents intents = new Intents(this);
 
 

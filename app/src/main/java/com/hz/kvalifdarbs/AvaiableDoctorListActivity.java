@@ -34,7 +34,7 @@ public class AvaiableDoctorListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_all_doctor_list);
+        setContentView(R.layout.activity_doctor_list);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         final Intents intents = new Intents(this);
