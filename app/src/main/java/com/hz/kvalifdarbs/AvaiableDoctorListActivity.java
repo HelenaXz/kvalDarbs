@@ -1,5 +1,3 @@
-
-
 package com.hz.kvalifdarbs;
 
         import android.content.Context;
@@ -20,6 +18,7 @@ package com.hz.kvalifdarbs;
         import com.hz.kvalifdarbs.Objects.Doctor;
         import com.hz.kvalifdarbs.Objects.Patient;
 
+        import java.lang.reflect.Array;
         import java.util.ArrayList;
 
 public class AvaiableDoctorListActivity extends AppCompatActivity {
@@ -41,28 +40,61 @@ public class AvaiableDoctorListActivity extends AppCompatActivity {
         Intent i = getIntent();
         context  = getApplicationContext();
         thisPatient = (Patient)i.getSerializableExtra("thisPatient");
+        rootRef = FirebaseDatabase.getInstance().getReference();
+        patientRef = rootRef.child("Patients").child(thisPatient.getId());
 
 
         listView = findViewById(R.id.allDoctors);
         allDoctors = new ArrayList<>();
         testAdapter = new AvaiableDoctorAdapter(this, allDoctors, thisPatient);
 
+        final ArrayList<String> patientDoctors = new ArrayList();
 
 
 
-        rootRef = FirebaseDatabase.getInstance().getReference();
+        patientRef.child("Doctors").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                patientDoctors.add(dataSnapshot.getKey());
+//                for (String curr : patientDoctors) if (curr.equals(dataSnapshot.getKey())){
+//                    Patient patient = dataSnapshot.getValue(Patient.class);
+//                    testAdapter.add(patient);
+//                }
+            }
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
 
         rootRef.child("Doctors").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Doctor doctor = dataSnapshot.getValue(Doctor.class);
-                childRef = rootRef.child(dataSnapshot.getKey());
+                if(!patientDoctors.contains(dataSnapshot.getKey())){
+                    Doctor doctor = dataSnapshot.getValue(Doctor.class);
+                    childRef = rootRef.child(dataSnapshot.getKey());
 //                allPatients.add(patient);
-                //TODO add doctor to list only if the current patient doesn't have him already
-                testAdapter.add(doctor);
+                    //TODO add doctor to list only if the current patient doesn't have him already
+                    testAdapter.add(doctor);
 //                patientArrayAdapter.notifyDataSetChanged();
-                testAdapter.notifyDataSetChanged();
+                    testAdapter.notifyDataSetChanged();
+                }
 
             }
 
@@ -97,12 +129,9 @@ public class AvaiableDoctorListActivity extends AppCompatActivity {
 
                 Doctor clicked = ((Doctor) parent.getItemAtPosition(position));
                 patientRef = rootRef.child("Patients").child(thisPatient.getId());
-//                patientRef = rootRef.getReference("Patients").child(thisPatient.getId());
-//                doctorRef = rootRef.getReference("Doctors").child(clicked.getId());
                 doctorRef = rootRef.child("Doctors").child(clicked.getId());
                 patientRef.child("Doctors").child(clicked.getId()).setValue(clicked.getName()+ " " +clicked.getSurname());
                 doctorRef.child("Patients").child(thisPatient.getId()).setValue(thisPatient.getId());
-//                context.startActivity(intents.adminPatientView);
                 Intent patientView = intents.adminPatientView;
                 patientView.putExtra("thisPatient", thisPatient);
                 context.startActivity(patientView);
@@ -110,8 +139,6 @@ public class AvaiableDoctorListActivity extends AppCompatActivity {
                 toast.show();
                 finish();
 
-//                Toast toast = Toast.makeText(getApplicationContext(), clicked.getName(), Toast.LENGTH_SHORT);
-//                toast.show();
             }
         });
 

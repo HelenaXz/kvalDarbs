@@ -5,7 +5,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
@@ -25,26 +28,44 @@ public class DoctorPatientListActivity extends AppCompatActivity {
     Context context;
     DatabaseReference rootRef, childRef;
     String doctorId;
+    TextView emptyElement;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_doctor_patient_list);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         final Intents intents = new Intents(this);
         context = getApplicationContext();
         rootRef = FirebaseDatabase.getInstance().getReference();
         Intent i = getIntent();
         doctorId = i.getStringExtra("doctorId");
-        Toast toast = Toast.makeText(getApplicationContext(), doctorId, Toast.LENGTH_SHORT);
-        toast.show();
+        childRef = rootRef.child("Doctors").child(doctorId);
+        emptyElement = findViewById(R.id.emptyElement);
+
+
+
 
         patientList = findViewById(R.id.patientList);
         doctorPatients = new ArrayList<>(); //list of doctor patient id's
         testAdapter = new DoctorPatientAdapter(this, doctorPatients);
         patientList.setAdapter(testAdapter);
 
-        childRef = rootRef.child("Doctors").child(doctorId);
+
+        Integer testAdapterSize = testAdapter.getCount();
+        if(testAdapterSize==0){
+            String emptyText = "There are no patients assigned to you.";
+//            TextView emptyText = findViewById(R.id.noPatientText);
+            emptyElement.setText(emptyText);
+
+            patientList.setEmptyView(emptyElement);
+        }
+
+        TextView emptyText = (TextView)findViewById(android.R.id.empty);
+        patientList.setEmptyView(emptyText);
+
+
 
         childRef.child("Patients").addValueEventListener(new ValueEventListener() {
                @Override
@@ -91,6 +112,29 @@ public class DoctorPatientListActivity extends AppCompatActivity {
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
+            }
+        });
+
+        patientList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Patient clicked = ((Patient) parent.getItemAtPosition(position));
+                Intent seePatient = intents.doctorPatientView;
+                seePatient.putExtra("thisPatient", clicked);
+                seePatient.putExtra("doctorId", doctorId);
+                startActivity(seePatient);
+            }
+        });
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // perform whatever you want on back arrow click
+                Intent intent = intents.doctorMainMenu;
+                intent.putExtra("doctorId", doctorId);
+                startActivity(intents.doctorMainMenu);
+                finish();
             }
         });
 

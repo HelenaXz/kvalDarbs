@@ -1,6 +1,8 @@
 package com.hz.kvalifdarbs.Objects;
 
-public class Doctor {
+import java.io.Serializable;
+
+public class Doctor implements Serializable {
 
     private String Id;
     private String name;

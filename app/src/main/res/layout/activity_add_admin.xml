@@ -42,7 +42,7 @@
             android:layout_marginStart="10dp"
             android:cursorVisible="true"
             android:ems="10"
-            android:hint="Name"
+            android:hint="@string/name"
             android:inputType="textPersonName"
             android:paddingEnd="20dp"
             android:paddingStart="20dp" />
@@ -54,7 +54,7 @@
             android:layout_marginEnd="10dp"
             android:layout_marginStart="10dp"
             android:ems="10"
-            android:hint="Surname"
+            android:hint="@string/surname"
             android:inputType="textPersonName"
             android:paddingEnd="20dp"
             android:paddingStart="20dp" />
@@ -66,7 +66,7 @@
             android:layout_marginEnd="10dp"
             android:layout_marginStart="10dp"
             android:ems="10"
-            android:hint="ID"
+            android:hint="@string/id"
             android:inputType="textPersonName"
             android:paddingEnd="20dp"
             android:paddingStart="20dp" />
@@ -78,7 +78,7 @@
             android:layout_marginEnd="10dp"
             android:layout_marginStart="10dp"
             android:ems="10"
-            android:hint="Phone Number"
+            android:hint="@string/phoneNumber"
             android:inputType="phone"
             android:paddingEnd="20dp"
             android:paddingStart="20dp" />
@@ -90,7 +90,7 @@
             android:layout_marginEnd="10dp"
             android:layout_marginStart="10dp"
             android:ems="10"
-            android:hint="Password"
+            android:hint="@string/password"
             android:inputType="textPassword"
             android:paddingEnd="20dp"
             android:paddingStart="20dp" />
@@ -102,7 +102,7 @@
             android:layout_marginEnd="10dp"
             android:layout_marginStart="10dp"
             android:ems="10"
-            android:hint="Repeat Password"
+            android:hint="@string/passwordRep"
             android:inputType="textPassword"
             android:paddingEnd="20dp"
             android:paddingStart="20dp" />
@@ -114,6 +114,6 @@
             android:layout_margin="5dp"
             android:background="@color/colorPrimaryLight"
             android:elevation="5dp"
-            android:text="Submit" />
+            android:text="@string/submit" />
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

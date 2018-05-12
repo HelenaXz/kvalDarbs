@@ -30,11 +30,9 @@ public class AdminViewPatientActivity extends AppCompatActivity {
     TextView name_surname, room, brought_in, birthDate, patientId;
     ListView patientExams, patientDoctors;
     Button addDoctorTo;
-    Patient thisPatient;
-    String fullName, patientIdString;
+    String patientIdString;
     DatabaseReference rootRef, patientRef, doctorRef;
     PatientDoctorAdapter testAdapter;
-    ArrayList<String> doctorIds;
     Context context;
 
 
@@ -45,32 +43,32 @@ public class AdminViewPatientActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//        getSupportActionBar().setDisplayShowHomeEnabled(true);
         final Intents intents = new Intents(this);
         context = getApplicationContext();
-
+        rootRef = FirebaseDatabase.getInstance().getReference();
         Intent i = getIntent();
-        thisPatient = (Patient)i.getSerializableExtra("thisPatient");
+        final Patient thisPatient = (Patient)i.getSerializableExtra("thisPatient");
+
         name_surname = findViewById(R.id.name_surname);
         room = findViewById(R.id.room);
         brought_in = findViewById(R.id.brought_in);
         birthDate = findViewById(R.id.birthDate);
         patientId = findViewById(R.id.patientId_field);
-
         addDoctorTo = findViewById(R.id.btnAddDoc);
 
-        fullName = thisPatient.getName()+" "+thisPatient.getSurname();
-        name_surname.setText(fullName);
+        //Fill TextViews
+        name_surname.setText(thisPatient.getFullName());
         brought_in.setText(thisPatient.getAddedToSystem());
         birthDate.setText(thisPatient.getBirthDate());
         patientIdString = "Patient nr. "+ thisPatient.getId();
         patientId.setText(patientIdString);
         room.setText(thisPatient.getRoom());
 
+
         patientExams = findViewById(R.id.patientExamList); //ListView
         patientDoctors = findViewById(R.id.patientDoctorList); //ListView
 
-
+        patientRef = rootRef.child("Patients").child(thisPatient.getId());
 
         addDoctorTo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,28 +78,22 @@ public class AdminViewPatientActivity extends AppCompatActivity {
                 startActivity(allDocList);
             }
         });
-        //TODO get doctors that are assigned to this patient
-        rootRef = FirebaseDatabase.getInstance().getReference();
-        patientRef = rootRef.child("Patients").child(thisPatient.getId());
+
 
 
         testAdapter = new PatientDoctorAdapter(this);
         patientDoctors.setAdapter(testAdapter);
-        patientDoctors.invalidateViews();
 
         patientDoctors.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
                 final String clicked =  parent.getItemAtPosition(position).toString();
-//                Toast toast = Toast.makeText(context, clicked.toString(), Toast.LENGTH_SHORT);
-//                toast.show();
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(AdminViewPatientActivity.this);
                 builder.setMessage("Delete doctor from patient?").setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Toast toast = Toast.makeText(context, "Later the doctor will be removed", Toast.LENGTH_SHORT);
-                        toast.show();
+
                         patientRef.child("Doctors").child(clicked).removeValue();
                         //doctor reference
                         doctorRef = rootRef.child("Doctors").child(clicked);
@@ -153,7 +145,6 @@ public class AdminViewPatientActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // perform whatever you want on back arrow click
                 startActivity(intents.allPatientList);
-//                finish();
             }
         });
     }

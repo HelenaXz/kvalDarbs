@@ -10,7 +10,8 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <TextView
@@ -19,7 +20,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
                 android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
                 android:layout_weight="1"
+                android:gravity="center_vertical"
                 android:text="TextView"
                 android:textSize="16sp" />
 
@@ -30,9 +33,12 @@
                 android:layout_marginEnd="10dp"
                 android:layout_marginStart="5dp"
                 android:layout_weight="5"
-                android:background="@color/urgent"
                 android:gravity="center_vertical|center_horizontal"
-                android:text="X" />
+                android:rotation="45"
+                android:text="+"
+                android:textColor="@color/urgent"
+                android:textSize="23sp"
+                android:textStyle="bold" />
         </LinearLayout>
 
     </LinearLayout>

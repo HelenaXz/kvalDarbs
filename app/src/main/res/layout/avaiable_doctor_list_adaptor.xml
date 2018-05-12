@@ -13,40 +13,28 @@
         android:orientation="horizontal"
         android:descendantFocusability="blocksDescendants">
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/doctorFullName"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
             android:layout_weight="1"
-            android:gravity="center_vertical|center_horizontal"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/doctorFullName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_weight="1"
-                android:text="Full Name"
-                android:textSize="18sp"
-                tools:layout_editor_absoluteX="384dp" />
-
-        </LinearLayout>
+            android:text="Full Name"
+            android:textSize="18sp"
+            tools:layout_editor_absoluteX="384dp" />
 
         <TextView
             android:id="@+id/addBtn"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_weight="7"
-            android:background="@color/ok"
+            android:layout_weight="4"
             android:gravity="center_vertical|center_horizontal"
             android:text="+"
-            android:textSize="20sp"
+            android:textColor="@color/ok"
+            android:textSize="30sp"
             android:textStyle="bold" />
 
         <!--<Button-->

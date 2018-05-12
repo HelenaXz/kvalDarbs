@@ -41,6 +41,7 @@ public class AddPatientActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_patient);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         final Intents intents = new Intents(this);
         rootRef = FirebaseDatabase.getInstance().getReference("Patients");
 
@@ -115,7 +116,23 @@ public class AddPatientActivity extends AppCompatActivity {
                     int duration = Toast.LENGTH_SHORT;
                     Toast toast = Toast.makeText(context, text, duration);
                     toast.show();
+                    name.setText(null);
+                    surname.setText(null);
+                    id.setText(null);
+                    phone.setText(null);
+                    pass.setText(null);
+                    passRepeat.setText(null);
+                    dateOfBirth.setText(null);
+                    roomNr.setText(null);
                 }
+            }
+        });
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // perform whatever you want on back arrow click
+                startActivity(intents.adminMainMenu);
+                finish();
             }
         });
     }
@@ -141,6 +158,9 @@ public class AddPatientActivity extends AppCompatActivity {
         if(TextUtils.isEmpty(passRepeat.getText().toString().trim())){
             passRepeat.setError("Please repeat password");
         } else {valid = valid + 1;}
+        if(TextUtils.isEmpty(roomNr.getText().toString().trim())){
+            name.setError("Please enter room");
+        } else {valid = valid + 1;}
         if(pass.getText().toString().equals(passRepeat.getText().toString())){
             valid = valid + 1;
         } else {
@@ -150,29 +170,30 @@ public class AddPatientActivity extends AppCompatActivity {
             Toast toast = Toast.makeText(context, text, duration);
             toast.show();
         }
-        if(valid < 7){ return false; } else { return true; }
-    }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+        if(valid < 8){ return false; } else { return true; }
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.menu_main, menu);
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//        int id = item.getItemId();
+//
+//        //noinspection SimplifiableIfStatement
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
+//
+//        return super.onOptionsItemSelected(item);
+//    }
 
 
 }

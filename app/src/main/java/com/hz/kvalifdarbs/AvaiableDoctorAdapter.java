@@ -24,6 +24,7 @@ class AvaiableDoctorAdapter extends ArrayAdapter<Doctor> {
     Intents intents;
     Intent i;
     private Patient thisPatient;
+    TextView fullName;
 
 
     public AvaiableDoctorAdapter(Context context, ArrayList<Doctor> allDoctors, Patient thisPatient) {
@@ -46,25 +47,14 @@ class AvaiableDoctorAdapter extends ArrayAdapter<Doctor> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.avaiable_doctor_list_adaptor, parent, false);
         }
         // Lookup view for data population
-        TextView fullName =  convertView.findViewById(R.id.doctorFullName);
+        fullName =  convertView.findViewById(R.id.doctorFullName);
         TextView addDoctor = convertView.findViewById(R.id.addBtn);
-//        Button roomField = convertView.findViewById(R.id.room);
 //        Populate the data into the template view using the data object
 
-        String fullNameString = doctor.getName() + " " + doctor.getSurname();
-        fullName.setText(fullNameString);
-        addDoctor.setFocusable(false);
-        addDoctor.setClickable(false);
+        fullName.setText(doctor.getFullName());
 
 
-        addDoctor.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //1.find patient by Id the the database
 
-
-            }
-        });
         // Return the completed view to render on screen
         return convertView;
     }

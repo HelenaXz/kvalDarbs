@@ -37,13 +37,13 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/patientId_field"
+                android:id="@+id/doctorId_field"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
                 android:layout_marginTop="5dp"
                 android:gravity="center_horizontal"
-                android:text="Patient ID"
+                android:text="Doctor ID"
                 android:textColor="@color/colorAccent"
                 android:textSize="20sp" />
 
@@ -78,7 +78,7 @@
                         android:textSize="16sp" />
 
                     <TextView
-                        android:id="@+id/name_surname"
+                        android:id="@+id/name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
@@ -101,11 +101,11 @@
                         android:layout_weight="3"
                         android:paddingBottom="5dp"
                         android:paddingTop="5dp"
-                        android:text="Birth date:"
+                        android:text="Surname:"
                         android:textSize="16sp" />
 
                     <TextView
-                        android:id="@+id/birthDate"
+                        android:id="@+id/surname"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
@@ -127,11 +127,11 @@
                         android:layout_weight="3"
                         android:paddingBottom="5dp"
                         android:paddingTop="5dp"
-                        android:text="Brought in on: "
+                        android:text="Phone:"
                         android:textSize="16sp" />
 
                     <TextView
-                        android:id="@+id/brought_in"
+                        android:id="@+id/phone_number"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
@@ -141,57 +141,7 @@
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="20dp"
-                    android:layout_marginStart="20dp">
 
-                    <TextView
-                        android:id="@+id/textView8"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="5"
-                        android:paddingBottom="5dp"
-                        android:paddingTop="5dp"
-                        android:text="Room: "
-                        android:textSize="16sp" />
-
-                    <TextView
-                        android:id="@+id/room"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_weight="2"
-                        android:paddingBottom="5dp"
-                        android:paddingTop="5dp"
-                        android:textSize="18sp" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="20dp"
-                    android:layout_marginStart="20dp">
-
-                    <TextView
-                        android:id="@+id/textView10"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="5"
-                        android:paddingBottom="5dp"
-                        android:paddingTop="5dp"
-                        android:text="Doctors:"
-                        android:textSize="16sp" />
-
-                    <ListView
-                        android:id="@+id/patientDoctorList"
-                        android:layout_width="match_parent"
-                        android:layout_height="60dp"
-                        android:layout_weight="2" />
-
-                </LinearLayout>
 
                 <Button
                     android:id="@+id/btnAddDoc"
@@ -200,7 +150,7 @@
                     android:layout_marginEnd="20dp"
                     android:layout_marginStart="20dp"
                     android:backgroundTint="@color/colorPrimaryDark"
-                    android:text="Add Doctor"
+                    android:text="Add Paitient(Mby no)"
                     android:textColor="@color/white" />
 
 
@@ -217,7 +167,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
-                    android:text="Examinations" />
+                    android:text="Patients" />
 
 
                 <ScrollView
@@ -230,7 +180,7 @@
                         android:orientation="vertical">
 
                         <ListView
-                            android:id="@+id/patientExamList"
+                            android:id="@+id/doctorPatientList"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent" />
                     </LinearLayout>

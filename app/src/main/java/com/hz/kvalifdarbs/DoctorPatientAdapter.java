@@ -12,6 +12,7 @@ import com.hz.kvalifdarbs.Objects.Patient;
 import java.util.ArrayList;
 
 public class DoctorPatientAdapter extends ArrayAdapter<Object> {
+    TextView patientId, patientName;
 
     public DoctorPatientAdapter(Context context, ArrayList<String> myPatients) {
         super(context, 0);
@@ -21,19 +22,16 @@ public class DoctorPatientAdapter extends ArrayAdapter<Object> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         Patient patient = (Patient) getItem(position);
-//        return super.getView(position, convertView, parent);
-//        Doctor doctorName = (Doctor) getItem(position);
-//        String doctorId = getItem(position);
         if (convertView == null){
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.doctor_patient_list_adaptor, parent, false);
         }
 
-        TextView patientId = convertView.findViewById(R.id.patientId);
-        TextView patientName = convertView.findViewById(R.id.fullName);
+
+        patientId = convertView.findViewById(R.id.patientId);
+        patientName = convertView.findViewById(R.id.fullName);
 
         patientId.setText(patient.getId());
-        patientName.setText(patient.getName());
-
+        patientName.setText(patient.getFullName());
 
 
         return convertView;

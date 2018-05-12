@@ -29,19 +29,18 @@ public class AllPatientListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_patient_list);
+        context = getApplicationContext();
+        final Intents intents = new Intents(this);
         Toolbar toolbar = findViewById(R.id.toolbar);
+        rootRef = FirebaseDatabase.getInstance().getReference();
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        final Intents intents = new Intents(this);
+
         listView = findViewById(R.id.allPatients);
         allPatients = new ArrayList<>();
-//        patientArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, allPatients);
         testAdapter = new AdminPatientAdapter(this, allPatients);
 
-        context = getApplicationContext();
-
-
-        rootRef = FirebaseDatabase.getInstance().getReference();
 
 
         rootRef.child("Patients").addChildEventListener(new ChildEventListener() {
@@ -49,11 +48,8 @@ public class AllPatientListActivity extends AppCompatActivity {
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Patient patient = dataSnapshot.getValue(Patient.class);
                 childRef = rootRef.child(dataSnapshot.getKey());
-//                allPatients.add(patient);
                 testAdapter.add(patient);
-//                patientArrayAdapter.notifyDataSetChanged();
                 testAdapter.notifyDataSetChanged();
-
             }
 
             @Override
@@ -78,7 +74,6 @@ public class AllPatientListActivity extends AppCompatActivity {
         });
 
 
-//        listView.setAdapter(patientArrayAdapter);
         listView.setAdapter(testAdapter);
         listView.setClickable(true);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -87,8 +82,6 @@ public class AllPatientListActivity extends AppCompatActivity {
 
                 Patient clicked = ((Patient) parent.getItemAtPosition(position));
 
-//                Toast toast = Toast.makeText(getApplicationContext(), clicked.getId(), Toast.LENGTH_SHORT);
-//                toast.show();
                 Intent seePatient = intents.adminPatientView;
                 seePatient.putExtra("thisPatient", clicked);
                 startActivity(seePatient);

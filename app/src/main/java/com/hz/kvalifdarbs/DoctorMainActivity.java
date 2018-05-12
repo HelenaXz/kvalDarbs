@@ -20,8 +20,7 @@ public class DoctorMainActivity extends AppCompatActivity {
         final Intents intents = new Intents(this);
         Intent i = getIntent();
         doctorId = i.getStringExtra("doctorId");
-        Toast toast = Toast.makeText(getApplicationContext(), doctorId, Toast.LENGTH_SHORT);
-        toast.show();
+
 
         viewAllPat = findViewById(R.id.btnViewPatients);
 

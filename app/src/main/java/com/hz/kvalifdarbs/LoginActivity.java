@@ -27,6 +27,7 @@ public class LoginActivity extends AppCompatActivity {
     DataSnapshot userRef;
     String userIdString, userPassString, thisUserType, added;
     Integer passEncrypt, passFromDB;
+    Toast toast;
 
 
     @Override
@@ -66,22 +67,22 @@ public class LoginActivity extends AppCompatActivity {
 
                                 passEncrypt = userPassString.hashCode();
                                 if(passFromDB.toString().equals(passEncrypt.toString())){
-                                    Toast toast = Toast.makeText(getApplicationContext(), "Login Succesful", Toast.LENGTH_SHORT);
+                                    toast = Toast.makeText(getApplicationContext(), "Login Succesful", Toast.LENGTH_SHORT);
                                     toast.show();
                                     Intent intent = intents.doctorMainMenu;
                                     intent.putExtra("doctorId", userIdString);
                                     startActivity(intent);
                                 } else {
-                                    Toast toast = Toast.makeText(getApplicationContext(), "Password incorect!", Toast.LENGTH_SHORT);
+                                    toast = Toast.makeText(getApplicationContext(), "Password incorect!", Toast.LENGTH_SHORT);
                                     toast.show();
                                 }
 
                             } else {
                                 if(userIdString.isEmpty()){
-                                    Toast toast = Toast.makeText(getApplicationContext(), "Enter user ID", Toast.LENGTH_SHORT);
+                                    toast = Toast.makeText(getApplicationContext(), "Enter user ID", Toast.LENGTH_SHORT);
                                     toast.show();
                                 } else {
-                                    Toast toast = Toast.makeText(getApplicationContext(), "Admin not found!", Toast.LENGTH_SHORT);
+                                    toast = Toast.makeText(getApplicationContext(), "Doctor not found!", Toast.LENGTH_SHORT);
                                     toast.show();
                                 }
                             }
@@ -105,6 +106,9 @@ public class LoginActivity extends AppCompatActivity {
                                 if(passFromDB.toString().equals(passEncrypt.toString())){
                                     Toast toast = Toast.makeText(getApplicationContext(), "Login Succesful", Toast.LENGTH_SHORT);
                                     toast.show();
+                                    Intent intent = intents.patientMainMenu;
+                                    intent.putExtra("patientId", userIdString);
+                                    startActivity(intent);
                                 } else {
                                     Toast toast = Toast.makeText(getApplicationContext(), "Password incorect!", Toast.LENGTH_SHORT);
                                     toast.show();
@@ -115,7 +119,7 @@ public class LoginActivity extends AppCompatActivity {
                                     Toast toast = Toast.makeText(getApplicationContext(), "Enter user ID", Toast.LENGTH_SHORT);
                                     toast.show();
                                 } else {
-                                    Toast toast = Toast.makeText(getApplicationContext(), "Admin not found!", Toast.LENGTH_SHORT);
+                                    Toast toast = Toast.makeText(getApplicationContext(), "Patient not found!", Toast.LENGTH_SHORT);
                                     toast.show();
                                 }
                             }

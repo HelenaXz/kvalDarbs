@@ -13,6 +13,7 @@ import com.hz.kvalifdarbs.Objects.Patient;
 import java.util.ArrayList;
 
 class AdminPatientAdapter extends ArrayAdapter<Patient> {
+    TextView tvName, tvSurname;
 
     public AdminPatientAdapter(Context context, ArrayList<Patient> allPatients) {
         super(context, 0, allPatients);
@@ -24,12 +25,11 @@ class AdminPatientAdapter extends ArrayAdapter<Patient> {
         Patient patient = getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.all_patient_list, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.all_patient_list_adaptor, parent, false);
         }
         // Lookup view for data population
-        LinearLayout main = convertView.findViewById(R.id.body);
-        TextView tvName = (TextView) convertView.findViewById(R.id.patientName);
-        TextView tvSurname = (TextView) convertView.findViewById(R.id.patientSurname);
+        tvName = (TextView) convertView.findViewById(R.id.patientName);
+        tvSurname = (TextView) convertView.findViewById(R.id.patientSurname);
 //        Button roomField = convertView.findViewById(R.id.room);
         // Populate the data into the template view using the data object
 //        roomField.setText(patient.getBirthDate());

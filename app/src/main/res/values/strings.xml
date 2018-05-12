@@ -1,4 +1,16 @@
 <resources>
     <string name="app_name">Nosore</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_navigation_test">navigationTest</string>
+
+    <string name="name">Name</string>
+    <string name="surname">Surname</string>
+    <string name="id">Id</string>
+    <string name="phoneNumber">Phone Number</string>
+    <string name="password">Phone Number</string>
+    <string name="passwordRep">Repeat Password</string>
+    <string name="submit">Submit</string>
+    <string name="addAdmin">Add Administrator</string>
+
+
 </resources>

@@ -64,7 +64,16 @@
             <ListView
                 android:id="@+id/patientList"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="wrap_content">
+
+            </ListView>
+
+            <TextView
+                android:id="@+id/emptyElement"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:gravity="center_vertical|center_horizontal" />
 
         </LinearLayout>
 

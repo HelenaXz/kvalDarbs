@@ -21,17 +21,22 @@ public class AddDoctorActivity extends AppCompatActivity {
     DatabaseReference rootRef, docRef;
     EditText name, surname, id, phone, pass, passRepeat;
     Integer passEncrypt;
+    Button submitForm;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_doctor);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         final Intents intents = new Intents(this);
+
+        //Database references
         rootRef = FirebaseDatabase.getInstance().getReference("Doctors");
 
         //Buttons
-        Button submitForm = findViewById(R.id.submitBtn);
+        submitForm = findViewById(R.id.submitBtn);
         //Text fields
         name = findViewById(R.id.name);
         surname = findViewById(R.id.surname);
@@ -60,7 +65,21 @@ public class AddDoctorActivity extends AppCompatActivity {
                     int duration = Toast.LENGTH_SHORT;
                     Toast toast = Toast.makeText(context, text, duration);
                     toast.show();
+                    name.setText(null);
+                    surname.setText(null);
+                    id.setText(null);
+                    phone.setText(null);
+                    pass.setText(null);
+                    passRepeat.setText(null);
                 }
+            }
+        });
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // perform whatever you want on back arrow click
+                startActivity(intents.adminMainMenu);
+                finish();
             }
         });
 
@@ -96,28 +115,29 @@ public class AddDoctorActivity extends AppCompatActivity {
             Toast toast = Toast.makeText(context, text, duration);
             toast.show();
         }
-        if(valid < 7){ return false; } else { return true; }
+        if(valid < 7) return false;
+        else { return true; }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.menu_main, menu);
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//        int id = item.getItemId();
+//
+//        //noinspection SimplifiableIfStatement
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
+//
+//        return super.onOptionsItemSelected(item);
+//    }
 }

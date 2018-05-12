@@ -12,7 +12,7 @@
 
         <TextView
             android:id="@+id/patientId"
-            android:layout_width="50dp"
+            android:layout_width="65dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_vertical|center_horizontal"
@@ -22,7 +22,7 @@
 
         <TextView
             android:id="@+id/colorIndicator"
-            android:layout_width="1dp"
+            android:layout_width="30dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@color/medium"
@@ -32,7 +32,7 @@
 
         <TextView
             android:id="@+id/fullName"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="8"
             android:paddingBottom="8dp"

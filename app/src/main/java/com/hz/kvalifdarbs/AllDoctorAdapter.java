@@ -31,7 +31,6 @@ public class AllDoctorAdapter extends ArrayAdapter<Doctor> {
         }
         // Lookup view for data population
 
-//        Button roomField = convertView.findViewById(R.id.room);
 //        Populate the data into the template view using the data object
 
         doctorName = convertView.findViewById(R.id.fullName);
@@ -40,14 +39,6 @@ public class AllDoctorAdapter extends ArrayAdapter<Doctor> {
         doctorName.setText(doctor.getFullName());
 
 
-//        addDoctor.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                //1.find patient by Id the the database
-//
-//
-//            }
-//        });
         // Return the completed view to render on screen
         return convertView;
     }
