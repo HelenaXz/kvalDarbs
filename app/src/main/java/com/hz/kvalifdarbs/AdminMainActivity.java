@@ -16,11 +16,13 @@ import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.hz.kvalifdarbs.utils.PreferenceUtils;
 
 
 public class AdminMainActivity extends AppCompatActivity {
         DatabaseReference rootRef;
-        Button addDoctorBtn, addPatientBtn, viewPatientList, addAdminBtn, viewDoctorList;
+        Button addDoctorBtn, addPatientBtn, viewPatientList, addAdminBtn, viewDoctorList, btnLogout;
+        Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +30,7 @@ public class AdminMainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         final Intents intents = new Intents(this);
+        context = getApplicationContext();
 
         rootRef = FirebaseDatabase.getInstance().getReference("TestUsers");
 
@@ -37,6 +40,8 @@ public class AdminMainActivity extends AppCompatActivity {
         viewPatientList = findViewById(R.id.btnViewPatients);
         addAdminBtn = findViewById(R.id.btnAddAdmin);
         viewDoctorList = findViewById(R.id.btnViewDoctors);
+
+        btnLogout = findViewById(R.id.btnLogout);
 
 
 
@@ -62,6 +67,16 @@ public class AdminMainActivity extends AppCompatActivity {
              public void onClick(View v) { startActivity(intents.allDoctorList);
              }
          });
+
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PreferenceUtils.saveId("", context);
+                PreferenceUtils.savePassword("", context);
+                PreferenceUtils.saveUserType("", context);
+                startActivity(intents.userSelect);
+            }
+        });
 
 //        FloatingActionButton fab =  findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {

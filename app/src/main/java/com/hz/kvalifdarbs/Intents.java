@@ -19,6 +19,7 @@ public class Intents extends AppCompatActivity {
     Intent doctorPatientView;
     Intent loginView;
     Intent addAdmin;
+    Intent userSelect;
 
 
     Intents(Context thisContext) {
@@ -36,6 +37,7 @@ public class Intents extends AppCompatActivity {
         this.allDoctorList = new Intent(thisContext, AllDoctorListActivity.class);
         this.doctorPatientView = new Intent(thisContext, DoctorViewPatientActivity.class);
         this.patientMainMenu = new Intent(thisContext, PatientMainActivity.class);
+        this.userSelect = new Intent(thisContext, UserSelectActivity.class);
 
     }
 }

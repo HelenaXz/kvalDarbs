@@ -1,5 +1,6 @@
 package com.hz.kvalifdarbs;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,6 +18,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.hz.kvalifdarbs.utils.PreferenceUtils;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -28,6 +30,7 @@ public class LoginActivity extends AppCompatActivity {
     String userIdString, userPassString, thisUserType, added;
     Integer passEncrypt, passFromDB;
     Toast toast;
+    Context context;
 
 
     @Override
@@ -37,6 +40,7 @@ public class LoginActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         final Intents intents = new Intents(this);
+        context = getApplicationContext();
 
         userId = findViewById(R.id.userId);
         userPass = findViewById(R.id.userPass);
@@ -54,6 +58,10 @@ public class LoginActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                //TODO Check shared preferences if is logged in already
+
+
                 userIdString = userId.getText().toString();
                 userPassString = userPass.getText().toString();
                 if(thisUserType.equals("Doctor")){
@@ -69,6 +77,10 @@ public class LoginActivity extends AppCompatActivity {
                                 if(passFromDB.toString().equals(passEncrypt.toString())){
                                     toast = Toast.makeText(getApplicationContext(), "Login Succesful", Toast.LENGTH_SHORT);
                                     toast.show();
+
+                                    PreferenceUtils.saveId(userIdString, context);
+                                    PreferenceUtils.savePassword(userPassString, context);
+                                    PreferenceUtils.saveUserType(thisUserType, context);
                                     Intent intent = intents.doctorMainMenu;
                                     intent.putExtra("doctorId", userIdString);
                                     startActivity(intent);
@@ -106,6 +118,10 @@ public class LoginActivity extends AppCompatActivity {
                                 if(passFromDB.toString().equals(passEncrypt.toString())){
                                     Toast toast = Toast.makeText(getApplicationContext(), "Login Succesful", Toast.LENGTH_SHORT);
                                     toast.show();
+
+                                    PreferenceUtils.saveId(userIdString, context);
+                                    PreferenceUtils.savePassword(userPassString, context);
+                                    PreferenceUtils.saveUserType(thisUserType, context);
                                     Intent intent = intents.patientMainMenu;
                                     intent.putExtra("patientId", userIdString);
                                     startActivity(intent);
@@ -143,6 +159,9 @@ public class LoginActivity extends AppCompatActivity {
                                 if(passFromDB.toString().equals(passEncrypt.toString())){
                                     Toast toast = Toast.makeText(getApplicationContext(), "Login Succesful", Toast.LENGTH_SHORT);
                                     toast.show();
+                                    PreferenceUtils.saveId(userIdString, context);
+                                    PreferenceUtils.savePassword(userPassString, context);
+                                    PreferenceUtils.saveUserType(thisUserType, context);
                                     startActivity(intents.adminMainMenu);
                                 } else {
                                     Toast toast = Toast.makeText(getApplicationContext(), "Password incorect!", Toast.LENGTH_SHORT);
