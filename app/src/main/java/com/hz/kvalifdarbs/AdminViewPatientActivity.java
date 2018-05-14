@@ -29,11 +29,12 @@ package com.hz.kvalifdarbs;
 public class AdminViewPatientActivity extends AppCompatActivity {
     TextView name_surname, room, brought_in, birthDate, patientId;
     ListView patientExams, patientDoctors;
-    Button addDoctorTo;
+    Button addDoctorTo, deleteUser;
     String patientIdString;
     DatabaseReference rootRef, patientRef, doctorRef;
     PatientDoctorAdapter testAdapter;
     Context context;
+    ArrayList<String> patientDocList;
 
 
     @Override
@@ -55,6 +56,7 @@ public class AdminViewPatientActivity extends AppCompatActivity {
         birthDate = findViewById(R.id.birthDate);
         patientId = findViewById(R.id.patientId_field);
         addDoctorTo = findViewById(R.id.btnAddDoc);
+        deleteUser = findViewById(R.id.btnDeleteUser);
 
         //Fill TextViews
         name_surname.setText(thisPatient.getFullName());
@@ -69,6 +71,8 @@ public class AdminViewPatientActivity extends AppCompatActivity {
         patientDoctors = findViewById(R.id.patientDoctorList); //ListView
 
         patientRef = rootRef.child("Patients").child(thisPatient.getId());
+
+        patientDocList = new ArrayList<>();
 
         addDoctorTo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,6 +112,28 @@ public class AdminViewPatientActivity extends AppCompatActivity {
             }
         });
 
+        deleteUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(AdminViewPatientActivity.this);
+                builder.setMessage("Delete patient from system?").setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        for(String docId : patientDocList){
+                            doctorRef = rootRef.child("Doctors").child(docId);
+                            doctorRef.child("Patients").child(thisPatient.getId()).removeValue();
+                        }
+                        patientRef.removeValue();
+                        startActivity(intents.allPatientList);
+
+                    }
+                }).setNegativeButton("Cancel", null);
+
+                AlertDialog deleteAlert = builder.create();
+                deleteAlert.show();
+            }
+        });
+
         patientRef.child("Doctors").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -115,6 +141,7 @@ public class AdminViewPatientActivity extends AppCompatActivity {
 //                Doctor doctorObj = dataSnapshot.getValue(Doctor.class);
 //                doctorIds.add(doctor);
                 testAdapter.add(doctorId);
+                patientDocList.add(doctorId);
 //                testAdapter.add(doctorName);
                 testAdapter.notifyDataSetChanged();
             }
