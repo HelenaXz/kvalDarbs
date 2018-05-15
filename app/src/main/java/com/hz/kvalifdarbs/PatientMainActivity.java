@@ -24,7 +24,7 @@ public class PatientMainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         final Intents intents = new Intents(this);
         Intent i = getIntent();
-        patientId = i.getStringExtra("patientId");
+        patientId = i.getStringExtra("userId");
 
         rootRef = FirebaseDatabase.getInstance().getReference();
         patientRef = rootRef.child("Patients").child(patientId);

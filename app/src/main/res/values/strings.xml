@@ -5,12 +5,44 @@
 
     <string name="name">Name</string>
     <string name="surname">Surname</string>
+    <string name="birthDate">Birth Date</string>
     <string name="id">Id</string>
     <string name="phoneNumber">Phone Number</string>
-    <string name="password">Phone Number</string>
+    <string name="phone">Phone</string>
+    <string name="password">Password</string>
     <string name="passwordRep">Repeat Password</string>
-    <string name="submit">Submit</string>
+    <string name="submitForm">Submit</string>
+    <string name="deleteUser">Delete User</string>
+
+    <string name="gender">Gender</string>
+    <string name="room">Room number</string>
+    <string name="broughtIn">Brought in on</string>
+
+
+    <string name="generalInfo">General information</string>
+    <string name="accountDetails">Account details</string>
+    <string name="patients">Patients</string>
+    <string name="doctors">Doctors</string>
+    <string name="exams">Examinations</string>
+
+    <string name="addPatient">Add Patient</string>
+    <string name="addDoctor">Add Doctor</string>
     <string name="addAdmin">Add Administrator</string>
+    <string name="addNewExam">Add New Examination</string>
+
+    <string name="allPatients">All Patients</string>
+    <string name="allDoctors">All Doctors</string>
+    <string name="myPatients">My Patients</string>
+
+    <string name="login">Login</string>
+    <string name="logout">Logout</string>
+    <string name="admin">Administrator</string>
+    <string name="doctor">Doctor</string>
+    <string name="patient">Patient</string>
+
+    <string name="viewPatientList">View Patient List</string>
+    <string name="viewDoctorList">View Doctor List</string>
+    <string name="viewMyPatients">View My Patients</string>
 
 
 </resources>

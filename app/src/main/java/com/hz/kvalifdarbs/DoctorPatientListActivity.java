@@ -40,7 +40,7 @@ public class DoctorPatientListActivity extends AppCompatActivity {
         context = getApplicationContext();
         rootRef = FirebaseDatabase.getInstance().getReference();
         Intent i = getIntent();
-        doctorId = i.getStringExtra("doctorId");
+        doctorId = i.getStringExtra("userId");
         childRef = rootRef.child("Doctors").child(doctorId);
         emptyElement = findViewById(R.id.emptyElement);
 
@@ -117,7 +117,7 @@ public class DoctorPatientListActivity extends AppCompatActivity {
                 Patient clicked = ((Patient) parent.getItemAtPosition(position));
                 Intent seePatient = intents.doctorPatientView;
                 seePatient.putExtra("thisPatient", clicked);
-                seePatient.putExtra("doctorId", doctorId);
+                seePatient.putExtra("userId", doctorId);
                 startActivity(seePatient);
             }
         });
@@ -127,7 +127,7 @@ public class DoctorPatientListActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // perform whatever you want on back arrow click
                 Intent intent = intents.doctorMainMenu;
-                intent.putExtra("doctorId", doctorId);
+                intent.putExtra("userId", doctorId);
                 startActivity(intents.doctorMainMenu);
                 finish();
             }

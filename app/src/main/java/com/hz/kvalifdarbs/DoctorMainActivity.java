@@ -24,7 +24,7 @@ public class DoctorMainActivity extends AppCompatActivity {
         context = getApplicationContext();
         final Intents intents = new Intents(this);
         Intent i = getIntent();
-        doctorId = i.getStringExtra("doctorId");
+        doctorId = i.getStringExtra("userId");
 
 
 
@@ -35,7 +35,7 @@ public class DoctorMainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = intents.doctorPatientList;
-                intent.putExtra("doctorId", doctorId);
+                intent.putExtra("userId", doctorId);
                 startActivity(intent);
             }
         });

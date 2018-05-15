@@ -70,12 +70,12 @@ public class UserSelectActivity extends AppCompatActivity {
         }
         if (PreferenceUtils.getUserType(context).equals("Doctor")) {
             Intent intent = intents.doctorMainMenu;
-            intent.putExtra("doctorId", userId);
+            intent.putExtra("userId", userId);
             startActivity(intent);
         }
         if (PreferenceUtils.getUserType(context).equals("Patient")) {
             Intent intent = intents.patientMainMenu;
-            intent.putExtra("patientId", userId);
+            intent.putExtra("userId", userId);
             startActivity(intent);
         }
     }

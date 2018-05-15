@@ -59,7 +59,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
-                    android:text="General Information"
+                    android:text="@string/generalInfo"
                     android:textSize="14sp" />
 
                 <LinearLayout
@@ -76,7 +76,7 @@
                         android:layout_weight="3"
                         android:paddingBottom="5dp"
                         android:paddingTop="5dp"
-                        android:text="Name:"
+                        android:text="@string/name"
                         android:textSize="16sp" />
 
                     <TextView
@@ -103,7 +103,7 @@
                         android:layout_weight="3"
                         android:paddingBottom="5dp"
                         android:paddingTop="5dp"
-                        android:text="Birth date:"
+                        android:text="@string/birthDate"
                         android:textSize="16sp" />
 
                     <TextView
@@ -129,7 +129,7 @@
                         android:layout_weight="3"
                         android:paddingBottom="5dp"
                         android:paddingTop="5dp"
-                        android:text="Brought in on: "
+                        android:text="@string/broughtIn"
                         android:textSize="16sp" />
 
                     <TextView
@@ -156,7 +156,7 @@
                         android:layout_weight="5"
                         android:paddingBottom="5dp"
                         android:paddingTop="5dp"
-                        android:text="Room: "
+                        android:text="@string/room"
                         android:textSize="16sp" />
 
                     <TextView
@@ -184,7 +184,7 @@
                         android:layout_weight="5"
                         android:paddingBottom="5dp"
                         android:paddingTop="5dp"
-                        android:text="Doctors:"
+                        android:text="@string/doctors"
                         android:textSize="16sp" />
 
                     <ListView
@@ -202,7 +202,7 @@
                     android:layout_marginEnd="20dp"
                     android:layout_marginStart="20dp"
                     android:backgroundTint="@color/colorPrimaryDark"
-                    android:text="Add Doctor"
+                    android:text="@string/addDoctor"
                     android:textColor="@color/white" />
 
 
@@ -219,7 +219,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
-                    android:text="Examinations" />
+                    android:text="@string/exams" />
 
 
                 <ScrollView
@@ -242,7 +242,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
                 android:backgroundTint="@color/urgent"
-                android:text="Delete User"
+                android:text="@string/deleteUser"
                 android:textSize="12sp" />
         </LinearLayout>
     </ScrollView>

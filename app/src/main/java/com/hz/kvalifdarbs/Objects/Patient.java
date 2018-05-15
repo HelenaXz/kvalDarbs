@@ -15,6 +15,7 @@ public class Patient implements Serializable {
     private String surname;
     private Integer password;
     private String room;
+    private String gender;
 
 
 
@@ -23,7 +24,7 @@ public class Patient implements Serializable {
     }
     //TODO Pievienot field nosacījumi, cik bieži jākustina
 
-    public Patient(String name, String surname, String Id, Integer password, Integer phone, String birthDate, String room){
+    public Patient(String name, String surname, String Id, String gender, Integer password, Integer phone, String birthDate, String room){
         setName(name);
         setSurname(surname);
         setId(Id);
@@ -32,6 +33,7 @@ public class Patient implements Serializable {
         setAddedToSystem();
         setPassword(password);
         setRoom(room);
+        setGender(gender);
     }
 
     public void setName(String name){
@@ -89,6 +91,9 @@ public class Patient implements Serializable {
     public String getFullName(){
         String fullName = this.name + " " + this.surname;
         return fullName;
+    }
+    public void setGender(String gender){
+        this.gender = gender;
     }
 
 }

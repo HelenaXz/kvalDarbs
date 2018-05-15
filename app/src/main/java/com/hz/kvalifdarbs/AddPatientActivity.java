@@ -30,7 +30,8 @@ public class AddPatientActivity extends AppCompatActivity {
 
     DatabaseReference rootRef, patientRef;
     EditText name, surname, id, phone, pass, passRepeat, roomNr;
-    String nameString, idString,surnameString, phoneString, birthDate, roomString;
+    String nameString, idString,surnameString, phoneString, birthDate, roomString, genderString;
+    Spinner genderSpinner;
     TextView dateOfBirth;
     Integer passEncrypt, phoneNum;
     DatePickerDialog.OnDateSetListener mDataSetListener;
@@ -50,7 +51,7 @@ public class AddPatientActivity extends AppCompatActivity {
         day = 1;
 
         //set up spinners
-        Spinner genderSpinner = findViewById(R.id.genderSpinner);
+        genderSpinner = findViewById(R.id.genderSpinner);
         ArrayAdapter<CharSequence> genderAdapter = ArrayAdapter.createFromResource(this,
         R.array.gender_list, android.R.layout.simple_spinner_item);
         genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -106,9 +107,10 @@ public class AddPatientActivity extends AppCompatActivity {
                     phoneNum = Integer.parseInt(phoneString);
                     passEncrypt = pass.getText().toString().hashCode();
                     roomString = roomNr.getText().toString();
+                    genderString = genderSpinner.getSelectedItem().toString();
 
                     patientRef = rootRef.child(idString);
-                    Patient newPatient = new Patient(nameString, surnameString, idString, passEncrypt, phoneNum, birthDate, roomString);
+                    Patient newPatient = new Patient(nameString, surnameString, idString, genderString, passEncrypt, phoneNum, birthDate, roomString);
                     patientRef.setValue(newPatient);
 
                     Context context = getApplicationContext();

@@ -21,7 +21,7 @@
             android:layout_marginStart="5dp"
             android:backgroundTint="@color/colorPrimaryLight"
             android:elevation="5dp"
-            android:text="Add Doctor" />
+            android:text="@string/addDoctor" />
 
         <Button
             android:id="@+id/btnAddPatient"
@@ -31,7 +31,7 @@
             android:layout_marginStart="5dp"
             android:backgroundTint="@color/colorPrimaryLight"
             android:elevation="5dp"
-            android:text="Add Patient" />
+            android:text="@string/addPatient" />
 
         <Button
             android:id="@+id/btnAddAdmin"
@@ -41,7 +41,7 @@
             android:layout_marginStart="5dp"
             android:backgroundTint="@color/colorPrimaryLight"
             android:elevation="5dp"
-            android:text="Add Administrator" />
+            android:text="@string/addAdmin" />
 
         <Button
             android:id="@+id/btnViewPatients"
@@ -51,7 +51,7 @@
             android:layout_marginStart="5dp"
             android:backgroundTint="@color/colorPrimaryLight"
             android:elevation="5dp"
-            android:text="View patient list" />
+            android:text="@string/viewPatientList" />
 
         <Button
             android:id="@+id/btnViewDoctors"
@@ -61,7 +61,7 @@
             android:layout_marginStart="5dp"
             android:backgroundTint="@color/colorPrimaryLight"
             android:elevation="5dp"
-            android:text="View Doctor list" />
+            android:text="@string/viewDoctorList" />
 
         <Button
             android:id="@+id/btnLogout"
@@ -71,6 +71,6 @@
             android:layout_marginStart="5dp"
             android:backgroundTint="@color/urgent"
             android:elevation="5dp"
-            android:text="LogOut" />
+            android:text="@string/logout" />
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

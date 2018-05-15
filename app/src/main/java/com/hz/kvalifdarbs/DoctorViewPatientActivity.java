@@ -29,7 +29,7 @@ public class DoctorViewPatientActivity extends AppCompatActivity {
 
         Intent i = getIntent();
         thisPatient = (Patient)i.getSerializableExtra("thisPatient");
-        doctorId = i.getStringExtra("doctorId");
+        doctorId = i.getStringExtra("userId");
         name_surname = findViewById(R.id.name_surname);
         room = findViewById(R.id.room);
         brought_in = findViewById(R.id.brought_in);
@@ -50,7 +50,7 @@ public class DoctorViewPatientActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // perform whatever you want on back arrow click
                 Intent intent = intents.doctorPatientList;
-                intent.putExtra("doctorId", doctorId);
+                intent.putExtra("userId", doctorId);
                 startActivity(intent);
                 finish();
             }
