@@ -16,36 +16,23 @@ import com.hz.kvalifdarbs.utils.PreferenceUtils;
 public class UserSelectActivity extends AppCompatActivity {
     Button admin, doctor, patient;
     Context context;
-    SharedPreferences prefs, prefs2;
+    String userId, userType;
+    Intents intents;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        final Intents intents = new Intents(this);
+        intents = new Intents(this);
         context = getApplicationContext();
-        prefs2 = PreferenceManager.getDefaultSharedPreferences(context);
-        String userId = prefs2.getString(Constants.KEY_ID, "none");
-        String testType = prefs2.getString(Constants.KEY_USER_TYPE, "none");
+        userId = PreferenceUtils.getId(context);
+        userType = PreferenceUtils.getUserType(context);
 
 
-        if(!userId.equals("")){
-            if(testType.equals("Administrator")){
-                startActivity(intents.adminMainMenu);
-            }
-            if(PreferenceUtils.getUserType(context).equals("Doctor")){
-                Intent intent = intents.doctorMainMenu;
-                intent.putExtra("doctorId", userId);
-                startActivity(intent);
-            }
-            if(PreferenceUtils.getUserType(context).equals("Patient")){
-                Intent intent = intents.patientMainMenu;
-                intent.putExtra("patientId", userId);
-                startActivity(intent);
-            }
+        if (!userId.equals("")) {
+            loggedIn();
         } else {
 
             setContentView(R.layout.activity_user_select);
-
             admin = findViewById(R.id.adminBtn);
             doctor = findViewById(R.id.doctorBtn);
             patient = findViewById(R.id.patientBtn);
@@ -53,31 +40,43 @@ public class UserSelectActivity extends AppCompatActivity {
             admin.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent loginAdmin = intents.loginView;
-                    loginAdmin.putExtra("UserType", "Administrator");
-                    startActivity(loginAdmin);
+                    startUser(intents.loginView, "Administrator");
                 }
             });
             doctor.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent loginAdmin = intents.loginView;
-                    loginAdmin.putExtra("UserType", "Doctor");
-                    startActivity(loginAdmin);
+                    startUser(intents.loginView, "Doctor");
                 }
             });
             patient.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent loginAdmin = intents.loginView;
-                    loginAdmin.putExtra("UserType", "Patient");
-                    startActivity(loginAdmin);
+                    startUser(intents.loginView, "Patient");
                 }
             });
         }
+    }
+
+    private void startUser(Intent intent, String userType) {
+        intent.putExtra("UserType", userType);
+        startActivity(intent);
+    }
 
 
-
-
+    public void loggedIn() {
+        if (userType.equals("Administrator")) {
+            startActivity(intents.adminMainMenu);
+        }
+        if (PreferenceUtils.getUserType(context).equals("Doctor")) {
+            Intent intent = intents.doctorMainMenu;
+            intent.putExtra("doctorId", userId);
+            startActivity(intent);
+        }
+        if (PreferenceUtils.getUserType(context).equals("Patient")) {
+            Intent intent = intents.patientMainMenu;
+            intent.putExtra("patientId", userId);
+            startActivity(intent);
+        }
     }
 }

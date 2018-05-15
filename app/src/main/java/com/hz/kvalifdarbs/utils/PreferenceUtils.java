@@ -28,10 +28,6 @@ public class PreferenceUtils {
         prefsEditor.apply();
         return true;
     }
-    public static String getPassword(Context context){
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        return prefs.getString(Constants.KEY_PASSWORD, null);
-    }
 
     public static boolean saveUserType(String userType, Context context){
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -43,5 +39,12 @@ public class PreferenceUtils {
     public static String getUserType(Context context){
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         return prefs.getString(Constants.KEY_USER_TYPE, null);
+    }
+
+    public static boolean savePatientInfo(){
+        return true;
+    }
+    public static boolean saveDoctorInfo(){
+        return true;
     }
 }

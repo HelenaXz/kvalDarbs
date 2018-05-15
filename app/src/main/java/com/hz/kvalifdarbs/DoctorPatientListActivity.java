@@ -45,24 +45,13 @@ public class DoctorPatientListActivity extends AppCompatActivity {
         emptyElement = findViewById(R.id.emptyElement);
 
 
-
-
         patientList = findViewById(R.id.patientList);
         doctorPatients = new ArrayList<>(); //list of doctor patient id's
-        testAdapter = new DoctorPatientAdapter(this, doctorPatients);
+        testAdapter = new DoctorPatientAdapter(this);
         patientList.setAdapter(testAdapter);
 
 
-        Integer testAdapterSize = testAdapter.getCount();
-        if(testAdapterSize==0){
-            String emptyText = "There are no patients assigned to you.";
-//            TextView emptyText = findViewById(R.id.noPatientText);
-            emptyElement.setText(emptyText);
-
-            patientList.setEmptyView(emptyElement);
-        }
-
-        TextView emptyText = (TextView)findViewById(android.R.id.empty);
+        TextView emptyText = findViewById(android.R.id.empty);
         patientList.setEmptyView(emptyText);
 
 
@@ -75,6 +64,13 @@ public class DoctorPatientListActivity extends AppCompatActivity {
                        //Loop 1 to go through all the child nodes of users
                        String patientId = uniqueKeySnapshot.getKey();
                        doctorPatients.add(patientId);
+                   }
+                   Integer testAdapterSize = doctorPatients.size();
+                   if(testAdapterSize==0){
+                       String emptyText = "There are no patients assigned to you.";
+                       emptyElement.setText(emptyText);
+
+                       patientList.setEmptyView(emptyElement);
                    }
                }
 
@@ -118,7 +114,6 @@ public class DoctorPatientListActivity extends AppCompatActivity {
         patientList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
                 Patient clicked = ((Patient) parent.getItemAtPosition(position));
                 Intent seePatient = intents.doctorPatientView;
                 seePatient.putExtra("thisPatient", clicked);

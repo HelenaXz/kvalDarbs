@@ -39,7 +39,7 @@ public class AllPatientListActivity extends AppCompatActivity {
 
         listView = findViewById(R.id.allPatients);
         allPatients = new ArrayList<>();
-        testAdapter = new AdminPatientAdapter(this, allPatients);
+        testAdapter = new AdminPatientAdapter(this);
 
 
 

@@ -9,14 +9,12 @@ import android.widget.TextView;
 
 import com.hz.kvalifdarbs.Objects.Patient;
 
-import java.util.ArrayList;
 
 public class DoctorPatientAdapter extends ArrayAdapter<Object> {
     TextView patientId, patientName;
 
-    public DoctorPatientAdapter(Context context, ArrayList<String> myPatients) {
+    DoctorPatientAdapter(Context context) {
         super(context, 0);
-
     }
 
     @Override

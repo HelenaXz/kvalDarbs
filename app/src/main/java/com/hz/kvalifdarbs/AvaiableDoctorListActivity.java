@@ -46,7 +46,7 @@ public class AvaiableDoctorListActivity extends AppCompatActivity {
 
         listView = findViewById(R.id.allDoctors);
         allDoctors = new ArrayList<>();
-        testAdapter = new AvaiableDoctorAdapter(this, allDoctors, thisPatient);
+        testAdapter = new AvaiableDoctorAdapter(this, allDoctors);
 
         final ArrayList<String> patientDoctors = new ArrayList();
 

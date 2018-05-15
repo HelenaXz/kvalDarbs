@@ -22,15 +22,14 @@ import com.hz.kvalifdarbs.utils.PreferenceUtils;
 
 public class LoginActivity extends AppCompatActivity {
 
-    EditText userId, userPass;
-    Button login;
+    EditText userIdView, userPassView;
     TextView userType;
     DatabaseReference rootRef, childRef;
     DataSnapshot userRef;
-    String userIdString, userPassString, thisUserType, added;
+    String userIdString, userPassString, thisUserType;
     Integer passEncrypt, passFromDB;
-    Toast toast;
     Context context;
+    Intents intents;
 
 
     @Override
@@ -39,164 +38,80 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        final Intents intents = new Intents(this);
+        intents = new Intents(this);
         context = getApplicationContext();
 
-        userId = findViewById(R.id.userId);
-        userPass = findViewById(R.id.userPass);
-        login = findViewById(R.id.loginBtn);
+        userIdView = findViewById(R.id.userId);
+        userPassView = findViewById(R.id.userPass);
+        Button login = findViewById(R.id.loginBtn);
         userType = findViewById(R.id.userTypeLogin);
 
 
         Intent i = getIntent();
         thisUserType = i.getStringExtra("UserType");
-        added = i.getStringExtra("UserType") + " Login";
-        userType.setText(added);
-
+        String s = thisUserType + " Login";
+        userType.setText(s);
         rootRef = FirebaseDatabase.getInstance().getReference();
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                //TODO Check shared preferences if is logged in already
-
-
-                userIdString = userId.getText().toString();
-                userPassString = userPass.getText().toString();
+                userIdString = userIdView.getText().toString();
+                userPassString = userPassView.getText().toString();
                 if(thisUserType.equals("Doctor")){
                     childRef = rootRef.child("Doctors");
-                    childRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            if (dataSnapshot.hasChild(userIdString) && !userIdString.isEmpty()) {
-                                userRef = dataSnapshot.child(userIdString);
-                                passFromDB = Integer.parseInt(userRef.child("password").getValue().toString());
-
-                                passEncrypt = userPassString.hashCode();
-                                if(passFromDB.toString().equals(passEncrypt.toString())){
-                                    toast = Toast.makeText(getApplicationContext(), "Login Succesful", Toast.LENGTH_SHORT);
-                                    toast.show();
-
-                                    PreferenceUtils.saveId(userIdString, context);
-                                    PreferenceUtils.savePassword(userPassString, context);
-                                    PreferenceUtils.saveUserType(thisUserType, context);
-                                    Intent intent = intents.doctorMainMenu;
-                                    intent.putExtra("doctorId", userIdString);
-                                    startActivity(intent);
-                                } else {
-                                    toast = Toast.makeText(getApplicationContext(), "Password incorect!", Toast.LENGTH_SHORT);
-                                    toast.show();
-                                }
-
-                            } else {
-                                if(userIdString.isEmpty()){
-                                    toast = Toast.makeText(getApplicationContext(), "Enter user ID", Toast.LENGTH_SHORT);
-                                    toast.show();
-                                } else {
-                                    toast = Toast.makeText(getApplicationContext(), "Doctor not found!", Toast.LENGTH_SHORT);
-                                    toast.show();
-                                }
-                            }
-                        }
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-                        }
-                    });
+                    attemptLogin(thisUserType, intents.doctorMainMenu);
                 }
 
                 if(thisUserType.equals("Patient")){
                     childRef = rootRef.child("Patients");
-                    childRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            if (dataSnapshot.hasChild(userIdString) && !userIdString.isEmpty()) {
-                                userRef = dataSnapshot.child(userIdString);
-                                passFromDB = Integer.parseInt(userRef.child("password").getValue().toString());
-
-                                passEncrypt = userPassString.hashCode();
-                                if(passFromDB.toString().equals(passEncrypt.toString())){
-                                    Toast toast = Toast.makeText(getApplicationContext(), "Login Succesful", Toast.LENGTH_SHORT);
-                                    toast.show();
-
-                                    PreferenceUtils.saveId(userIdString, context);
-                                    PreferenceUtils.savePassword(userPassString, context);
-                                    PreferenceUtils.saveUserType(thisUserType, context);
-                                    Intent intent = intents.patientMainMenu;
-                                    intent.putExtra("patientId", userIdString);
-                                    startActivity(intent);
-                                } else {
-                                    Toast toast = Toast.makeText(getApplicationContext(), "Password incorect!", Toast.LENGTH_SHORT);
-                                    toast.show();
-                                }
-
-                            } else {
-                                if(userIdString.isEmpty()){
-                                    Toast toast = Toast.makeText(getApplicationContext(), "Enter user ID", Toast.LENGTH_SHORT);
-                                    toast.show();
-                                } else {
-                                    Toast toast = Toast.makeText(getApplicationContext(), "Patient not found!", Toast.LENGTH_SHORT);
-                                    toast.show();
-                                }
-                            }
-                        }
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-                        }
-                    });
+                    attemptLogin(thisUserType, intents.patientMainMenu);
                 }
 
                 if(thisUserType.equals("Administrator")){
                     childRef = rootRef.child("Admins");
-                    childRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            if (dataSnapshot.hasChild(userIdString) && !userIdString.isEmpty()) {
-                                userRef = dataSnapshot.child(userIdString);
-                                passFromDB = Integer.parseInt(userRef.child("password").getValue().toString());
-
-                                passEncrypt = userPassString.hashCode();
-                                if(passFromDB.toString().equals(passEncrypt.toString())){
-                                    Toast toast = Toast.makeText(getApplicationContext(), "Login Succesful", Toast.LENGTH_SHORT);
-                                    toast.show();
-                                    PreferenceUtils.saveId(userIdString, context);
-                                    PreferenceUtils.savePassword(userPassString, context);
-                                    PreferenceUtils.saveUserType(thisUserType, context);
-                                    startActivity(intents.adminMainMenu);
-                                } else {
-                                    Toast toast = Toast.makeText(getApplicationContext(), "Password incorect!", Toast.LENGTH_SHORT);
-                                    toast.show();
-                                }
-
-                            } else {
-                                if(userIdString.isEmpty()){
-                                    Toast toast = Toast.makeText(getApplicationContext(), "Enter user ID", Toast.LENGTH_SHORT);
-                                    toast.show();
-                                } else {
-                                    Toast toast = Toast.makeText(getApplicationContext(), "Admin not found!", Toast.LENGTH_SHORT);
-                                    toast.show();
-                                }
-
-                            }
-                        }
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-                        }
-                    });
+                    attemptLogin(thisUserType, intents.adminMainMenu);
                 }
             }
         });
+    }
 
-//        Log.i("USER", userIdString);
-//        if (dataSnapshot.hasChild(userIdString)) {
-//            Toast toast = Toast.makeText(getApplicationContext(), "Doctor found", Toast.LENGTH_SHORT);
-//            toast.show();
-//        } else {
-//            Toast toast = Toast.makeText(getApplicationContext(), "Doctor NOT found", Toast.LENGTH_SHORT);
-//            toast.show();
-//        }
+    public void attemptLogin(final String userTypeString, final Intent userTypeMainMenu){
+        childRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.hasChild(userIdString) && !userIdString.isEmpty()) {
+                    userRef = dataSnapshot.child(userIdString);
+                    passFromDB = Integer.parseInt(userRef.child("password").getValue().toString());
 
+                    passEncrypt = userPassString.hashCode();
+                    if(passFromDB.toString().equals(passEncrypt.toString())){
+                        Toast toast = Toast.makeText(getApplicationContext(), "Login Successful", Toast.LENGTH_SHORT);
+                        toast.show();
 
-
+                        PreferenceUtils.saveId(userIdString, context);
+                        PreferenceUtils.savePassword(userPassString, context);
+                        PreferenceUtils.saveUserType(thisUserType, context);
+                        Intent intent = userTypeMainMenu;
+                        intent.putExtra("userId", userIdString);
+                        startActivity(intent);
+                    } else {
+                        Toast toast = Toast.makeText(getApplicationContext(), "Password incorrect!", Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+                } else {
+                    if(userIdString.isEmpty()){
+                        Toast toast = Toast.makeText(getApplicationContext(), "Enter user ID", Toast.LENGTH_SHORT);
+                        toast.show();
+                    } else {
+                        Toast toast = Toast.makeText(getApplicationContext(), userTypeString + "not found!", Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
     }
 }

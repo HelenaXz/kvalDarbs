@@ -29,8 +29,6 @@ public class AllDoctorAdapter extends ArrayAdapter<Doctor> {
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.all_doctor_list_adaptor, parent, false);
         }
-        // Lookup view for data population
-
 //        Populate the data into the template view using the data object
 
         doctorName = convertView.findViewById(R.id.fullName);
