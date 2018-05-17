@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
@@ -26,19 +28,15 @@
                 android:text="TextView"
                 android:textSize="16sp" />
 
-            <TextView
-                android:id="@+id/textView13"
+            <ImageView
+                android:id="@+id/imageView2"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:layout_marginStart="5dp"
-                android:layout_weight="5"
-                android:gravity="center_vertical|center_horizontal"
-                android:rotation="45"
-                android:text="+"
-                android:textColor="@color/urgent"
-                android:textSize="23sp"
-                android:textStyle="bold" />
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp"
+                app:srcCompat="@drawable/ic_clear_red_24dp" />
+
         </LinearLayout>
 
     </LinearLayout>

@@ -13,7 +13,7 @@ import com.hz.kvalifdarbs.Objects.Patient;
 import java.util.ArrayList;
 
 class AdminPatientAdapter extends ArrayAdapter<Patient> {
-    TextView tvName, tvSurname;
+    TextView tvName, tvInfo;
 
     public AdminPatientAdapter(Context context) {
         super(context, 0);
@@ -29,10 +29,11 @@ class AdminPatientAdapter extends ArrayAdapter<Patient> {
         }
         // Lookup view for data population
         tvName = (TextView) convertView.findViewById(R.id.patientName);
-        tvSurname = (TextView) convertView.findViewById(R.id.patientSurname);
+        tvInfo = (TextView) convertView.findViewById(R.id.someInfo);
         // Populate the data into the template view using the data object
-        tvName.setText(patient.getName());
-        tvSurname.setText(patient.getSurname());
+        tvName.setText(patient.getFullName());
+        String s = patient.getId()+"/"+patient.getRoom();
+        tvInfo.setText(s);
         // Return the completed view to render on screen
         return convertView;
     }

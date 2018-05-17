@@ -87,7 +87,6 @@ public class Patient implements Serializable {
     public void setRoom(String room){
         this.room = room;
     }
-
     public String getFullName(){
         String fullName = this.name + " " + this.surname;
         return fullName;

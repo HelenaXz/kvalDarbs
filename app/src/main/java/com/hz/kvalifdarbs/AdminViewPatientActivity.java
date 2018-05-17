@@ -137,7 +137,7 @@ public class AdminViewPatientActivity extends AppCompatActivity {
         patientRef.child("Doctors").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                String doctorId = dataSnapshot.getKey();
+                String doctorId = dataSnapshot.getValue().toString();
 //                Doctor doctorObj = dataSnapshot.getValue(Doctor.class);
 //                doctorIds.add(doctor);
                 testAdapter.add(doctorId);

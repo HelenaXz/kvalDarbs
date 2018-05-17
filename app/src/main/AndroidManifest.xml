@@ -18,34 +18,34 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".AddAdminActivity"
-            android:label="Add doctor" />
-        <activity
-            android:name=".AddPatientActivity"
-            android:label="Add patient" />
-        <activity
-            android:name=".AddDoctorActivity"
-            android:label="Add administrator"/>
-        <activity
-            android:name=".DoctorViewPatientActivity"
+        <activity android:name=".AddAdminActivity"
+            android:label="Add Administrator" />
+        <activity android:name=".AddPatientActivity"
+            android:label="Add Patient" />
+        <activity android:name=".AddDoctorActivity"
+            android:label="Add Doctor"/>
+        <activity android:name=".DoctorViewPatientActivity"
             android:label="Patient" />
-        <activity
-            android:name=".AllPatientListActivity"
+        <activity android:name=".AllPatientListActivity"
             android:label="All patients" />
-        <activity
-            android:name=".AdminMainActivity"
+        <activity android:name=".AdminMainActivity"
             android:label="Hello"/>
-        <activity
-            android:name=".LoginActivity"
+        <activity android:name=".LoginActivity"
             android:label="Login" />
-        <activity android:name=".AdminViewPatientActivity" />
-        <activity android:name=".AdminViewDoctorActivity" />
-        <activity android:name=".AvaiableDoctorListActivity" />
-        <activity android:name=".DoctorMainActivity" />
-        <activity android:name=".PatientMainActivity" />
-        <activity android:name=".DoctorPatientListActivity" />
-        <activity android:name=".AllDoctorListActivity" />
+        <activity android:name=".AdminViewPatientActivity"
+            android:label="Patient"/>
+        <activity android:name=".AdminViewDoctorActivity"
+            android:label="Doctor"/>
+        <activity android:name=".AvaiableDoctorListActivity"
+            android:label="Available Doctors  "/>
+        <activity android:name=".DoctorMainActivity"
+            android:label="Hello"/>
+        <activity android:name=".PatientMainActivity"
+            android:label="Hello"/>
+        <activity android:name=".DoctorPatientListActivity"
+            android:label="My Patients"/>
+        <activity android:name=".AllDoctorListActivity"
+            android:label="All Doctors"/>
         <activity android:name=".ConnectDeviceActivity" />
     </application>
 

@@ -38,7 +38,7 @@
             android:paddingBottom="8dp"
             android:paddingStart="8dp"
             android:paddingTop="8dp"
-            android:text="Name"
+            android:text="@string/name"
             android:textSize="20sp" />
 
     </LinearLayout>

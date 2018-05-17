@@ -27,6 +27,7 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
             android:fillViewport="true">
 
 
@@ -37,19 +38,10 @@
 
 
                 <TextView
-                    android:id="@+id/addPatient"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:fontFamily="sans-serif-smallcaps"
-                    android:gravity="center_horizontal"
-                    android:text="@string/addPatient"
-                    android:textSize="24sp" />
-
-                <TextView
                     android:id="@+id/textView12"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
                     android:text="@string/generalInfo" />
 
                 <EditText
@@ -143,6 +135,7 @@
                     android:id="@+id/textView14"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
                     android:text="@string/accountDetails" />
 
                 <EditText
@@ -187,7 +180,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
-                    android:background="@color/colorPrimaryLight"
+                    android:backgroundTint="@color/colorPrimaryLight"
                     android:elevation="5dp"
                     android:text="Submit" />
 

@@ -18,6 +18,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.hz.kvalifdarbs.Objects.Patient;
+import com.hz.kvalifdarbs.utils.PreferenceUtils;
 
 import java.util.ArrayList;
 
@@ -39,8 +40,7 @@ public class DoctorPatientListActivity extends AppCompatActivity {
         final Intents intents = new Intents(this);
         context = getApplicationContext();
         rootRef = FirebaseDatabase.getInstance().getReference();
-        Intent i = getIntent();
-        doctorId = i.getStringExtra("userId");
+        doctorId  = PreferenceUtils.getId(context);
         childRef = rootRef.child("Doctors").child(doctorId);
         emptyElement = findViewById(R.id.emptyElement);
 
@@ -69,7 +69,6 @@ public class DoctorPatientListActivity extends AppCompatActivity {
                    if(testAdapterSize==0){
                        String emptyText = "There are no patients assigned to you.";
                        emptyElement.setText(emptyText);
-
                        patientList.setEmptyView(emptyElement);
                    }
                }
@@ -117,7 +116,6 @@ public class DoctorPatientListActivity extends AppCompatActivity {
                 Patient clicked = ((Patient) parent.getItemAtPosition(position));
                 Intent seePatient = intents.doctorPatientView;
                 seePatient.putExtra("thisPatient", clicked);
-                seePatient.putExtra("userId", doctorId);
                 startActivity(seePatient);
             }
         });
@@ -127,8 +125,7 @@ public class DoctorPatientListActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // perform whatever you want on back arrow click
                 Intent intent = intents.doctorMainMenu;
-                intent.putExtra("userId", doctorId);
-                startActivity(intents.doctorMainMenu);
+                startActivity(intent);
                 finish();
             }
         });

@@ -90,10 +90,10 @@ public class LoginActivity extends AppCompatActivity {
                         toast.show();
 
                         PreferenceUtils.saveId(userIdString, context);
-                        PreferenceUtils.savePassword(userPassString, context);
+                        PreferenceUtils.savePassword(passEncrypt.toString(), context);
                         PreferenceUtils.saveUserType(thisUserType, context);
                         Intent intent = userTypeMainMenu;
-                        intent.putExtra("userId", userIdString);
+//                        intent.putExtra("userId", userIdString);
                         startActivity(intent);
                     } else {
                         Toast toast = Toast.makeText(getApplicationContext(), "Password incorrect!", Toast.LENGTH_SHORT);

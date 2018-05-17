@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -22,20 +23,16 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
             android:layout_weight="1"
-            android:text="Full Name"
+            android:text="@string/full_name"
             android:textSize="18sp"
             tools:layout_editor_absoluteX="384dp" />
 
-        <TextView
-            android:id="@+id/addBtn"
+        <ImageView
+            android:id="@+id/imageView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="4"
-            android:gravity="center_vertical|center_horizontal"
-            android:text="+"
-            android:textColor="@color/ok"
-            android:textSize="30sp"
-            android:textStyle="bold" />
+            android:layout_weight="2"
+            app:srcCompat="@drawable/ic_add_green_24dp" />
 
         <!--<Button-->
         <!--android:id="@+id/room"-->

@@ -59,9 +59,8 @@ public class AddAdminActivity extends AppCompatActivity {
                     adminRef.setValue(newAdmin);
 
                     Context context = getApplicationContext();
-                    CharSequence text = "Administrator added to DB";
-                    int duration = Toast.LENGTH_SHORT;
-                    Toast toast = Toast.makeText(context, text, duration);
+                    String text = "Administrator added to DB";
+                    Toast toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
                     toast.show();
                     name.setText(null);
                     surname.setText(null);

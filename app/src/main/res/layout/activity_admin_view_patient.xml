@@ -25,14 +25,14 @@
         android:id="@+id/scrollView2"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@color/colorPrimaryLight"
+        android:background="@color/colorAccentLight"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appBarLayout">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimaryLight"
+            android:background="@color/colorAccentLight"
             android:orientation="vertical">
 
             <TextView
@@ -41,10 +41,10 @@
                 android:layout_height="wrap_content"
                 android:background="@color/white"
                 android:backgroundTint="@color/white"
+                android:elevation="3dp"
                 android:gravity="center_horizontal"
                 android:paddingBottom="5dp"
                 android:paddingTop="5dp"
-                android:text="Patient ID"
                 android:textColor="@color/colorAccent"
                 android:textSize="20sp" />
 
@@ -52,6 +52,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
+                android:elevation="3dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -153,7 +154,7 @@
                         android:id="@+id/textView8"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="5"
+                        android:layout_weight="3"
                         android:paddingBottom="5dp"
                         android:paddingTop="5dp"
                         android:text="@string/room"
@@ -163,7 +164,6 @@
                         android:id="@+id/room"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
                         android:layout_weight="2"
                         android:paddingBottom="5dp"
                         android:paddingTop="5dp"
@@ -199,9 +199,10 @@
                     android:id="@+id/btnAddDoc"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
                     android:layout_marginEnd="20dp"
                     android:layout_marginStart="20dp"
-                    android:backgroundTint="@color/colorPrimaryDark"
+                    android:backgroundTint="@color/colorPrimaryMedium"
                     android:text="@string/addDoctor"
                     android:textColor="@color/white" />
 
@@ -211,13 +212,15 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/colorPrimaryLight"
+                android:background="@color/colorAccentLight"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/textView5"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="3dp"
+                    android:layout_marginTop="3dp"
                     android:gravity="center_horizontal"
                     android:text="@string/exams" />
 

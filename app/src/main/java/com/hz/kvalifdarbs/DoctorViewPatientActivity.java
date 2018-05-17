@@ -50,7 +50,6 @@ public class DoctorViewPatientActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // perform whatever you want on back arrow click
                 Intent intent = intents.doctorPatientList;
-                intent.putExtra("userId", doctorId);
                 startActivity(intent);
                 finish();
             }

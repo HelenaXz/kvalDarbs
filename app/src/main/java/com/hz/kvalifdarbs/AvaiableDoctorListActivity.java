@@ -29,6 +29,7 @@ public class AvaiableDoctorListActivity extends AppCompatActivity {
     DatabaseReference patientRef, doctorRef;
     Patient thisPatient;
     Context context;
+    Doctor doctor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +88,7 @@ public class AvaiableDoctorListActivity extends AppCompatActivity {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 if(!patientDoctors.contains(dataSnapshot.getKey())){
-                    Doctor doctor = dataSnapshot.getValue(Doctor.class);
+                    doctor = dataSnapshot.getValue(Doctor.class);
                     childRef = rootRef.child(dataSnapshot.getKey());
 //                allPatients.add(patient);
                     //TODO add doctor to list only if the current patient doesn't have him already
@@ -130,7 +131,7 @@ public class AvaiableDoctorListActivity extends AppCompatActivity {
                 Doctor clicked = ((Doctor) parent.getItemAtPosition(position));
                 patientRef = rootRef.child("Patients").child(thisPatient.getId());
                 doctorRef = rootRef.child("Doctors").child(clicked.getId());
-                patientRef.child("Doctors").child(clicked.getId()).setValue(clicked.getName()+ " " +clicked.getSurname());
+                patientRef.child("Doctors").child(clicked.getId()).setValue(clicked.getFullName());
                 doctorRef.child("Patients").child(thisPatient.getId()).setValue(thisPatient.getId());
                 Intent patientView = intents.adminPatientView;
                 patientView.putExtra("thisPatient", thisPatient);
