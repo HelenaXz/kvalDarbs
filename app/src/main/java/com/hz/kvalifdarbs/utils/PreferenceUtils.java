@@ -45,13 +45,29 @@ public class PreferenceUtils {
         return prefs.getString(Constants.KEY_USER_TYPE, null);
     }
 
-    public static boolean savePatientInfo(Context context){
+    public static boolean saveUserName(String userName, Context context){
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor prefsEditor = prefs.edit();
-
+        prefsEditor.putString(Constants.KEY_USER_NAME, userName);
         prefsEditor.apply();
         return true;
     }
+    public static boolean saveUserSurname(String userSurname, Context context){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor prefsEditor = prefs.edit();
+        prefsEditor.putString(Constants.KEY_USER_SURNAME, userSurname);
+        prefsEditor.apply();
+        return true;
+    }
+    public static String getUserName(Context context){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.getString(Constants.KEY_USER_NAME, null);
+    }
+    public static String getUserSurname(Context context){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.getString(Constants.KEY_USER_SURNAME, null);
+    }
+
     public static boolean saveDoctorInfo(){
         return true;
     }

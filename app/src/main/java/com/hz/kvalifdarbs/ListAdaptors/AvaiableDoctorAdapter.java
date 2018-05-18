@@ -1,4 +1,4 @@
-package com.hz.kvalifdarbs;
+package com.hz.kvalifdarbs.ListAdaptors;
 
 import android.content.Context;
 import android.content.Intent;
@@ -8,14 +8,14 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.hz.kvalifdarbs.utils.Intents;
 import com.hz.kvalifdarbs.Objects.Doctor;
-import com.hz.kvalifdarbs.Objects.Patient;
+import com.hz.kvalifdarbs.R;
 
 import java.util.ArrayList;
 
-class AvaiableDoctorAdapter extends ArrayAdapter<Doctor> {
+public class AvaiableDoctorAdapter extends ArrayAdapter<Doctor> {
     Context context;
     String patientId;
     Doctor doctor;

@@ -1,4 +1,4 @@
-package com.hz.kvalifdarbs;
+package com.hz.kvalifdarbs.admin;
 
         import android.content.Context;
         import android.content.DialogInterface;
@@ -13,15 +13,16 @@ package com.hz.kvalifdarbs;
         import android.widget.Button;
         import android.widget.ListView;
         import android.widget.TextView;
-        import android.widget.Toast;
 
         import com.google.firebase.database.ChildEventListener;
         import com.google.firebase.database.DataSnapshot;
         import com.google.firebase.database.DatabaseError;
         import com.google.firebase.database.DatabaseReference;
         import com.google.firebase.database.FirebaseDatabase;
-        import com.hz.kvalifdarbs.Objects.Doctor;
+        import com.hz.kvalifdarbs.utils.Intents;
         import com.hz.kvalifdarbs.Objects.Patient;
+        import com.hz.kvalifdarbs.ListAdaptors.PatientDoctorAdapter;
+        import com.hz.kvalifdarbs.R;
 
         import java.util.ArrayList;
 
@@ -77,12 +78,11 @@ public class AdminViewPatientActivity extends AppCompatActivity {
         addDoctorTo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent allDocList = intents.avaiableDoctorList;
+                Intent allDocList = intents.availableDoctorList;
                 allDocList.putExtra("thisPatient", thisPatient);
-                startActivity(allDocList);
+                startActivity(allDocList.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
             }
         });
-
 
 
         testAdapter = new PatientDoctorAdapter(this);
@@ -124,7 +124,7 @@ public class AdminViewPatientActivity extends AppCompatActivity {
                             doctorRef.child("Patients").child(thisPatient.getId()).removeValue();
                         }
                         patientRef.removeValue();
-                        startActivity(intents.allPatientList);
+                        startActivity(intents.allPatientList.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
 
                     }
                 }).setNegativeButton("Cancel", null);
@@ -171,7 +171,7 @@ public class AdminViewPatientActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // perform whatever you want on back arrow click
-                startActivity(intents.allPatientList);
+                startActivity(intents.allPatientList.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
             }
         });
     }

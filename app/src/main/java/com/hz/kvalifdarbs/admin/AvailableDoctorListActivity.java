@@ -1,4 +1,4 @@
-package com.hz.kvalifdarbs;
+package com.hz.kvalifdarbs.admin;
 
         import android.content.Context;
         import android.content.Intent;
@@ -15,13 +15,15 @@ package com.hz.kvalifdarbs;
         import com.google.firebase.database.DatabaseError;
         import com.google.firebase.database.DatabaseReference;
         import com.google.firebase.database.FirebaseDatabase;
+        import com.hz.kvalifdarbs.ListAdaptors.AvaiableDoctorAdapter;
+        import com.hz.kvalifdarbs.utils.Intents;
         import com.hz.kvalifdarbs.Objects.Doctor;
         import com.hz.kvalifdarbs.Objects.Patient;
+        import com.hz.kvalifdarbs.R;
 
-        import java.lang.reflect.Array;
         import java.util.ArrayList;
 
-public class AvaiableDoctorListActivity extends AppCompatActivity {
+public class AvailableDoctorListActivity extends AppCompatActivity {
     DatabaseReference rootRef, childRef;
     ArrayList<Doctor> allDoctors;
     private ListView listView;
@@ -135,7 +137,7 @@ public class AvaiableDoctorListActivity extends AppCompatActivity {
                 doctorRef.child("Patients").child(thisPatient.getId()).setValue(thisPatient.getId());
                 Intent patientView = intents.adminPatientView;
                 patientView.putExtra("thisPatient", thisPatient);
-                context.startActivity(patientView);
+                context.startActivity(patientView.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
                 Toast toast = Toast.makeText(context, "Doctor added to patient", Toast.LENGTH_SHORT);
                 toast.show();
                 finish();

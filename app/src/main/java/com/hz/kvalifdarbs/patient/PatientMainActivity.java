@@ -1,7 +1,6 @@
-package com.hz.kvalifdarbs;
+package com.hz.kvalifdarbs.patient;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -10,41 +9,45 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.hz.kvalifdarbs.utils.Intents;
+import com.hz.kvalifdarbs.utils.MethodHelper;
+import com.hz.kvalifdarbs.R;
 import com.hz.kvalifdarbs.utils.PreferenceUtils;
 
-public class DoctorMainActivity extends AppCompatActivity {
-    Button viewAllPat, btnLogout, btnChangePass;
-    String doctorId;
-    Context context;
+public class PatientMainActivity extends AppCompatActivity {
     DatabaseReference rootRef, userRef;
+    Button connectDevice, btnLogout, btnChangePass;
+    String patientId, patientNrString;
+    TextView patientNr;
+    Context context;
 
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_doctor_main_menu);
+        setContentView(R.layout.activity_patient_main_menu);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         context = getApplicationContext();
         final Intents intents = new Intents(this);
-        doctorId  = PreferenceUtils.getId(context);
+        Intent i = getIntent();
+        patientId = i.getStringExtra("userId");
 
         rootRef = FirebaseDatabase.getInstance().getReference();
-        userRef = rootRef.child("Doctors").child(doctorId);
+        userRef = rootRef.child("Patients").child(patientId);
 
-        viewAllPat = findViewById(R.id.btnViewPatients);
-        btnLogout = findViewById(R.id.btnLogout);
+        patientNr = findViewById(R.id.patientId);
+        patientNrString = "Patient Nr. " + patientId;
+        patientNr.setText(patientNrString);
+
+        //TODO set action on button click
+        connectDevice = findViewById(R.id.btnConnectDevice);
         btnChangePass = findViewById(R.id.btnChangePassword);
+        btnLogout = findViewById(R.id.btnLogout);
 
-        viewAllPat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = intents.doctorPatientList;
-                startActivity(intent);
-            }
-        });
 
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,12 +59,11 @@ public class DoctorMainActivity extends AppCompatActivity {
             }
         });
 
-
         btnChangePass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final String currDbPassString = PreferenceUtils.getPassword(context);
-                AlertDialog.Builder builder = new AlertDialog.Builder(DoctorMainActivity.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(PatientMainActivity.this);
                 View mView = getLayoutInflater().inflate(R.layout.dialog_pass_change, null);
                 final EditText currentPass, newPass, newPassRepeat;
                 currentPass = mView.findViewById(R.id.oldPass);
@@ -77,27 +79,7 @@ public class DoctorMainActivity extends AppCompatActivity {
                 changePass.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        String newPassw, newPasswRep;
-                        newPassw = newPass.getText().toString();
-                        newPasswRep = newPassRepeat.getText().toString();
-                        Integer currPass = currentPass.getText().toString().hashCode();
-                        String currPassString = currPass.toString();
-                        if(currPassString.equals(currDbPassString)){
-                            if(newPassw.equals(newPasswRep)){
-                                Integer newPassInt = newPassw.hashCode();
-                                userRef.child("password").setValue(newPassInt);
-                                PreferenceUtils.savePassword(newPassInt.toString(), context);
-                                changePassDialog.dismiss();
-                            } else {
-                                String text = "New passwords do not match!";
-                                Toast toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
-                                toast.show();
-                            }
-                        } else {
-                            String text = "Current password does not match Database";
-                            Toast toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
-                            toast.show();
-                        }
+                        MethodHelper.changePassword(newPass, newPassRepeat, currentPass, currDbPassString, changePassDialog, context, userRef);
                     }
                 });
                 cancel.setOnClickListener(new View.OnClickListener() {
@@ -109,5 +91,6 @@ public class DoctorMainActivity extends AppCompatActivity {
 
             }
         });
+
     }
 }

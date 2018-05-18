@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_add_user"
+            android:icon="@drawable/ic_user_add_white"
+            android:title="Add User" />
+        <item
+            android:id="@+id/nav_all_patients"
+            android:icon="@drawable/ic_people_white"
+            android:title="All Patients" />
+        <item
+            android:id="@+id/nav_all_doctors"
+            android:icon="@drawable/ic_people_white"
+            android:title="All Doctors" />
+    </group>
+
+    <item android:title="Communicate">
+        <menu>
+            <item
+                android:id="@+id/nav_change_pass"
+                android:icon="@drawable/ic_settings_white"
+                android:title="Settings" />
+            <item
+                android:id="@+id/nav_logout"
+                android:icon="@drawable/ic_exit_white_24dp"
+                android:title="Logout" />
+        </menu>
+    </item>
+
+</menu>

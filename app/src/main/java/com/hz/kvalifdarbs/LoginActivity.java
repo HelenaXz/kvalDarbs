@@ -3,10 +3,8 @@ package com.hz.kvalifdarbs;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,6 +16,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.hz.kvalifdarbs.utils.Intents;
 import com.hz.kvalifdarbs.utils.PreferenceUtils;
 
 public class LoginActivity extends AppCompatActivity {
@@ -83,6 +82,9 @@ public class LoginActivity extends AppCompatActivity {
                 if (dataSnapshot.hasChild(userIdString) && !userIdString.isEmpty()) {
                     userRef = dataSnapshot.child(userIdString);
                     passFromDB = Integer.parseInt(userRef.child("password").getValue().toString());
+                    String userName = userRef.child("name").getValue().toString();
+                    String userSurname = userRef.child("surname").getValue().toString();
+
 
                     passEncrypt = userPassString.hashCode();
                     if(passFromDB.toString().equals(passEncrypt.toString())){
@@ -92,9 +94,11 @@ public class LoginActivity extends AppCompatActivity {
                         PreferenceUtils.saveId(userIdString, context);
                         PreferenceUtils.savePassword(passEncrypt.toString(), context);
                         PreferenceUtils.saveUserType(thisUserType, context);
+                        PreferenceUtils.saveUserName(userName, context);
+                        PreferenceUtils.saveUserSurname(userSurname, context);
                         Intent intent = userTypeMainMenu;
 //                        intent.putExtra("userId", userIdString);
-                        startActivity(intent);
+                        startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
                     } else {
                         Toast toast = Toast.makeText(getApplicationContext(), "Password incorrect!", Toast.LENGTH_SHORT);
                         toast.show();

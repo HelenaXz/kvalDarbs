@@ -1,18 +1,16 @@
-package com.hz.kvalifdarbs;
+package com.hz.kvalifdarbs.ListAdaptors;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.hz.kvalifdarbs.Objects.Patient;
+import com.hz.kvalifdarbs.R;
 
-import java.util.ArrayList;
-
-class AdminPatientAdapter extends ArrayAdapter<Patient> {
+public class AdminPatientAdapter extends ArrayAdapter<Patient> {
     TextView tvName, tvInfo;
 
     public AdminPatientAdapter(Context context) {

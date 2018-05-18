@@ -1,4 +1,4 @@
-package com.hz.kvalifdarbs;
+package com.hz.kvalifdarbs.doctor;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -17,7 +16,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.hz.kvalifdarbs.ListAdaptors.DoctorPatientAdapter;
+import com.hz.kvalifdarbs.utils.Intents;
 import com.hz.kvalifdarbs.Objects.Patient;
+import com.hz.kvalifdarbs.R;
 import com.hz.kvalifdarbs.utils.PreferenceUtils;
 
 import java.util.ArrayList;
@@ -116,7 +118,7 @@ public class DoctorPatientListActivity extends AppCompatActivity {
                 Patient clicked = ((Patient) parent.getItemAtPosition(position));
                 Intent seePatient = intents.doctorPatientView;
                 seePatient.putExtra("thisPatient", clicked);
-                startActivity(seePatient);
+                startActivity(seePatient.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
             }
         });
 
@@ -125,7 +127,7 @@ public class DoctorPatientListActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // perform whatever you want on back arrow click
                 Intent intent = intents.doctorMainMenu;
-                startActivity(intent);
+                startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
                 finish();
             }
         });

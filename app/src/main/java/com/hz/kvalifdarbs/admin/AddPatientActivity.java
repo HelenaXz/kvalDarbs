@@ -1,15 +1,14 @@
-package com.hz.kvalifdarbs;
+package com.hz.kvalifdarbs.admin;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -21,7 +20,9 @@ import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.hz.kvalifdarbs.utils.Intents;
 import com.hz.kvalifdarbs.Objects.Patient;
+import com.hz.kvalifdarbs.R;
 
 import java.text.DateFormat;
 
@@ -133,7 +134,7 @@ public class AddPatientActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // perform whatever you want on back arrow click
-                startActivity(intents.adminMainMenu);
+                startActivity(intents.addUser.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
                 finish();
             }
         });

@@ -1,12 +1,11 @@
-package com.hz.kvalifdarbs;
+package com.hz.kvalifdarbs.admin;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,33 +13,32 @@ import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.hz.kvalifdarbs.Objects.Doctor;
+import com.hz.kvalifdarbs.utils.Intents;
+import com.hz.kvalifdarbs.Objects.Admin;
+import com.hz.kvalifdarbs.R;
 
-public class AddDoctorActivity extends AppCompatActivity {
+public class AddAdminActivity extends AppCompatActivity {
 
-    DatabaseReference rootRef, docRef;
+    DatabaseReference rootRef, adminRef;
     EditText name, surname, id, phone, pass, passRepeat;
     Integer passEncrypt;
-    Button submitForm;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_doctor);
+        setContentView(R.layout.activity_add_admin);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         final Intents intents = new Intents(this);
 
-        //Database references
-        rootRef = FirebaseDatabase.getInstance().getReference("Doctors");
+        rootRef = FirebaseDatabase.getInstance().getReference("Admins");
 
         //Buttons
-        submitForm = findViewById(R.id.submitBtn);
+        Button submitForm = findViewById(R.id.submitBtn);
         //Text fields
         name = findViewById(R.id.name);
         surname = findViewById(R.id.surname);
-        id = findViewById(R.id.doctorID);
+        id = findViewById(R.id.adminID);
         phone = findViewById(R.id.phone);
         pass = findViewById(R.id.password);
         passRepeat = findViewById(R.id.passwordRepeat);
@@ -56,14 +54,13 @@ public class AddDoctorActivity extends AppCompatActivity {
                     Integer phoneNum = Integer.parseInt(phoneString);
                     passEncrypt = pass.getText().toString().hashCode();
 
-                    docRef = rootRef.child(idString);
-                    Doctor newDoctor = new Doctor(idString, nameString, passEncrypt, phoneNum, surnameString);
-                    docRef.setValue(newDoctor);
+                    adminRef = rootRef.child(idString);
+                    Admin newAdmin = new Admin(idString, nameString, passEncrypt, phoneNum, surnameString);
+                    adminRef.setValue(newAdmin);
 
                     Context context = getApplicationContext();
-                    CharSequence text = "Doctor added to DB";
-                    int duration = Toast.LENGTH_SHORT;
-                    Toast toast = Toast.makeText(context, text, duration);
+                    String text = "Administrator added to DB";
+                    Toast toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
                     toast.show();
                     name.setText(null);
                     surname.setText(null);
@@ -78,7 +75,7 @@ public class AddDoctorActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // perform whatever you want on back arrow click
-                startActivity(intents.adminMainMenu);
+                startActivity(intents.addUser.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
                 finish();
             }
         });
@@ -89,16 +86,16 @@ public class AddDoctorActivity extends AppCompatActivity {
     public boolean validate(){
         int valid = 0;
         if(TextUtils.isEmpty(name.getText().toString().trim())){
-            name.setError("Please enter doctors name");
+            name.setError("Please enter name");
         } else {valid = valid + 1;}
         if(TextUtils.isEmpty(surname.getText().toString().trim())){
-            surname.setError("Please enter doctors surname");
+            surname.setError("Please enter surname");
         } else {valid = valid + 1;}
         if(TextUtils.isEmpty(id.getText().toString().trim())){
-            id.setError("Please enter doctors ID number");
+            id.setError("Please enter ID number");
         } else {valid = valid + 1;}
         if(TextUtils.isEmpty(phone.getText().toString().trim())){
-            phone.setError("Please enter doctors phone number");
+            phone.setError("Please enter phone number");
         } else {valid = valid + 1;}
         if(TextUtils.isEmpty(pass.getText().toString().trim())){
             pass.setError("Please enter password");
@@ -115,8 +112,8 @@ public class AddDoctorActivity extends AppCompatActivity {
             Toast toast = Toast.makeText(context, text, duration);
             toast.show();
         }
-        if(valid < 7) return false;
-        else { return true; }
+        if (valid < 7) return true;
+        else return false;
     }
 
 //    @Override
@@ -140,4 +137,5 @@ public class AddDoctorActivity extends AppCompatActivity {
 //
 //        return super.onOptionsItemSelected(item);
 //    }
+
 }

@@ -1,4 +1,4 @@
-package com.hz.kvalifdarbs;
+package com.hz.kvalifdarbs.doctor;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,11 +6,11 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
 
+import com.hz.kvalifdarbs.utils.Intents;
 import com.hz.kvalifdarbs.Objects.Patient;
+import com.hz.kvalifdarbs.R;
 
 
 public class DoctorViewPatientActivity extends AppCompatActivity {
@@ -50,7 +50,7 @@ public class DoctorViewPatientActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // perform whatever you want on back arrow click
                 Intent intent = intents.doctorPatientList;
-                startActivity(intent);
+                startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
                 finish();
             }
         });

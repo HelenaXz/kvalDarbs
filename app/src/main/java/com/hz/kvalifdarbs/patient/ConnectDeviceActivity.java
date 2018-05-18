@@ -1,4 +1,4 @@
-package com.hz.kvalifdarbs;
+package com.hz.kvalifdarbs.patient;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

@@ -1,4 +1,4 @@
-package com.hz.kvalifdarbs;
+package com.hz.kvalifdarbs.admin;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -17,9 +17,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.hz.kvalifdarbs.utils.Intents;
 import com.hz.kvalifdarbs.Objects.Doctor;
-import com.hz.kvalifdarbs.Objects.Patient;
+import com.hz.kvalifdarbs.R;
 
 import java.util.ArrayList;
 
@@ -75,7 +75,7 @@ public class AdminViewDoctorActivity extends AppCompatActivity {
                             patientRef.child("Doctors").child(thisDoctor.getId()).removeValue();
                         }
                         docRef.removeValue();
-                        startActivity(intents.allDoctorList);
+                        startActivity(intents.allDoctorList.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
 
                     }
                 }).setNegativeButton("Cancel", null);
@@ -88,7 +88,7 @@ public class AdminViewDoctorActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(intents.allDoctorList);
+                startActivity(intents.allDoctorList.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
             }
         });
 

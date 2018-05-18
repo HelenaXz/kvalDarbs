@@ -1,4 +1,4 @@
-package com.hz.kvalifdarbs;
+package com.hz.kvalifdarbs.ListAdaptors;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.hz.kvalifdarbs.Objects.Doctor;
+import com.hz.kvalifdarbs.R;
 
 public class AllDoctorAdapter extends ArrayAdapter<Doctor> {
     Context context;
