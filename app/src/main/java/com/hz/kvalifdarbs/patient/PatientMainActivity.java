@@ -225,6 +225,7 @@ public class PatientMainActivity extends AppCompatActivity implements AdapterVie
         }
     };
 
+
     private final BroadcastReceiver mBroadcastReceiver2 = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
             final String action = intent.getAction();
