@@ -4,9 +4,12 @@
         <shape>
             <gradient
                 android:angle="135"
-                android:startColor="@color/colorPrimary"
+                android:startColor="@color/colorPrimaryMedium"
                 android:endColor="@color/colorPrimaryDark"
-                android:type="linear" />
+                android:type="radial"
+                android:gradientRadius = "150%p"
+                android:centerX="1.1"
+                android:centerY="0.5"/>
         </shape>
     </item>
 </selector>

@@ -106,13 +106,13 @@ public class AdminMainActivity extends AppCompatActivity
                         }
                     });
                 }
-                else if(item.getItemId()== R.id.action_logout)
-                {
-                    MethodHelper.logOut(context, intents);
-                }
-                else{
-                    // do something
-                }
+//                else if(item.getItemId()== R.id.action_logout)
+//                {
+//                    MethodHelper.logOut(context, intents);
+//                }
+//                else{
+//                    // do something
+//                }
 
                 return false;
             }
@@ -137,8 +137,6 @@ public class AdminMainActivity extends AppCompatActivity
             startActivity(intents.allPatientList.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
         } else if (id == R.id.nav_all_doctors) {
             startActivity(intents.allDoctorList.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
-        } else if (id == R.id.nav_change_pass) {
-
         } else if (id == R.id.nav_logout) {
             MethodHelper.logOut(context, intents);
         }
