@@ -26,10 +26,7 @@ public class UserSelectActivity extends AppCompatActivity {
         userType = PreferenceUtils.getUserType(context);
 
 
-        if (!userId.equals("")) {
-            loggedIn();
-        } else {
-
+        if (userId.equals("")) {
             setContentView(R.layout.activity_user_select);
             admin = findViewById(R.id.adminBtn);
             doctor = findViewById(R.id.doctorBtn);
@@ -53,6 +50,9 @@ public class UserSelectActivity extends AppCompatActivity {
                     startUser(intents.loginView, "Patient");
                 }
             });
+
+        } else {
+            loggedIn();
         }
     }
 

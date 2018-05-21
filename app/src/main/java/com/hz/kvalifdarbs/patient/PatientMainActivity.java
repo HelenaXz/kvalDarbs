@@ -10,10 +10,16 @@ import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -25,6 +31,7 @@ import android.widget.Toast;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.hz.kvalifdarbs.ListAdaptors.DeviceListAdapter;
+import com.hz.kvalifdarbs.admin.AdminMainActivity;
 import com.hz.kvalifdarbs.utils.Intents;
 import com.hz.kvalifdarbs.utils.MethodHelper;
 import com.hz.kvalifdarbs.R;
@@ -32,27 +39,13 @@ import com.hz.kvalifdarbs.utils.PreferenceUtils;
 
 import java.util.ArrayList;
 
-public class PatientMainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
+public class PatientMainActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener
+{
     DatabaseReference rootRef, userRef;
-    Button discoverDevices, btnLogout, btnChangePass, btnToggleBluetooth;
-    String patientId, patientNrString;
-    TextView patientNr;
+    String userId, userName, userSurname, fullName;
     Context context;
-    BluetoothAdapter mBluetoothAdapter;
-    private static final String TAG = "MainActivity";
-    public ArrayList<BluetoothDevice> mBTDevices = new ArrayList<>();
-    public DeviceListAdapter mDeviceListAdapter;
-    ListView deviceListView;
 
-    @Override
-    protected void onDestroy() {
-        Log.d(TAG, "onDestroy: called.");
-        super.onDestroy();
-        unregisterReceiver(mBroadcastReceiver1);
-        unregisterReceiver(mBroadcastReceiver2);
-        unregisterReceiver(mBroadcastReceiver4);
-        //mBluetoothAdapter.cancelDiscovery();
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,214 +54,106 @@ public class PatientMainActivity extends AppCompatActivity implements AdapterVie
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         context = getApplicationContext();
-        final Intents intents = new Intents(this);
-        Intent i = getIntent();
-        patientId = i.getStringExtra("userId");
 
-        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
-        registerReceiver(mBroadcastReceiver4, filter);
 
+        //Drawer menu
+        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        final ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        navigationView.inflateHeaderView(R.layout.nav_header_main);
+        navigationView.inflateMenu(R.menu.patient_drawer);
+        View headView = navigationView.getHeaderView(0);
+        TextView headUserName = headView.findViewById(R.id.headFullName);
+        TextView headUserId = headView.findViewById(R.id.headUserId);
+
+        navigationView.setNavigationItemSelectedListener(this);
+
+
+        context = getApplicationContext();
+        userId  = PreferenceUtils.getId(context);
+        userName = PreferenceUtils.getUserName(context);
+        userSurname = PreferenceUtils.getUserSurname(context);
+        fullName = userName + " " + userSurname;
         rootRef = FirebaseDatabase.getInstance().getReference();
-        userRef = rootRef.child("Patients").child(patientId);
+        userRef = rootRef.child("Patients").child(userId);
 
-        patientNr = findViewById(R.id.patientId);
-        patientNrString = "Patient Nr. " + patientId;
-        patientNr.setText(patientNrString);
+        headUserId.setText(userId);
+        headUserName.setText(fullName);
 
-        deviceListView = findViewById(R.id.discoveredDevices);
-        //TODO set action on button click
-        discoverDevices = findViewById(R.id.btnConnectDevice);
-        btnChangePass = findViewById(R.id.btnChangePassword);
-        btnLogout = findViewById(R.id.btnLogout);
-        btnToggleBluetooth = findViewById(R.id.btnToggleBluetooth);
+        //Firebase
+        rootRef = FirebaseDatabase.getInstance().getReference();
+        userRef = rootRef.child("Patients").child(userId);
 
-        deviceListView.setOnItemClickListener(PatientMainActivity.this);
 
-        discoverDevices.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.M)
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO clear list View
-                btnDiscover(v);
+                drawer.openDrawer(Gravity.LEFT);
             }
         });
 
-        btnToggleBluetooth.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                enableDisableBT();
-            }
-        });
+    }//End of OnCreate
 
-        btnLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PreferenceUtils.saveId("", context);
-                PreferenceUtils.savePassword("", context);
-                PreferenceUtils.saveUserType("", context);
-                startActivity(intents.userSelect);
-            }
-        });
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+        final Intents intents = new Intents(this);
 
-        btnChangePass.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final String currDbPassString = PreferenceUtils.getPassword(context);
-                AlertDialog.Builder builder = new AlertDialog.Builder(PatientMainActivity.this);
-                View mView = getLayoutInflater().inflate(R.layout.dialog_pass_change, null);
-                final EditText currentPass, newPass, newPassRepeat;
-                currentPass = mView.findViewById(R.id.oldPass);
-                newPass = mView.findViewById(R.id.newPass);
-                newPassRepeat = mView.findViewById(R.id.newPassRep);
+        if (id == R.id.nav_my_doctors) {
+//            startActivity(intents.addUser.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
+            startActivity(intents.patientDoctorListView.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
+            //TODO
+        } else if (id == R.id.nav_pat_movements) {
+            //TODO
+        } else if (id == R.id.nav_pat_exams) {
+            //TODO
+        } else if (id == R.id.nav_profile) {
+            final String currDbPassString = PreferenceUtils.getPassword(context);
+            AlertDialog.Builder builder = new AlertDialog.Builder(PatientMainActivity.this);
+            View mView = getLayoutInflater().inflate(R.layout.dialog_pass_change, null);
+            final EditText currentPass, newPass, newPassRepeat;
+            currentPass = mView.findViewById(R.id.oldPass);
+            newPass = mView.findViewById(R.id.newPass);
+            newPassRepeat = mView.findViewById(R.id.newPassRep);
 
-                Button changePass = mView.findViewById(R.id.btnChangePass);
-                Button cancel = mView.findViewById(R.id.btnCancel);
+            Button changePass = mView.findViewById(R.id.btnChangePass);
+            Button cancel = mView.findViewById(R.id.btnCancel);
 
-                builder.setView(mView);
-                final AlertDialog changePassDialog = builder.create();
-                changePassDialog.show();
-                changePass.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        MethodHelper.changePassword(newPass, newPassRepeat, currentPass, currDbPassString, changePassDialog, context, userRef);
-                    }
-                });
-                cancel.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        changePassDialog.dismiss();
-                    }
-                });
-
-            }
-        });
-
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    public void btnDiscover(View view) {
-        if (mBluetoothAdapter.isDiscovering()) {
-            mBluetoothAdapter.cancelDiscovery();
-            checkBTPermissions();
-            mBluetoothAdapter.startDiscovery();
-            IntentFilter discoverDevicesIntent = new IntentFilter(BluetoothDevice.ACTION_FOUND);
-            registerReceiver(mBroadcastReceiver2, discoverDevicesIntent);
-        }
-        if (!mBluetoothAdapter.isDiscovering()) {
-            checkBTPermissions();
-            mBluetoothAdapter.startDiscovery();
-            IntentFilter discoverDevicesIntent = new IntentFilter(BluetoothDevice.ACTION_FOUND);
-            registerReceiver(mBroadcastReceiver2, discoverDevicesIntent);
-        }
-
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    private void checkBTPermissions() {
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
-            int permissionCheck = this.checkSelfPermission("Manifest.permission.ACCESS_FINE_LOCATION");
-            permissionCheck += this.checkSelfPermission("Manifest.permission.ACCESS_COARSE_LOCATION");
-            if (permissionCheck != 0) {
-
-                this.requestPermissions(new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION}, 1001); //Any number
-            }
-        } else {
-            Log.d(TAG, "checkBTPermissions: No need to check permissions. SDK version < LOLLIPOP.");
-        }
-    }
-
-    public void enableDisableBT() {
-        if (mBluetoothAdapter == null) {
-            Toast toast = Toast.makeText(getApplicationContext(), "Your device can not use BlueTooth", Toast.LENGTH_SHORT);
-            toast.show();
-        }
-        if (!mBluetoothAdapter.isEnabled()) {
-            Intent enableBT = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            startActivity(enableBT);
-
-            IntentFilter BTIntent = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
-            registerReceiver(mBroadcastReceiver1, BTIntent);
-            Toast toast = Toast.makeText(getApplicationContext(), "Bluetooth turned ON", Toast.LENGTH_SHORT);
-            toast.show();
-        }
-        if (mBluetoothAdapter.isEnabled()) {
-            mBluetoothAdapter.disable();
-            IntentFilter BTIntent = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
-            registerReceiver(mBroadcastReceiver1, BTIntent);
-            Toast toast = Toast.makeText(getApplicationContext(), "BlueTooth turned OFF", Toast.LENGTH_SHORT);
-            toast.show();
-        }
-    }
-
-    private final BroadcastReceiver mBroadcastReceiver1 = new BroadcastReceiver() {
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            if (action.equals(mBluetoothAdapter.ACTION_STATE_CHANGED)) {
-
-                final int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, mBluetoothAdapter.ERROR);
-                switch (state) {
-                    case BluetoothAdapter.STATE_OFF:
-                        Log.d(TAG, "onReceiver; STATE OFF");
-                        break;
-                    case BluetoothAdapter.STATE_TURNING_OFF:
-                        Log.d(TAG, "onReceiver; STATE TURNING OFF");
-                        break;
-                    case BluetoothAdapter.STATE_ON:
-                        Log.d(TAG, "onReceiver; STATE ON");
-                        break;
-                    case BluetoothAdapter.STATE_TURNING_ON:
-                        Log.d(TAG, "onReceiver; STATE TURNING ON");
-                        break;
+            builder.setView(mView);
+            final AlertDialog changePassDialog = builder.create();
+            changePassDialog.show();
+            changePass.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    MethodHelper.changePassword(newPass, newPassRepeat, currentPass, currDbPassString, changePassDialog, context, userRef);
                 }
-            }
-        }
-    };
-
-    private final BroadcastReceiver mBroadcastReceiver2 = new BroadcastReceiver() {
-        public void onReceive(Context context, Intent intent) {
-            final String action = intent.getAction();
-            Log.d(TAG, "onReceive: ACTION FOUND.");
-
-            if (action.equals(BluetoothDevice.ACTION_FOUND)) {
-                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                mBTDevices.add(device);
-                Log.d(TAG, "onReceive: " + device.getName() + ": " + device.getAddress());
-                mDeviceListAdapter = new DeviceListAdapter(context, R.layout.device_adapter_view, mBTDevices);
-                deviceListView.setAdapter(mDeviceListAdapter);
-            }
-        }
-    };
-
-    private final BroadcastReceiver mBroadcastReceiver4 = new BroadcastReceiver() {
-        public void onReceive(Context context, Intent intent) {
-            final String action = intent.getAction();
-            if (action.equals(BluetoothDevice.ACTION_BOND_STATE_CHANGED)) {
-
-                BluetoothDevice mDevice = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                //3 cases
-                if (mDevice.getBondState() == BluetoothDevice.BOND_BONDED) {
-
+            });
+            cancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    changePassDialog.dismiss();
                 }
-                if (mDevice.getBondState() == BluetoothDevice.BOND_BONDING) {
-
-                }
-                if (mDevice.getBondState() == BluetoothDevice.BOND_NONE) {
-
-                }
-            }
+            });
+        } else if (id == R.id.nav_BT_device){
+            //TODO
+        } else if (id == R.id.nav_logout) {
+            MethodHelper.logOut(context, intents);
         }
-    };
 
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        mBluetoothAdapter.cancelDiscovery();
-        String deviceName = mBTDevices.get(position).getName();
-        String deviceAdress = mBTDevices.get(position).getAddress();
-
-        mBTDevices.get(position).createBond();
-        Toast toast = Toast.makeText(PatientMainActivity.this, "Bond created", Toast.LENGTH_SHORT);
-        toast.show();
-
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
+
+
+
+
+
+
 }

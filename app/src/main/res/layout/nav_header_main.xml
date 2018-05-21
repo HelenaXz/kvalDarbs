@@ -19,8 +19,15 @@
         android:contentDescription="@string/nav_header_desc"
         app:srcCompat="@drawable/ic_person_white_50" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginEnd="80dp"
+        android:background="@color/colorAccentLightTransparent" />
+
+
     <TextView
-        android:id="@+id/headUserId"
+        android:id="@+id/headFullName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
@@ -28,7 +35,7 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     <TextView
-        android:id="@+id/headFullName"
+        android:id="@+id/headUserId"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="User Full Name" />

@@ -21,7 +21,7 @@ package com.hz.kvalifdarbs.admin;
         import com.google.firebase.database.FirebaseDatabase;
         import com.hz.kvalifdarbs.utils.Intents;
         import com.hz.kvalifdarbs.Objects.Patient;
-        import com.hz.kvalifdarbs.ListAdaptors.PatientDoctorAdapter;
+        import com.hz.kvalifdarbs.ListAdaptors.PatientDoctorSmallAdapter;
         import com.hz.kvalifdarbs.R;
 
         import java.util.ArrayList;
@@ -33,7 +33,7 @@ public class AdminViewPatientActivity extends AppCompatActivity {
     Button addDoctorTo, deleteUser;
     String patientIdString;
     DatabaseReference rootRef, patientRef, doctorRef;
-    PatientDoctorAdapter testAdapter;
+    PatientDoctorSmallAdapter testAdapter;
     Context context;
     ArrayList<String> patientDocList;
 
@@ -85,7 +85,7 @@ public class AdminViewPatientActivity extends AppCompatActivity {
         });
 
 
-        testAdapter = new PatientDoctorAdapter(this);
+        testAdapter = new PatientDoctorSmallAdapter(this);
         patientDoctors.setAdapter(testAdapter);
 
         patientDoctors.setOnItemClickListener(new AdapterView.OnItemClickListener() {

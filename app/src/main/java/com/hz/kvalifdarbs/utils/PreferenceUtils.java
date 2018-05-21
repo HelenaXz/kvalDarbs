@@ -18,7 +18,7 @@ public class PreferenceUtils {
 
     public static String getId(Context context){
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        return prefs.getString(Constants.KEY_ID, null);
+        return prefs.getString(Constants.KEY_ID, "");
     }
 
     public static boolean savePassword(String password, Context context){
@@ -30,7 +30,7 @@ public class PreferenceUtils {
     }
     public static String getPassword(Context context){
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        return prefs.getString(Constants.KEY_PASSWORD, null);
+        return prefs.getString(Constants.KEY_PASSWORD, "");
     }
 
     public static boolean saveUserType(String userType, Context context){
@@ -42,7 +42,7 @@ public class PreferenceUtils {
     }
     public static String getUserType(Context context){
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        return prefs.getString(Constants.KEY_USER_TYPE, null);
+        return prefs.getString(Constants.KEY_USER_TYPE, "");
     }
 
     public static boolean saveUserName(String userName, Context context){
@@ -61,11 +61,11 @@ public class PreferenceUtils {
     }
     public static String getUserName(Context context){
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        return prefs.getString(Constants.KEY_USER_NAME, null);
+        return prefs.getString(Constants.KEY_USER_NAME, "");
     }
     public static String getUserSurname(Context context){
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        return prefs.getString(Constants.KEY_USER_SURNAME, null);
+        return prefs.getString(Constants.KEY_USER_SURNAME, "");
     }
 
     public static boolean saveDoctorInfo(){

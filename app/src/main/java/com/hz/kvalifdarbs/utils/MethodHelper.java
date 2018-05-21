@@ -9,7 +9,8 @@ import android.widget.Toast;
 import com.google.firebase.database.DatabaseReference;
 
 public class MethodHelper {
-    public static void changePassword(EditText newPass, EditText newPassRepeat, EditText currentPass, String currDbPassString, AlertDialog changePassDialog, Context context, DatabaseReference userRef ){
+    public static void changePassword(EditText newPass, EditText newPassRepeat, EditText currentPass, String currDbPassString, AlertDialog changePassDialog, Context context, DatabaseReference userRef){
+
         String newPassw, newPasswRep;
         newPassw = newPass.getText().toString();
         newPasswRep = newPassRepeat.getText().toString();

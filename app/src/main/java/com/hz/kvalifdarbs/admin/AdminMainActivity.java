@@ -28,9 +28,9 @@ import com.hz.kvalifdarbs.utils.PreferenceUtils;
 public class AdminMainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
         DatabaseReference rootRef, userRef;
-        Button viewPatientList, viewDoctorList, btnLogout, btnChangePass, addUser;
         Context context;
         String userId, userName, userSurname, fullName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +40,8 @@ public class AdminMainActivity extends AppCompatActivity
         toolbar.inflateMenu(R.menu.menu_main);
         toolbar.setNavigationIcon(R.drawable.ic_menu_white);
 
+
+        //Drawer menu
         final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         final ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -51,10 +53,10 @@ public class AdminMainActivity extends AppCompatActivity
 
         navigationView.inflateHeaderView(R.layout.nav_header_main);
         navigationView.inflateMenu(R.menu.admin_drawer);
-        View headView2 = navigationView.getHeaderView(0);
+        View headView = navigationView.getHeaderView(0);
 
-        TextView headUserName = headView2.findViewById(R.id.headFullName);
-        TextView headUserId = headView2.findViewById(R.id.headUserId);
+        TextView headUserName = headView.findViewById(R.id.headFullName);
+        TextView headUserId = headView.findViewById(R.id.headUserId);
 
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -66,7 +68,7 @@ public class AdminMainActivity extends AppCompatActivity
         userSurname = PreferenceUtils.getUserSurname(context);
         fullName = userName + " " + userSurname;
         rootRef = FirebaseDatabase.getInstance().getReference();
-        userRef = rootRef.child("Admins").child(userId);
+        userRef = rootRef.child("Patients").child(userId);
 
 
         headUserId.setText(userId);
@@ -146,13 +148,5 @@ public class AdminMainActivity extends AppCompatActivity
         return true;
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-////        getMenuInflater()
-//        getMenuInflater().inflate(R.menu.menu_main, menu);
-//        return true;
-//    }
-//
 
 }

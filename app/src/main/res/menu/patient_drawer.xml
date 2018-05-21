@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_my_doctors"
+            android:icon="@drawable/ic_people_white"
+            android:title="My Doctors" />
+        <item
+            android:id="@+id/nav_pat_movements"
+            android:icon="@drawable/ic_movement"
+            android:title="Movements" />
+        <item
+            android:id="@+id/nav_pat_exams"
+            android:icon="@drawable/ic_exams"
+            android:title="Examinations" />
+    </group>
+
+    <item android:title="User">
+        <menu>
+            <item
+                android:id="@+id/nav_profile"
+                android:icon="@drawable/ic_settings_white"
+                android:title="Profile" />
+            <item
+                android:id="@+id/nav_BT_device"
+                android:icon="@drawable/ic_bt_settings"
+                android:title="Movement Device" />
+            <item
+                android:id="@+id/nav_logout"
+                android:icon="@drawable/ic_exit_white_24dp"
+                android:title="Logout"
+                android:visible="true" />
+        </menu>
+    </item>
+
+</menu>

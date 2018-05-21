@@ -7,6 +7,7 @@
     <color name="colorPrimaryLight">#d1d9ff</color>
     <color name="colorAccent">#ff8a65</color>
     <color name="colorAccentDark">#c75b39</color>
+    <color name="colorAccentLightTransparent">#80f5e0d2</color>
     <color name="colorAccentLight">#f5e0d2</color>
 
     <color name="urgent">#c9444f</color>

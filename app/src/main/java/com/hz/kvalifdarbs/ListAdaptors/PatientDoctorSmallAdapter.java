@@ -7,29 +7,25 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.hz.kvalifdarbs.Objects.Doctor;
 import com.hz.kvalifdarbs.R;
 
-public class PatientDoctorAdapter extends ArrayAdapter<Doctor> {
-    TextView doctorName;
+public class PatientDoctorSmallAdapter extends ArrayAdapter<String> {
+    TextView doctorIdtv;
 
-    public PatientDoctorAdapter(Context context) {
+    public PatientDoctorSmallAdapter(Context context) {
         super(context, 0);
 
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Doctor thisDoctor = getItem(position);
+        String doctorId = getItem(position);
         if (convertView == null){
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.patient_doctor_list_adaptor, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.patient_doctor_list_small_adaptor, parent, false);
         }
 
-        doctorName = convertView.findViewById(R.id.doctorName);
-
-        doctorName.setText(thisDoctor.getFullName());
-
-
+        doctorIdtv = convertView.findViewById(R.id.doctorIdList);
+        doctorIdtv.setText(doctorId);
 
 
         return convertView;

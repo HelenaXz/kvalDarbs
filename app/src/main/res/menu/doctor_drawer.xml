@@ -5,29 +5,22 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_add_user"
-            android:icon="@drawable/ic_user_add_white"
-            android:title="Add User" />
-        <item
-            android:id="@+id/nav_all_patients"
+            android:id="@+id/nav_my_patients"
             android:icon="@drawable/ic_people_white"
-            android:title="All Patients" />
-        <item
-            android:id="@+id/nav_all_doctors"
-            android:icon="@drawable/ic_people_white"
-            android:title="All Doctors" />
+            android:title="My Patients" />
     </group>
 
-    <item android:title="">
+    <item android:title="User">
         <menu>
             <item
-                android:id="@+id/nav_settings"
+                android:id="@+id/nav_profile"
                 android:icon="@drawable/ic_settings_white"
-                android:title="Settings" />
+                android:title="Profile" />
             <item
                 android:id="@+id/nav_logout"
                 android:icon="@drawable/ic_exit_white_24dp"
-                android:title="Logout" />
+                android:title="Logout"
+                android:visible="true" />
         </menu>
     </item>
 

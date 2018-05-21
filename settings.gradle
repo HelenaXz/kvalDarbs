@@ -1,1 +1,2 @@
 include ':app'
+include ':mdslib-1.13.0(1)-release'
