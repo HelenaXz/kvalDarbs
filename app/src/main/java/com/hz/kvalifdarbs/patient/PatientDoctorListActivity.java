@@ -72,13 +72,13 @@ public class PatientDoctorListActivity extends AppCompatActivity
 
 
         //Drawer menu
-        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        final DrawerLayout drawer = findViewById(R.id.drawer_layout);
         final ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         navigationView.inflateHeaderView(R.layout.nav_header_main);
@@ -150,14 +150,9 @@ public class PatientDoctorListActivity extends AppCompatActivity
         doctorList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Patient clicked = ((Patient) parent.getItemAtPosition(position));
-//                Intent seePatient = intents.doctorPatientView;
-//                seePatient.putExtra("thisDoctor", clicked);
-//                startActivity(seePatient.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
+                //TODO
             }
         });
-
-
     }
 
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -180,7 +175,7 @@ public class PatientDoctorListActivity extends AppCompatActivity
             MethodHelper.logOut(context, intents);
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

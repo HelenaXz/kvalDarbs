@@ -19,6 +19,7 @@ package com.hz.kvalifdarbs.admin;
         import com.google.firebase.database.DatabaseError;
         import com.google.firebase.database.DatabaseReference;
         import com.google.firebase.database.FirebaseDatabase;
+        import com.hz.kvalifdarbs.Objects.smallDoctor;
         import com.hz.kvalifdarbs.utils.Intents;
         import com.hz.kvalifdarbs.Objects.Patient;
         import com.hz.kvalifdarbs.ListAdaptors.PatientDoctorSmallAdapter;
@@ -92,16 +93,16 @@ public class AdminViewPatientActivity extends AppCompatActivity {
         patientDoctors.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-                final String clicked =  parent.getItemAtPosition(position).toString();
+                final smallDoctor clicked = (smallDoctor) parent.getItemAtPosition(position);
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(AdminViewPatientActivity.this);
                 builder.setMessage("Delete doctor from patient?").setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                        patientRef.child("Doctors").child(clicked).removeValue();
+                        patientRef.child("Doctors").child(clicked.getId()).removeValue();
                         //doctor reference
-                        doctorRef = rootRef.child("Doctors").child(clicked);
+                        doctorRef = rootRef.child("Doctors").child(clicked.getId());
                         doctorRef.child("Patients").child(thisPatient.getId()).removeValue();
                         testAdapter.remove(testAdapter.getItem(position));
                         testAdapter.notifyDataSetChanged();
@@ -140,11 +141,12 @@ public class AdminViewPatientActivity extends AppCompatActivity {
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 String doctorId = dataSnapshot.getKey();
                 String doctorName = dataSnapshot.getValue().toString();
+                smallDoctor newSmallDoc = new smallDoctor(doctorId, doctorName);
 
 //                Doctor doctorObj = dataSnapshot.getValue(Doctor.class);
 //                doctorIds.add(doctor);
-                testAdapter.add(doctorId);
-                patientDocList.add(doctorId);
+                testAdapter.add(newSmallDoc);
+                patientDocList.add(newSmallDoc.getId());
 //                testAdapter.add(doctorName);
                 testAdapter.notifyDataSetChanged();
             }

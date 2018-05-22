@@ -25,41 +25,48 @@
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     </android.support.design.widget.AppBarLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-        <Button
-            android:id="@+id/btnAddDoctor"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="5dp"
-            android:layout_marginStart="5dp"
-            android:backgroundTint="@color/colorPrimaryLight"
-            android:elevation="5dp"
-            android:text="@string/addDoctor" />
 
-        <Button
-            android:id="@+id/btnAddPatient"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="5dp"
-            android:layout_marginStart="5dp"
-            android:backgroundTint="@color/colorPrimaryLight"
-            android:elevation="5dp"
-            android:text="@string/addPatient" />
+            android:layout_height="match_parent"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:orientation="vertical">
 
-        <Button
-            android:id="@+id/btnAddAdmin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="5dp"
-            android:layout_marginStart="5dp"
-            android:backgroundTint="@color/colorPrimaryLight"
-            android:elevation="5dp"
-            android:text="@string/addAdmin" />
+            <Button
+                android:id="@+id/btnAddDoctor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:backgroundTint="@color/colorPrimaryLight"
+                android:elevation="5dp"
+                android:text="@string/addDoctor" />
 
-    </LinearLayout>
+            <Button
+                android:id="@+id/btnAddPatient"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:backgroundTint="@color/colorPrimaryLight"
+                android:elevation="5dp"
+                android:text="@string/addPatient" />
+
+            <Button
+                android:id="@+id/btnAddAdmin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:backgroundTint="@color/colorPrimaryLight"
+                android:elevation="5dp"
+                android:text="@string/addAdmin" />
+
+        </LinearLayout>
     </LinearLayout>
 
     <android.support.design.widget.NavigationView
