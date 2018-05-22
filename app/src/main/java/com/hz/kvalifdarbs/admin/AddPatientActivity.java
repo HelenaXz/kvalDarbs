@@ -31,24 +31,29 @@ import java.text.DateFormat;
 
 public class AddPatientActivity extends AppCompatActivity {
 
-    DatabaseReference rootRef, patientRef;
+    DatabaseReference rootRef, userRef;
     EditText name, surname, id, phone, pass, passRepeat, roomNr;
     String nameString, idString,surnameString, phoneString, birthDate, roomString, genderString, passEncrypt;
     Spinner genderSpinner;
     TextView dateOfBirth;
     Integer phoneNum;
     DatePickerDialog.OnDateSetListener mDataSetListener;
+    Context context;
     int year, month, day;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_patient);
+        context = getApplicationContext();
+        final Intents intents = new Intents(this);
+        //Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        final Intents intents = new Intents(this);
+        //Firebase reference
         rootRef = FirebaseDatabase.getInstance().getReference("Patients");
 
+        //starting date for date picker
         year = 1990;
         month = 0;
         day = 1;
@@ -60,9 +65,7 @@ public class AddPatientActivity extends AppCompatActivity {
         genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         genderSpinner.setAdapter(genderAdapter);
 
-        //Buttons
-        Button submitForm = findViewById(R.id.submit);
-        //Text fields
+        //TextViews, Buttons
         name = findViewById(R.id.name);
         surname = findViewById(R.id.surname);
         id = findViewById(R.id.patientID);
@@ -71,6 +74,7 @@ public class AddPatientActivity extends AppCompatActivity {
         passRepeat = findViewById(R.id.passwordRepeat);
         dateOfBirth = findViewById(R.id.birthYear);
         roomNr = findViewById(R.id.roomNr);
+        Button submitForm = findViewById(R.id.submit);
 
         dateOfBirth.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -88,7 +92,7 @@ public class AddPatientActivity extends AppCompatActivity {
         mDataSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int yearPick, int monthPick, int dayOfMonth) {
-                DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM);
+
                 month = monthPick + 1;
                 String date = (dayOfMonth < 10 ? "0" : "") + dayOfMonth + "-"+ (month < 10 ? "0" : "") + month + "-" + yearPick;
                 dateOfBirth.setText(date);
@@ -112,15 +116,14 @@ public class AddPatientActivity extends AppCompatActivity {
                     roomString = roomNr.getText().toString();
                     genderString = genderSpinner.getSelectedItem().toString();
 
-                    patientRef = rootRef.child(idString);
+                    userRef = rootRef.child(idString);
                     Patient newPatient = new Patient(nameString, surnameString, idString, genderString, passEncrypt, phoneNum, birthDate, roomString);
-                    patientRef.setValue(newPatient);
+                    userRef.setValue(newPatient);
 
-                    Context context = getApplicationContext();
-                    CharSequence text = "Patient added to DB";
-                    int duration = Toast.LENGTH_SHORT;
-                    Toast toast = Toast.makeText(context, text, duration);
+
+                    Toast toast = Toast.makeText(context, "Patient added to DB", Toast.LENGTH_SHORT);
                     toast.show();
+                    //Clear Form
                     name.setText(null);
                     surname.setText(null);
                     id.setText(null);
@@ -129,6 +132,10 @@ public class AddPatientActivity extends AppCompatActivity {
                     passRepeat.setText(null);
                     dateOfBirth.setText(null);
                     roomNr.setText(null);
+                    year = 1990;
+                    month = 0;
+                    day = 1;
+                    //Close keyboard
                     InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
                 }
@@ -137,9 +144,7 @@ public class AddPatientActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // perform whatever you want on back arrow click
                 startActivity(intents.addUser.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
-                finish();
             }
         });
     }
@@ -179,28 +184,5 @@ public class AddPatientActivity extends AppCompatActivity {
         }
         if(valid < 8){ return false; } else { return true; }
     }
-
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.menu_main, menu);
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//
-//        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
-//
-//        return super.onOptionsItemSelected(item);
-//    }
-
 
 }

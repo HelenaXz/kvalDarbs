@@ -21,37 +21,39 @@ import com.hz.kvalifdarbs.utils.MethodHelper;
 
 public class AddDoctorActivity extends AppCompatActivity {
 
-    DatabaseReference rootRef, docRef;
+    DatabaseReference rootRef, userRef;
     EditText name, surname, id, phone, pass, passRepeat;
-    String passEncrypt;
+    private String passEncrypt;
     Button submitForm;
+    Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_doctor);
+        context = getApplicationContext();
+        final Intents intents = new Intents(this);
+        //Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        final Intents intents = new Intents(this);
-
-        //Database references
+        //Firebase references
         rootRef = FirebaseDatabase.getInstance().getReference("Doctors");
 
-        //Buttons
-        submitForm = findViewById(R.id.submitBtn);
-        //Text fields
+        //TextViews, Buttons
         name = findViewById(R.id.name);
         surname = findViewById(R.id.surname);
         id = findViewById(R.id.doctorID);
         phone = findViewById(R.id.phone);
         pass = findViewById(R.id.password);
         passRepeat = findViewById(R.id.passwordRepeat);
+        submitForm = findViewById(R.id.submitBtn);
 
         submitForm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(validate()){
+                    //get text from fields
                     String nameString = name.getText().toString();
                     String surnameString = surname.getText().toString();
                     String idString = id.getText().toString();
@@ -59,37 +61,25 @@ public class AddDoctorActivity extends AppCompatActivity {
                     Integer phoneNum = Integer.parseInt(phoneString);
                     passEncrypt = MethodHelper.sha1Hash(pass.getText().toString());
 
-                    docRef = rootRef.child(idString);
+                    userRef = rootRef.child(idString);
                     Doctor newDoctor = new Doctor(idString, nameString, passEncrypt, phoneNum, surnameString);
-                    docRef.setValue(newDoctor);
+                    userRef.setValue(newDoctor);
 
-                    Context context = getApplicationContext();
-                    CharSequence text = "Doctor added to DB";
-                    int duration = Toast.LENGTH_SHORT;
-                    Toast toast = Toast.makeText(context, text, duration);
-                    toast.show();
-                    name.setText(null);
-                    surname.setText(null);
-                    id.setText(null);
-                    phone.setText(null);
-                    pass.setText(null);
-                    passRepeat.setText(null);
-                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+//                    Toast toast =
+                            Toast.makeText(context, "Doctor added to DB", Toast.LENGTH_SHORT).show();
+//                    toast.show();
+                    clearForm(v);
                 }
             }
         });
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // perform whatever you want on back arrow click
                 startActivity(intents.addUser.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
                 finish();
             }
         });
-
     }
-
 
     public boolean validate(){
         int valid = 0;
@@ -123,26 +113,16 @@ public class AddDoctorActivity extends AppCompatActivity {
         if(valid < 7) return false;
         else { return true; }
     }
+    public void clearForm(View v){
+        name.setText(null);
+        surname.setText(null);
+        id.setText(null);
+        phone.setText(null);
+        pass.setText(null);
+        passRepeat.setText(null);
+        //close keyboard
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+    }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.menu_main, menu);
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//
-//        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
-//
-//        return super.onOptionsItemSelected(item);
-//    }
 }

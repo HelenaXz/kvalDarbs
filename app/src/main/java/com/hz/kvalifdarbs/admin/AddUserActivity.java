@@ -31,35 +31,39 @@ public class AddUserActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_user);
         context = getApplicationContext();
+        final Intents intents = new Intents(this);
+        //Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("Select User to Add");
         toolbar.inflateMenu(R.menu.menu_main);
         toolbar.setNavigationIcon(R.drawable.ic_menu_white);
-        final Intents intents = new Intents(this);
 
-        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        //Strings
+        userId  = PreferenceUtils.getId(context);
+        userName = PreferenceUtils.getUserName(context);
+        userSurname = PreferenceUtils.getUserSurname(context);
+        fullName = userName + " " + userSurname;
+
+        //Drawer menu
+        final DrawerLayout drawer =  findViewById(R.id.drawer_layout);
         final ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        View headView = navigationView.getHeaderView(0);
         navigationView.inflateHeaderView(R.layout.nav_header_main);
         navigationView.inflateMenu(R.menu.admin_drawer);
-        View headView2 = navigationView.getHeaderView(0);
-
-        TextView headUserId = headView2.findViewById(R.id.headUserId);
-        TextView headUserName = headView2.findViewById(R.id.headFullName);
-
-        userId  = PreferenceUtils.getId(context);
-        userName = PreferenceUtils.getUserName(context);
-        userSurname = PreferenceUtils.getUserSurname(context);
-        fullName = userName + " " + userSurname;
+        //Header of drawer nav.
+        View headView = navigationView.getHeaderView(0);
+        TextView headUserId = headView.findViewById(R.id.headUserId);
+        TextView headUserName = headView.findViewById(R.id.headFullName);
         headUserId.setText(userId);
         headUserName.setText(fullName);
+
 
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -104,7 +108,7 @@ public class AddUserActivity extends AppCompatActivity
             MethodHelper.logOut(context, intents);
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

@@ -32,28 +32,32 @@ public class AdminViewPatientActivity extends AppCompatActivity {
     TextView name_surname, room, brought_in, birthDate, patientId;
     ListView patientExams, patientDoctors;
     Button addDoctorTo, deleteUser;
-    String patientIdString;
     DatabaseReference rootRef, allDocRef, patientRef, doctorRef;
     PatientDoctorSmallAdapter testAdapter;
     Context context;
     ArrayList<String> patientDocList;
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_view_patient);
+        final Intents intents = new Intents(this);
+        context = getApplicationContext();
+        Intent i = getIntent();
+        final Patient thisPatient = (Patient)i.getSerializableExtra("thisPatient");
+        //Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        final Intents intents = new Intents(this);
-        context = getApplicationContext();
+
+        //Firebase References
         rootRef = FirebaseDatabase.getInstance().getReference();
         allDocRef = rootRef.child("Doctors");
-        Intent i = getIntent();
-        final Patient thisPatient = (Patient)i.getSerializableExtra("thisPatient");
-        patientDocList = new ArrayList<>();
+        patientRef = rootRef.child("Patients").child(thisPatient.getId());
 
+
+        patientDocList = new ArrayList<>();
+        //TextViews, ListViews, Buttons
         name_surname = findViewById(R.id.name_surname);
         room = findViewById(R.id.room);
         brought_in = findViewById(R.id.brought_in);
@@ -61,20 +65,19 @@ public class AdminViewPatientActivity extends AppCompatActivity {
         patientId = findViewById(R.id.patientId_field);
         addDoctorTo = findViewById(R.id.btnAddDoc);
         deleteUser = findViewById(R.id.btnDeleteUser);
+        patientExams = findViewById(R.id.patientExamList);
+        patientDoctors = findViewById(R.id.patientDoctorList);
 
         //Fill TextViews
         name_surname.setText(thisPatient.getFullName());
         brought_in.setText(thisPatient.getAddedToSystem());
         birthDate.setText(thisPatient.getBirthDate());
-        patientIdString = "Patient nr. "+ thisPatient.getId();
-        patientId.setText(patientIdString);
+        patientId.append(thisPatient.getId());
         room.setText(thisPatient.getRoom());
 
-
-        patientExams = findViewById(R.id.patientExamList); //ListView
-        patientDoctors = findViewById(R.id.patientDoctorList); //ListView
-
-        patientRef = rootRef.child("Patients").child(thisPatient.getId());
+        //ArrayAdapter for small doctor list
+        testAdapter = new PatientDoctorSmallAdapter(this);
+        patientDoctors.setAdapter(testAdapter);
 
 
         addDoctorTo.setOnClickListener(new View.OnClickListener() {
@@ -87,9 +90,6 @@ public class AdminViewPatientActivity extends AppCompatActivity {
         });
 
 
-        testAdapter = new PatientDoctorSmallAdapter(this);
-        patientDoctors.setAdapter(testAdapter);
-
         patientDoctors.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
@@ -101,7 +101,6 @@ public class AdminViewPatientActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
 
                         patientRef.child("Doctors").child(clicked.getId()).removeValue();
-                        //doctor reference
                         doctorRef = rootRef.child("Doctors").child(clicked.getId());
                         doctorRef.child("Patients").child(thisPatient.getId()).removeValue();
                         testAdapter.remove(testAdapter.getItem(position));
@@ -143,11 +142,8 @@ public class AdminViewPatientActivity extends AppCompatActivity {
                 String doctorName = dataSnapshot.getValue().toString();
                 smallDoctor newSmallDoc = new smallDoctor(doctorId, doctorName);
 
-//                Doctor doctorObj = dataSnapshot.getValue(Doctor.class);
-//                doctorIds.add(doctor);
                 testAdapter.add(newSmallDoc);
                 patientDocList.add(newSmallDoc.getId());
-//                testAdapter.add(doctorName);
                 testAdapter.notifyDataSetChanged();
             }
 

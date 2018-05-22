@@ -26,7 +26,6 @@ package com.hz.kvalifdarbs.admin;
 public class AvailableDoctorListActivity extends AppCompatActivity {
     DatabaseReference rootRef, childRef;
     ArrayList<Doctor> allDoctors;
-    private ListView listView;
     AvaiableDoctorAdapter testAdapter;
     DatabaseReference patientRef, doctorRef;
     Patient thisPatient;
@@ -37,32 +36,33 @@ public class AvailableDoctorListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_doctor_list);
+        context  = getApplicationContext();
+        final Intents intents = new Intents(this);
+        //Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        final Intents intents = new Intents(this);
+
         Intent i = getIntent();
-        context  = getApplicationContext();
         thisPatient = (Patient)i.getSerializableExtra("thisPatient");
+        //Firebase references
         rootRef = FirebaseDatabase.getInstance().getReference();
         patientRef = rootRef.child("Patients").child(thisPatient.getId());
 
-
-        listView = findViewById(R.id.allDoctors);
+        //Set up listView
+        ListView listView = findViewById(R.id.allDoctors);
         allDoctors = new ArrayList<>();
         testAdapter = new AvaiableDoctorAdapter(this, allDoctors);
 
         final ArrayList<String> patientDoctors = new ArrayList();
 
+        listView.setAdapter(testAdapter);
+        listView.setClickable(true);
 
 
         patientRef.child("Doctors").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 patientDoctors.add(dataSnapshot.getKey());
-//                for (String curr : patientDoctors) if (curr.equals(dataSnapshot.getKey())){
-//                    Patient patient = dataSnapshot.getValue(Patient.class);
-//                    testAdapter.add(patient);
-//                }
             }
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
@@ -92,13 +92,9 @@ public class AvailableDoctorListActivity extends AppCompatActivity {
                 if(!patientDoctors.contains(dataSnapshot.getKey())){
                     doctor = dataSnapshot.getValue(Doctor.class);
                     childRef = rootRef.child(dataSnapshot.getKey());
-//                allPatients.add(patient);
-                    //TODO add doctor to list only if the current patient doesn't have him already
                     testAdapter.add(doctor);
-//                patientArrayAdapter.notifyDataSetChanged();
                     testAdapter.notifyDataSetChanged();
                 }
-
             }
 
             @Override
@@ -122,9 +118,6 @@ public class AvailableDoctorListActivity extends AppCompatActivity {
             }
         });
 
-
-        listView.setAdapter(testAdapter);
-        listView.setClickable(true);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

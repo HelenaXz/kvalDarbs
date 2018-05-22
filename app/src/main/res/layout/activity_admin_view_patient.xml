@@ -45,6 +45,7 @@
                 android:gravity="center_horizontal"
                 android:paddingBottom="5dp"
                 android:paddingTop="5dp"
+                android:text="Patient ID: "
                 android:textColor="@color/colorAccent"
                 android:textSize="20sp" />
 

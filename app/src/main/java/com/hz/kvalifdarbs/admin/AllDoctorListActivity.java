@@ -33,9 +33,8 @@ import java.util.ArrayList;
 public class AllDoctorListActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener
 {
-    DatabaseReference rootRef, childRef;
+    DatabaseReference rootRef;
     ArrayList<Doctor> allDoctors;
-    private ListView listView;
     AllDoctorAdapter testAdapter;
     Context context;
     String userId, userName, userSurname, fullName;
@@ -54,14 +53,20 @@ public class AllDoctorListActivity extends AppCompatActivity
         toolbar.setNavigationIcon(R.drawable.ic_menu_white);
         toolbar.setTitle("All Doctors");
 
-        //Side Navigation Setup
-        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        //Strings
+        userId  = PreferenceUtils.getId(context);
+        userName = PreferenceUtils.getUserName(context);
+        userSurname = PreferenceUtils.getUserSurname(context);
+        fullName = userName + " " + userSurname;
+
+        //Drawer menu
+        final DrawerLayout drawer = findViewById(R.id.drawer_layout);
         final ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         navigationView.inflateHeaderView(R.layout.nav_header_main);
@@ -70,24 +75,20 @@ public class AllDoctorListActivity extends AppCompatActivity
 
         TextView headUserName = headView2.findViewById(R.id.headFullName);
         TextView headUserId = headView2.findViewById(R.id.headUserId);
-
-        navigationView.setNavigationItemSelectedListener(this);
-
-        userId  = PreferenceUtils.getId(context);
-        userName = PreferenceUtils.getUserName(context);
-        userSurname = PreferenceUtils.getUserSurname(context);
-        fullName = userName + " " + userSurname;
-
         headUserId.setText(userId);
         headUserName.setText(fullName);
 
+        navigationView.setNavigationItemSelectedListener(this);
+
+
         //ListView setup
-        listView = findViewById(R.id.allDoctors);
+        ListView listView = findViewById(R.id.allDoctors);
         allDoctors = new ArrayList<>();
         testAdapter = new AllDoctorAdapter(this);
 
         listView.setAdapter(testAdapter);
         listView.setClickable(true);
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -134,7 +135,7 @@ public class AllDoctorListActivity extends AppCompatActivity
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                drawer.openDrawer(Gravity.LEFT);
+                drawer.openDrawer(Gravity.START);
             }
         });
     }
@@ -154,7 +155,7 @@ public class AllDoctorListActivity extends AppCompatActivity
             MethodHelper.logOut(context, intents);
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

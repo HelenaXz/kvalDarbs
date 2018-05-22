@@ -20,35 +20,40 @@ import com.hz.kvalifdarbs.R;
 import com.hz.kvalifdarbs.utils.MethodHelper;
 
 public class AddAdminActivity extends AppCompatActivity {
-
-    DatabaseReference rootRef, adminRef;
+    DatabaseReference rootRef, userRef;
     EditText name, surname, id, phone, pass, passRepeat;
     String passEncrypt;
+    Context context;
+    Button submitForm;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_admin);
+        context = getApplicationContext();
+        final Intents intents = new Intents(this);
+        //Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        final Intents intents = new Intents(this);
 
+        //Firebase reference
         rootRef = FirebaseDatabase.getInstance().getReference("Admins");
 
-        //Buttons
-        Button submitForm = findViewById(R.id.submitBtn);
-        //Text fields
+        //TextViews, Buttons
         name = findViewById(R.id.name);
         surname = findViewById(R.id.surname);
         id = findViewById(R.id.adminID);
         phone = findViewById(R.id.phone);
         pass = findViewById(R.id.password);
         passRepeat = findViewById(R.id.passwordRepeat);
+        submitForm = findViewById(R.id.submitBtn);
 
         submitForm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(validate()){
+                    //get text from fields
                     String nameString = name.getText().toString();
                     String surnameString = surname.getText().toString();
                     String idString = id.getText().toString();
@@ -56,34 +61,32 @@ public class AddAdminActivity extends AppCompatActivity {
                     Integer phoneNum = Integer.parseInt(phoneString);
                     passEncrypt = MethodHelper.sha1Hash(pass.getText().toString());
 
-                    adminRef = rootRef.child(idString);
+                    userRef = rootRef.child(idString);
                     Admin newAdmin = new Admin(idString, nameString, passEncrypt, phoneNum, surnameString);
-                    adminRef.setValue(newAdmin);
+                    userRef.setValue(newAdmin);
 
-                    Context context = getApplicationContext();
-                    String text = "Administrator added to DB";
-                    Toast toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
+                    Toast toast = Toast.makeText(context, "Administrator added to DB", Toast.LENGTH_SHORT);
                     toast.show();
+                    //Clear Form
                     name.setText(null);
                     surname.setText(null);
                     id.setText(null);
                     phone.setText(null);
                     pass.setText(null);
                     passRepeat.setText(null);
+                    //Close keyboard
                     InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
                 }
             }
         });
+
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // perform whatever you want on back arrow click
                 startActivity(intents.addUser.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
-                finish();
             }
         });
-
     }
 
 
@@ -120,26 +123,5 @@ public class AddAdminActivity extends AppCompatActivity {
         else return false;
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.menu_main, menu);
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//
-//        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
-//
-//        return super.onOptionsItemSelected(item);
-//    }
 
 }

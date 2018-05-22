@@ -35,11 +35,21 @@ public class AdminMainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        context = getApplicationContext();
+        final Intents intents = new Intents(this);
+        //Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("Hello");
         toolbar.inflateMenu(R.menu.menu_main);
         toolbar.setNavigationIcon(R.drawable.ic_menu_white);
 
+        //Strings
+        userId  = PreferenceUtils.getId(context);
+        userName = PreferenceUtils.getUserName(context);
+        userSurname = PreferenceUtils.getUserSurname(context);
+        fullName = userName + " " + userSurname;
+        rootRef = FirebaseDatabase.getInstance().getReference();
+        userRef = rootRef.child("Patients").child(userId);
 
         //Drawer menu
         final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -57,22 +67,11 @@ public class AdminMainActivity extends AppCompatActivity
 
         TextView headUserName = headView.findViewById(R.id.headFullName);
         TextView headUserId = headView.findViewById(R.id.headUserId);
+        headUserId.setText(userId);
+        headUserName.setText(fullName);
 
         navigationView.setNavigationItemSelectedListener(this);
 
-
-        final Intents intents = new Intents(this);
-        context = getApplicationContext();
-        userId  = PreferenceUtils.getId(context);
-        userName = PreferenceUtils.getUserName(context);
-        userSurname = PreferenceUtils.getUserSurname(context);
-        fullName = userName + " " + userSurname;
-        rootRef = FirebaseDatabase.getInstance().getReference();
-        userRef = rootRef.child("Patients").child(userId);
-
-
-        headUserId.setText(userId);
-        headUserName.setText(fullName);
 
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
 
@@ -108,13 +107,6 @@ public class AdminMainActivity extends AppCompatActivity
                         }
                     });
                 }
-//                else if(item.getItemId()== R.id.action_logout)
-//                {
-//                    MethodHelper.logOut(context, intents);
-//                }
-//                else{
-//                    // do something
-//                }
 
                 return false;
             }
@@ -143,7 +135,7 @@ public class AdminMainActivity extends AppCompatActivity
             MethodHelper.logOut(context, intents);
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

@@ -35,26 +35,28 @@ public class AdminViewDoctorActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_view_doctor);
+        context = getApplicationContext();
+        final Intents intents = new Intents(this);
+        //Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        final Intents intents = new Intents(this);
-        context = getApplicationContext();
+
+        //Firebase reference
         rootRef = FirebaseDatabase.getInstance().getReference();
-        doctorPatients = new ArrayList<>();
 
         Intent i = getIntent();
         final Doctor thisDoctor = (Doctor)i.getSerializableExtra("thisDoctor");
         docRef = rootRef.child("Doctors").child(thisDoctor.getId());
         allPatientRef = rootRef.child("Patients");
 
-        //Get list of Doctor patients
-
-        deleteUser = findViewById(R.id.btnDeleteUser);
-
+        //TextViews, Buttons
         name = findViewById(R.id.name);
         surname = findViewById(R.id.surname);
         phone = findViewById(R.id.phone_number);
+        deleteUser = findViewById(R.id.btnDeleteUser);
+
+        doctorPatients = new ArrayList<>();
 
         //Fill text views
         name.setText(thisDoctor.getName());
@@ -121,5 +123,4 @@ public class AdminViewDoctorActivity extends AppCompatActivity {
         });
 
     }
-
 }
