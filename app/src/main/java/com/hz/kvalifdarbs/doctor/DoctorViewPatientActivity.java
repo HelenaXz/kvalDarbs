@@ -1,5 +1,6 @@
 package com.hz.kvalifdarbs.doctor;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,12 +12,14 @@ import android.widget.TextView;
 import com.hz.kvalifdarbs.utils.Intents;
 import com.hz.kvalifdarbs.Objects.Patient;
 import com.hz.kvalifdarbs.R;
+import com.hz.kvalifdarbs.utils.PreferenceUtils;
 
 
 public class DoctorViewPatientActivity extends AppCompatActivity {
     TextView name_surname, room, brought_in, birthDate, patientId, patientRoom;
-    String doctorId, patientIdString;
+    String userId, patientIdString;
     Patient thisPatient;
+    Context context;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -25,11 +28,12 @@ public class DoctorViewPatientActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        context = getApplicationContext();
         final Intents intents = new Intents(this);
 
         Intent i = getIntent();
         thisPatient = (Patient)i.getSerializableExtra("thisPatient");
-        doctorId = i.getStringExtra("userId");
+        userId = PreferenceUtils.getId(context);
         name_surname = findViewById(R.id.name_surname);
         room = findViewById(R.id.room);
         brought_in = findViewById(R.id.brought_in);
@@ -51,7 +55,6 @@ public class DoctorViewPatientActivity extends AppCompatActivity {
                 // perform whatever you want on back arrow click
                 Intent intent = intents.doctorPatientList;
                 startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
-                finish();
             }
         });
 

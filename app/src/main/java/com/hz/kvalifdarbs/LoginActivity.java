@@ -17,6 +17,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.hz.kvalifdarbs.utils.Intents;
+import com.hz.kvalifdarbs.utils.MethodHelper;
 import com.hz.kvalifdarbs.utils.PreferenceUtils;
 
 public class LoginActivity extends AppCompatActivity {
@@ -26,7 +27,7 @@ public class LoginActivity extends AppCompatActivity {
     DatabaseReference rootRef, childRef;
     DataSnapshot userRef;
     String userIdString, userPassString, thisUserType;
-    Integer passEncrypt, passFromDB;
+    String passEncrypt, passFromDB;
     Context context;
     Intents intents;
 
@@ -81,23 +82,35 @@ public class LoginActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.hasChild(userIdString) && !userIdString.isEmpty()) {
                     userRef = dataSnapshot.child(userIdString);
-                    passFromDB = Integer.parseInt(userRef.child("password").getValue().toString());
+                    passFromDB = userRef.child("password").getValue().toString();
                     String userName = userRef.child("name").getValue().toString();
                     String userSurname = userRef.child("surname").getValue().toString();
+                    String addedToSystem, birthDate, roomString;
+                    String phoneString = userRef.child("phone").getValue().toString();
 
 
-                    passEncrypt = userPassString.hashCode();
-                    if(passFromDB.toString().equals(passEncrypt.toString())){
+                    passEncrypt = MethodHelper.sha1Hash(userPassString);
+
+                    if(passFromDB.equals(passEncrypt)){
                         Toast toast = Toast.makeText(getApplicationContext(), "Login Successful", Toast.LENGTH_SHORT);
                         toast.show();
 
                         PreferenceUtils.saveId(userIdString, context);
-                        PreferenceUtils.savePassword(passEncrypt.toString(), context);
+                        PreferenceUtils.savePassword(passEncrypt, context);
                         PreferenceUtils.saveUserType(thisUserType, context);
                         PreferenceUtils.saveUserName(userName, context);
                         PreferenceUtils.saveUserSurname(userSurname, context);
+                        PreferenceUtils.savePhoneNum(phoneString, context);
+                        if(thisUserType.equals("Patient")){
+                            addedToSystem = userRef.child("addedToSystem").getValue().toString();
+                            birthDate = userRef.child("birthDate").getValue().toString();
+                            roomString = userRef.child("room").getValue().toString();
+                            PreferenceUtils.saveBirthDate(birthDate, context);
+                            PreferenceUtils.saveAddedToSystem(addedToSystem, context);
+                            PreferenceUtils.saveRoomNum(roomString, context);
+                        }
+
                         Intent intent = userTypeMainMenu;
-//                        intent.putExtra("userId", userIdString);
                         startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
                     } else {
                         Toast toast = Toast.makeText(getApplicationContext(), "Password incorrect!", Toast.LENGTH_SHORT);

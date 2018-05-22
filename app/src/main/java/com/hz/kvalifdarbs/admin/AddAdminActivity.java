@@ -16,12 +16,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.hz.kvalifdarbs.utils.Intents;
 import com.hz.kvalifdarbs.Objects.Admin;
 import com.hz.kvalifdarbs.R;
+import com.hz.kvalifdarbs.utils.MethodHelper;
 
 public class AddAdminActivity extends AppCompatActivity {
 
     DatabaseReference rootRef, adminRef;
     EditText name, surname, id, phone, pass, passRepeat;
-    Integer passEncrypt;
+    String passEncrypt;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +53,7 @@ public class AddAdminActivity extends AppCompatActivity {
                     String idString = id.getText().toString();
                     String phoneString = phone.getText().toString();
                     Integer phoneNum = Integer.parseInt(phoneString);
-                    passEncrypt = pass.getText().toString().hashCode();
+                    passEncrypt = MethodHelper.sha1Hash(pass.getText().toString());
 
                     adminRef = rootRef.child(idString);
                     Admin newAdmin = new Admin(idString, nameString, passEncrypt, phoneNum, surnameString);

@@ -16,12 +16,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.hz.kvalifdarbs.utils.Intents;
 import com.hz.kvalifdarbs.Objects.Doctor;
 import com.hz.kvalifdarbs.R;
+import com.hz.kvalifdarbs.utils.MethodHelper;
 
 public class AddDoctorActivity extends AppCompatActivity {
 
     DatabaseReference rootRef, docRef;
     EditText name, surname, id, phone, pass, passRepeat;
-    Integer passEncrypt;
+    String passEncrypt;
     Button submitForm;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +56,7 @@ public class AddDoctorActivity extends AppCompatActivity {
                     String idString = id.getText().toString();
                     String phoneString = phone.getText().toString();
                     Integer phoneNum = Integer.parseInt(phoneString);
-                    passEncrypt = pass.getText().toString().hashCode();
+                    passEncrypt = MethodHelper.sha1Hash(pass.getText().toString());
 
                     docRef = rootRef.child(idString);
                     Doctor newDoctor = new Doctor(idString, nameString, passEncrypt, phoneNum, surnameString);

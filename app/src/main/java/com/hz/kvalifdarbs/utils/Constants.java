@@ -6,4 +6,8 @@ public class Constants {
     public static String KEY_USER_TYPE = "userType";
     public static String KEY_USER_NAME = "name";
     public static String KEY_USER_SURNAME = "surname";
+    public static String KEY_BIRTH_DATE = "birthDate";
+    public static String KEY_PHONE_NR = "phoneNumber";
+    public static String KEY_ROOM_NR = "roomNr";
+    public static String KEY_ADDED_TO_SYSTEM = "addedToSystem";
 }

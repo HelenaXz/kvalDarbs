@@ -28,8 +28,10 @@ public class DoctorMainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener
 {
     Context context;
-    String userId, userName, userSurname, fullName;
+    String userId, userName, userSurname, fullName, phoneNum;
     DatabaseReference rootRef, userRef;
+    TextView fullNameTV, userIdTV, phoneNumTV;
+    Button changePassword;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,9 +41,26 @@ public class DoctorMainActivity extends AppCompatActivity
         context = getApplicationContext();
         userId  = PreferenceUtils.getId(context);
 
+        //firebase
         rootRef = FirebaseDatabase.getInstance().getReference();
         userRef = rootRef.child("Doctors").child(userId);
 
+        //Strings
+        phoneNum = PreferenceUtils.getPhoneNum(context);
+        userName = PreferenceUtils.getUserName(context);
+        userSurname = PreferenceUtils.getUserSurname(context);
+        fullName = "Dr. " + userName + " " + userSurname;
+
+
+        //Text Views, Buttons
+        fullNameTV = findViewById(R.id.fullName);
+        userIdTV = findViewById(R.id.userId);
+        phoneNumTV = findViewById(R.id.phoneNum);
+        changePassword = findViewById(R.id.changePassword);
+
+        fullNameTV.setText(fullName);
+        userIdTV.append(userId);
+        phoneNumTV.append(phoneNum);
 
         //Drawer menu
         final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -62,17 +81,40 @@ public class DoctorMainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
-        context = getApplicationContext();
-        userName = PreferenceUtils.getUserName(context);
-        userSurname = PreferenceUtils.getUserSurname(context);
-        fullName = "Dr. " + userName + " " + userSurname;
-        rootRef = FirebaseDatabase.getInstance().getReference();
-        userRef = rootRef.child("Patients").child(userId);
-
         headUserId.setText(userId);
         headUserName.setText(fullName);
 
+        changePassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final String currDbPassString = PreferenceUtils.getPassword(context);
+                AlertDialog.Builder builder = new AlertDialog.Builder(DoctorMainActivity.this);
+                View mView = getLayoutInflater().inflate(R.layout.dialog_pass_change, null);
+                final EditText currentPass, newPass, newPassRepeat;
+                currentPass = mView.findViewById(R.id.oldPass);
+                newPass = mView.findViewById(R.id.newPass);
+                newPassRepeat = mView.findViewById(R.id.newPassRep);
 
+                Button changePass = mView.findViewById(R.id.btnChangePass);
+                Button cancel = mView.findViewById(R.id.btnCancel);
+
+                builder.setView(mView);
+                final AlertDialog changePassDialog = builder.create();
+                changePassDialog.show();
+                changePass.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        MethodHelper.changePassword(newPass, newPassRepeat, currentPass, currDbPassString, changePassDialog, context, userRef);
+                    }
+                });
+                cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        changePassDialog.dismiss();
+                    }
+                });
+            }
+        });
 
     }
 
@@ -86,32 +128,7 @@ public class DoctorMainActivity extends AppCompatActivity
             startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
 
         } else if (id == R.id.nav_profile) {
-            final String currDbPassString = PreferenceUtils.getPassword(context);
-            AlertDialog.Builder builder = new AlertDialog.Builder(DoctorMainActivity.this);
-            View mView = getLayoutInflater().inflate(R.layout.dialog_pass_change, null);
-            final EditText currentPass, newPass, newPassRepeat;
-            currentPass = mView.findViewById(R.id.oldPass);
-            newPass = mView.findViewById(R.id.newPass);
-            newPassRepeat = mView.findViewById(R.id.newPassRep);
-
-            Button changePass = mView.findViewById(R.id.btnChangePass);
-            Button cancel = mView.findViewById(R.id.btnCancel);
-
-            builder.setView(mView);
-            final AlertDialog changePassDialog = builder.create();
-            changePassDialog.show();
-            changePass.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    MethodHelper.changePassword(newPass, newPassRepeat, currentPass, currDbPassString, changePassDialog, context, userRef);
-                }
-            });
-            cancel.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    changePassDialog.dismiss();
-                }
-            });
+            startActivity(intents.doctorMainMenu.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
         } else if (id == R.id.nav_logout) {
             MethodHelper.logOut(context, intents);
         }
@@ -120,7 +137,6 @@ public class DoctorMainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
 
 }
 

@@ -23,6 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.hz.kvalifdarbs.utils.Intents;
 import com.hz.kvalifdarbs.Objects.Patient;
 import com.hz.kvalifdarbs.R;
+import com.hz.kvalifdarbs.utils.MethodHelper;
 
 import java.text.DateFormat;
 
@@ -31,10 +32,10 @@ public class AddPatientActivity extends AppCompatActivity {
 
     DatabaseReference rootRef, patientRef;
     EditText name, surname, id, phone, pass, passRepeat, roomNr;
-    String nameString, idString,surnameString, phoneString, birthDate, roomString, genderString;
+    String nameString, idString,surnameString, phoneString, birthDate, roomString, genderString, passEncrypt;
     Spinner genderSpinner;
     TextView dateOfBirth;
-    Integer passEncrypt, phoneNum;
+    Integer phoneNum;
     DatePickerDialog.OnDateSetListener mDataSetListener;
     int year, month, day;
     @Override
@@ -106,7 +107,7 @@ public class AddPatientActivity extends AppCompatActivity {
                     phoneString = phone.getText().toString();
                     birthDate= dateOfBirth.getText().toString();
                     phoneNum = Integer.parseInt(phoneString);
-                    passEncrypt = pass.getText().toString().hashCode();
+                    passEncrypt = MethodHelper.sha1Hash(pass.getText().toString());
                     roomString = roomNr.getText().toString();
                     genderString = genderSpinner.getSelectedItem().toString();
 

@@ -3,8 +3,13 @@ package com.hz.kvalifdarbs.patient;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -23,17 +28,20 @@ import com.hz.kvalifdarbs.Objects.Doctor;
 import com.hz.kvalifdarbs.utils.Intents;
 import com.hz.kvalifdarbs.Objects.Patient;
 import com.hz.kvalifdarbs.R;
+import com.hz.kvalifdarbs.utils.MethodHelper;
 import com.hz.kvalifdarbs.utils.PreferenceUtils;
 
 import java.util.ArrayList;
 
-public class PatientDoctorListActivity extends AppCompatActivity {
-    ListView patientList;
+public class PatientDoctorListActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener
+{
+    ListView doctorList;
     ArrayList<String> patientDoctors;
     PatientDoctorAdapter testAdapter;
     Context context;
     DatabaseReference rootRef, childRef;
-    String userId;
+    String userId, fullName, userName, userSurname;
     TextView emptyElement;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,19 +54,44 @@ public class PatientDoctorListActivity extends AppCompatActivity {
         context = getApplicationContext();
         rootRef = FirebaseDatabase.getInstance().getReference();
         userId  = PreferenceUtils.getId(context);
+        userName = PreferenceUtils.getUserName(context);
+        userSurname = PreferenceUtils.getUserSurname(context);
+        fullName = "Dr. " + userName + " " + userSurname;
         childRef = rootRef.child("Patients").child(userId);
         emptyElement = findViewById(R.id.emptyElement);
 
 
-        patientList = findViewById(R.id.doctorList);
+        doctorList = findViewById(R.id.doctorList);
         patientDoctors = new ArrayList<>(); //list of doctor patient id's
         testAdapter = new PatientDoctorAdapter(this);
-        patientList.setAdapter(testAdapter);
+        doctorList.setAdapter(testAdapter);
 
 
         TextView emptyText = findViewById(android.R.id.empty);
-        patientList.setEmptyView(emptyText);
+        doctorList.setEmptyView(emptyText);
 
+
+        //Drawer menu
+        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        final ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        navigationView.inflateHeaderView(R.layout.nav_header_main);
+        navigationView.inflateMenu(R.menu.doctor_drawer);
+        View headView = navigationView.getHeaderView(0);
+        TextView headUserName = headView.findViewById(R.id.headFullName);
+        TextView headUserId = headView.findViewById(R.id.headUserId);
+
+        navigationView.setNavigationItemSelectedListener(this);
+
+
+        headUserId.setText(userId);
+        headUserName.setText(fullName);
 
 
         childRef.child("Doctors").addValueEventListener(new ValueEventListener() {
@@ -74,7 +107,7 @@ public class PatientDoctorListActivity extends AppCompatActivity {
                 if(testAdapterSize==0){
                     String emptyText = "There are no doctors assigned to you.";
                     emptyElement.setText(emptyText);
-                    patientList.setEmptyView(emptyElement);
+                    doctorList.setEmptyView(emptyElement);
                 }
             }
 
@@ -115,13 +148,13 @@ public class PatientDoctorListActivity extends AppCompatActivity {
             }
         });
 
-        patientList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        doctorList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Patient clicked = ((Patient) parent.getItemAtPosition(position));
-                Intent seePatient = intents.doctorPatientView;
-                seePatient.putExtra("thisPatient", clicked);
-                startActivity(seePatient.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
+//                Patient clicked = ((Patient) parent.getItemAtPosition(position));
+//                Intent seePatient = intents.doctorPatientView;
+//                seePatient.putExtra("thisDoctor", clicked);
+//                startActivity(seePatient.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
             }
         });
 
@@ -129,12 +162,37 @@ public class PatientDoctorListActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // perform whatever you want on back arrow click
-                Intent intent = intents.doctorMainMenu;
+                Intent intent = intents.patientMainMenu;
                 startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
                 finish();
             }
         });
 
+    }
+
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+        final Intents intents = new Intents(this);
+
+        if (id == R.id.nav_my_doctors) {
+            startActivity(intents.patientDoctorListView.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
+            //TODO
+        } else if (id == R.id.nav_pat_movements) {
+            //TODO
+        } else if (id == R.id.nav_pat_exams) {
+            //TODO
+        } else if (id == R.id.nav_profile) {
+            startActivity(intents.patientMainMenu.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
+        } else if (id == R.id.nav_BT_device){
+            //TODO
+        } else if (id == R.id.nav_logout) {
+            MethodHelper.logOut(context, intents);
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 
 }

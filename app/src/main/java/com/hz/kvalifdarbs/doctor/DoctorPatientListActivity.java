@@ -3,8 +3,13 @@ package com.hz.kvalifdarbs.doctor;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -20,17 +25,20 @@ import com.hz.kvalifdarbs.ListAdaptors.DoctorPatientAdapter;
 import com.hz.kvalifdarbs.utils.Intents;
 import com.hz.kvalifdarbs.Objects.Patient;
 import com.hz.kvalifdarbs.R;
+import com.hz.kvalifdarbs.utils.MethodHelper;
 import com.hz.kvalifdarbs.utils.PreferenceUtils;
 
 import java.util.ArrayList;
 
-public class DoctorPatientListActivity extends AppCompatActivity {
+public class DoctorPatientListActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener
+{
     ListView patientList;
     ArrayList<String> doctorPatients;
     DoctorPatientAdapter testAdapter;
     Context context;
     DatabaseReference rootRef, childRef;
-    String doctorId;
+    String userId, userName, userSurname, fullName;
     TextView emptyElement;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,10 +50,16 @@ public class DoctorPatientListActivity extends AppCompatActivity {
         final Intents intents = new Intents(this);
         context = getApplicationContext();
         rootRef = FirebaseDatabase.getInstance().getReference();
-        doctorId  = PreferenceUtils.getId(context);
-        childRef = rootRef.child("Doctors").child(doctorId);
+
+        userId  = PreferenceUtils.getId(context);
+        childRef = rootRef.child("Doctors").child(userId);
         emptyElement = findViewById(R.id.emptyElement);
 
+
+        //Strings
+        userName = PreferenceUtils.getUserName(context);
+        userSurname = PreferenceUtils.getUserSurname(context);
+        fullName = "Dr. " + userName + " " + userSurname;
 
         patientList = findViewById(R.id.patientList);
         doctorPatients = new ArrayList<>(); //list of doctor patient id's
@@ -56,6 +70,26 @@ public class DoctorPatientListActivity extends AppCompatActivity {
         TextView emptyText = findViewById(android.R.id.empty);
         patientList.setEmptyView(emptyText);
 
+        //Drawer menu
+        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        final ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        navigationView.inflateHeaderView(R.layout.nav_header_main);
+        navigationView.inflateMenu(R.menu.doctor_drawer);
+        View headView = navigationView.getHeaderView(0);
+        TextView headUserName = headView.findViewById(R.id.headFullName);
+        TextView headUserId = headView.findViewById(R.id.headUserId);
+
+        navigationView.setNavigationItemSelectedListener(this);
+
+        headUserId.setText(userId);
+        headUserName.setText(fullName);
 
 
         childRef.child("Patients").addValueEventListener(new ValueEventListener() {
@@ -122,16 +156,36 @@ public class DoctorPatientListActivity extends AppCompatActivity {
             }
         });
 
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // perform whatever you want on back arrow click
-                Intent intent = intents.doctorMainMenu;
-                startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
-                finish();
-            }
-        });
+//        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                // perform whatever you want on back arrow click
+//                Intent intent = intents.doctorMainMenu;
+//                startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
+//                finish();
+//            }
+//        });
 
+    }
+
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+        final Intents intents = new Intents(this);
+
+        if (id == R.id.nav_my_patients) {
+            Intent intent = intents.doctorPatientList;
+            startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
+
+        } else if (id == R.id.nav_profile) {
+            startActivity(intents.doctorMainMenu.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
+        } else if (id == R.id.nav_logout) {
+            MethodHelper.logOut(context, intents);
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 
 }

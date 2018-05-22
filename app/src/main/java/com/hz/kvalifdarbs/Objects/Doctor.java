@@ -6,7 +6,7 @@ public class Doctor implements Serializable {
 
     private String Id;
     private String name;
-    private Integer password;
+    private String password;
     private Integer phone;
     private String surname;
     private String gender;
@@ -15,7 +15,7 @@ public class Doctor implements Serializable {
     public Doctor(){
     }
 
-    public Doctor(String Id, String name, Integer password,  Integer phone, String surname ){
+    public Doctor(String Id, String name, String password,  Integer phone, String surname ){
         setId(Id);
         setName(name);
         setPassword(password);
@@ -34,7 +34,7 @@ public class Doctor implements Serializable {
     public Integer getPhone() {
         return phone;
     }
-    public Integer getPassword() {
+    public String getPassword() {
         return password;
     }
     public void setName(String name) {
@@ -49,7 +49,7 @@ public class Doctor implements Serializable {
     public void setPhone(Integer phone) {
         this.phone = phone;
     }
-    public void setPassword(Integer password) {
+    public void setPassword(String password) {
         this.password = password;
     }
     public String getFullName(){
