@@ -32,7 +32,7 @@ public class AdminViewPatientActivity extends AppCompatActivity {
     ListView patientExams, patientDoctors;
     Button addDoctorTo, deleteUser;
     String patientIdString;
-    DatabaseReference rootRef, patientRef, doctorRef;
+    DatabaseReference rootRef, allDocRef, patientRef, doctorRef;
     PatientDoctorSmallAdapter testAdapter;
     Context context;
     ArrayList<String> patientDocList;
@@ -48,8 +48,10 @@ public class AdminViewPatientActivity extends AppCompatActivity {
         final Intents intents = new Intents(this);
         context = getApplicationContext();
         rootRef = FirebaseDatabase.getInstance().getReference();
+        allDocRef = rootRef.child("Doctors");
         Intent i = getIntent();
         final Patient thisPatient = (Patient)i.getSerializableExtra("thisPatient");
+        patientDocList = new ArrayList<>();
 
         name_surname = findViewById(R.id.name_surname);
         room = findViewById(R.id.room);
@@ -73,7 +75,6 @@ public class AdminViewPatientActivity extends AppCompatActivity {
 
         patientRef = rootRef.child("Patients").child(thisPatient.getId());
 
-        patientDocList = new ArrayList<>();
 
         addDoctorTo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,7 +121,7 @@ public class AdminViewPatientActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         for(String docId : patientDocList){
-                            doctorRef = rootRef.child("Doctors").child(docId);
+                            doctorRef = allDocRef.child(docId);
                             doctorRef.child("Patients").child(thisPatient.getId()).removeValue();
                         }
                         patientRef.removeValue();
@@ -137,7 +138,9 @@ public class AdminViewPatientActivity extends AppCompatActivity {
         patientRef.child("Doctors").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                String doctorId = dataSnapshot.getValue().toString();
+                String doctorId = dataSnapshot.getKey();
+                String doctorName = dataSnapshot.getValue().toString();
+
 //                Doctor doctorObj = dataSnapshot.getValue(Doctor.class);
 //                doctorIds.add(doctor);
                 testAdapter.add(doctorId);

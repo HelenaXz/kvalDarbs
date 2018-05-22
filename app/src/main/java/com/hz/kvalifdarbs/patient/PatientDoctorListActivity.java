@@ -82,13 +82,12 @@ public class PatientDoctorListActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         navigationView.inflateHeaderView(R.layout.nav_header_main);
-        navigationView.inflateMenu(R.menu.doctor_drawer);
+        navigationView.inflateMenu(R.menu.patient_drawer);
         View headView = navigationView.getHeaderView(0);
         TextView headUserName = headView.findViewById(R.id.headFullName);
         TextView headUserId = headView.findViewById(R.id.headUserId);
 
         navigationView.setNavigationItemSelectedListener(this);
-
 
         headUserId.setText(userId);
         headUserName.setText(fullName);
@@ -158,15 +157,6 @@ public class PatientDoctorListActivity extends AppCompatActivity
             }
         });
 
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // perform whatever you want on back arrow click
-                Intent intent = intents.patientMainMenu;
-                startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
-                finish();
-            }
-        });
 
     }
 
