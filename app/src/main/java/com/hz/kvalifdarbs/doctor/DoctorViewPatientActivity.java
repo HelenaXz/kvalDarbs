@@ -41,11 +41,12 @@ public class DoctorViewPatientActivity extends AppCompatActivity {
     String userId;
     Patient thisPatient;
     Context context;
-    Button addExam;
+    Button addExam, examinationsBtn, movementsBtn;
     PatientExamAdapter testAdapter;
     DatabaseReference rootRef, childRef;
     ListView patientExamList;
     TextView emptyElement;
+    String valueType;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -56,7 +57,7 @@ public class DoctorViewPatientActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         context = getApplicationContext();
         final Intents intents = new Intents(this);
-
+        valueType = "Examinations";
 
 
         Intent i = getIntent();
@@ -75,6 +76,29 @@ public class DoctorViewPatientActivity extends AppCompatActivity {
         brought_in = findViewById(R.id.brought_in);
 
         addExam = findViewById(R.id.addExamBtn);
+        examinationsBtn = findViewById(R.id.btnExamination);
+        movementsBtn = findViewById(R.id.btnMovements);
+
+        examinationsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                movementsBtn.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+                movementsBtn.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+                valueType = "Examinations";
+                testAdapter.clear();
+                getChildren(valueType);
+            }
+        });
+        movementsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                examinationsBtn.setBackgroundColor(getResources().getColor(R.color.colorPrimaryLight));
+                movementsBtn.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+                valueType = "Movements";
+                testAdapter.clear();
+                getChildren(valueType);
+            }
+        });
 
         //Set TextViews
         name_surname.setText(thisPatient.getFullName());
@@ -84,41 +108,40 @@ public class DoctorViewPatientActivity extends AppCompatActivity {
         birthDate.append(thisPatient.getBirthDate());
         brought_in.append(thisPatient.getAddedToSystem());
 
-        //TODO set up exam list
-        //Set up ListView
+        //ListView set up
         patientExamList = findViewById(R.id.patientExamList);
 
         testAdapter = new PatientExamAdapter(this);
         patientExamList.setAdapter(testAdapter);
 
-        childRef.child("Examinations").addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Examination exam = dataSnapshot.getValue(Examination.class);
-                testAdapter.insert(exam, 0);
-                testAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+//        childRef.child(valueType).addChildEventListener(new ChildEventListener() {
+//            @Override
+//            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+//                Examination exam = dataSnapshot.getValue(Examination.class);
+//                testAdapter.insert(exam, 0);
+//                testAdapter.notifyDataSetChanged();
+//            }
+//
+//            @Override
+//            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+//
+//            }
+//
+//            @Override
+//            public void onChildRemoved(DataSnapshot dataSnapshot) {
+//
+//            }
+//
+//            @Override
+//            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
 
 
         emptyElement = findViewById(R.id.emptyElement);
@@ -186,5 +209,36 @@ public class DoctorViewPatientActivity extends AppCompatActivity {
 
 
 
+    }
+
+    public void getChildren(String valueType){
+        childRef.child(valueType).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Examination exam = dataSnapshot.getValue(Examination.class);
+                testAdapter.insert(exam, 0);
+                testAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 }

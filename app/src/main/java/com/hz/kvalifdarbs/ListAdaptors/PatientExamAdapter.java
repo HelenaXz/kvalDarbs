@@ -40,9 +40,6 @@ public class PatientExamAdapter extends ArrayAdapter<Examination> {
         doctorName.setText(s);
         s = "Comment: " + thisExam.getComment();
         examComment.setText(s);
-//        examTime.append(thisExam.getAddDateTime());
-//        doctorName.append(thisExam.getDoctorName());
-//        examComment.append(thisExam.getComment());
 
         return convertView;
 
