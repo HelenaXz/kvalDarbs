@@ -27,6 +27,7 @@ import com.hz.kvalifdarbs.R;
 import com.hz.kvalifdarbs.utils.MethodHelper;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 
 
 public class AddPatientActivity extends AppCompatActivity {
@@ -75,6 +76,7 @@ public class AddPatientActivity extends AppCompatActivity {
         dateOfBirth = findViewById(R.id.birthYear);
         roomNr = findViewById(R.id.roomNr);
         Button submitForm = findViewById(R.id.submitBtn);
+        final ArrayList<String> existingUsers = MethodHelper.userExisting("Patients");
 
         dateOfBirth.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -106,38 +108,29 @@ public class AddPatientActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(validate()){
-                    nameString = name.getText().toString();
-                    surnameString = surname.getText().toString();
                     idString = id.getText().toString();
-                    phoneString = phone.getText().toString();
-                    birthDate= dateOfBirth.getText().toString();
-                    phoneNum = Integer.parseInt(phoneString);
-                    passEncrypt = MethodHelper.sha1Hash(pass.getText().toString());
-                    roomString = roomNr.getText().toString();
-                    genderString = genderSpinner.getSelectedItem().toString();
+                    if(!existingUsers.contains(idString)) {
+                        nameString = name.getText().toString();
+                        surnameString = surname.getText().toString();
 
-                    userRef = rootRef.child(idString);
-                    Patient newPatient = new Patient(nameString, surnameString, idString, genderString, passEncrypt, phoneNum, birthDate, roomString);
-                    userRef.setValue(newPatient);
+                        phoneString = phone.getText().toString();
+                        birthDate= dateOfBirth.getText().toString();
+                        phoneNum = Integer.parseInt(phoneString);
+                        passEncrypt = MethodHelper.sha1Hash(pass.getText().toString());
+                        roomString = roomNr.getText().toString();
+                        genderString = genderSpinner.getSelectedItem().toString();
 
+                        userRef = rootRef.child(idString);
+                        Patient newPatient = new Patient(nameString, surnameString, idString, genderString, passEncrypt, phoneNum, birthDate, roomString);
+                        userRef.setValue(newPatient);
 
-                    Toast toast = Toast.makeText(context, "Patient added to DB", Toast.LENGTH_SHORT);
-                    toast.show();
-                    //Clear Form
-                    name.setText(null);
-                    surname.setText(null);
-                    id.setText(null);
-                    phone.setText(null);
-                    pass.setText(null);
-                    passRepeat.setText(null);
-                    dateOfBirth.setText(null);
-                    roomNr.setText(null);
-                    year = 1990;
-                    month = 0;
-                    day = 1;
-                    //Close keyboard
-                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                        Toast toast = Toast.makeText(context, "Patient added to DB", Toast.LENGTH_SHORT);
+                        toast.show();
+                        clearForm(v);
+                    } else {
+                        Toast toast = Toast.makeText(context, "Patient with id exists", Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
                 }
             }
         });
@@ -183,6 +176,23 @@ public class AddPatientActivity extends AppCompatActivity {
             toast.show();
         }
         if(valid < 8){ return false; } else { return true; }
+    }
+    public void clearForm(View v){
+        //Clear Form
+        name.setText(null);
+        surname.setText(null);
+        id.setText(null);
+        phone.setText(null);
+        pass.setText(null);
+        passRepeat.setText(null);
+        dateOfBirth.setText(null);
+        roomNr.setText(null);
+        year = 1990;
+        month = 0;
+        day = 1;
+        //Close keyboard
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
     }
 
 }

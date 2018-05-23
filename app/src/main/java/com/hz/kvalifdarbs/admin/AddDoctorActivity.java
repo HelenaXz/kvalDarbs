@@ -19,6 +19,8 @@ import com.hz.kvalifdarbs.Objects.Doctor;
 import com.hz.kvalifdarbs.R;
 import com.hz.kvalifdarbs.utils.MethodHelper;
 
+import java.util.ArrayList;
+
 public class AddDoctorActivity extends AppCompatActivity {
 
     DatabaseReference rootRef, userRef;
@@ -48,27 +50,32 @@ public class AddDoctorActivity extends AppCompatActivity {
         pass = findViewById(R.id.password);
         passRepeat = findViewById(R.id.passwordRepeat);
         submitForm = findViewById(R.id.submitBtn);
+        final ArrayList<String> existingUsers = MethodHelper.userExisting("Doctors");
 
         submitForm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(validate()){
                     //get text from fields
-                    String nameString = name.getText().toString();
-                    String surnameString = surname.getText().toString();
                     String idString = id.getText().toString();
-                    String phoneString = phone.getText().toString();
-                    Integer phoneNum = Integer.parseInt(phoneString);
-                    passEncrypt = MethodHelper.sha1Hash(pass.getText().toString());
+                    if(!existingUsers.contains(idString)) {
+                        String nameString = name.getText().toString();
+                        String surnameString = surname.getText().toString();
 
-                    userRef = rootRef.child(idString);
-                    Doctor newDoctor = new Doctor(idString, nameString, passEncrypt, phoneNum, surnameString);
-                    userRef.setValue(newDoctor);
+                        String phoneString = phone.getText().toString();
+                        Integer phoneNum = Integer.parseInt(phoneString);
+                        passEncrypt = MethodHelper.sha1Hash(pass.getText().toString());
 
-//                    Toast toast =
-                            Toast.makeText(context, "Doctor added to DB", Toast.LENGTH_SHORT).show();
-//                    toast.show();
-                    clearForm(v);
+                        userRef = rootRef.child(idString);
+                        Doctor newDoctor = new Doctor(idString, nameString, passEncrypt, phoneNum, surnameString);
+                        userRef.setValue(newDoctor);
+                        
+                        Toast.makeText(context, "Doctor added to DB", Toast.LENGTH_SHORT).show();
+                        clearForm(v);
+                    } else {
+                        Toast toast = Toast.makeText(context, "Doctor with id exists", Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
                 }
             }
         });

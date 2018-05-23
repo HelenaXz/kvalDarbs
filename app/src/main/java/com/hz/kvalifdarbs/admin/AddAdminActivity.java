@@ -12,12 +12,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.hz.kvalifdarbs.utils.Intents;
 import com.hz.kvalifdarbs.Objects.Admin;
 import com.hz.kvalifdarbs.R;
 import com.hz.kvalifdarbs.utils.MethodHelper;
+import com.hz.kvalifdarbs.utils.PreferenceUtils;
+
+import java.lang.reflect.Method;
+import java.util.ArrayList;
 
 public class AddAdminActivity extends AppCompatActivity {
     DatabaseReference rootRef, userRef;
@@ -47,26 +54,37 @@ public class AddAdminActivity extends AppCompatActivity {
         pass = findViewById(R.id.password);
         passRepeat = findViewById(R.id.passwordRepeat);
         Button submitForm = findViewById(R.id.submitBtn);
+        final ArrayList<String> existingUsers = MethodHelper.userExisting("Admins");
+
 
         submitForm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(validate()){
-                    //get text from fields
-                    String nameString = name.getText().toString();
-                    String surnameString = surname.getText().toString();
+
                     String idString = id.getText().toString();
-                    String phoneString = phone.getText().toString();
-                    passEncrypt = MethodHelper.sha1Hash(pass.getText().toString());
+                    if(!existingUsers.contains(idString)){
+                        //If user doesn't exist
+                        String nameString = name.getText().toString();
+                        String surnameString = surname.getText().toString();
+                        String phoneString = phone.getText().toString();
+                        passEncrypt = MethodHelper.sha1Hash(pass.getText().toString());
 
-                    userRef = rootRef.child(idString);
-                    Admin newAdmin = new Admin(idString, nameString, passEncrypt, phoneString, surnameString);
-                    userRef.setValue(newAdmin);
+                        userRef = rootRef.child(idString);
 
-                    Toast toast = Toast.makeText(context, "Administrator added to DB", Toast.LENGTH_SHORT);
-                    toast.show();
-                    //Clear Form
-                    clearForm(v);
+                        Admin newAdmin = new Admin(idString, nameString, passEncrypt, phoneString, surnameString);
+                        userRef.setValue(newAdmin);
+
+                        Toast toast = Toast.makeText(context, "Administrator added to DB", Toast.LENGTH_SHORT);
+                        toast.show();
+                        //Clear Form
+                        clearForm(v);
+                    } else {
+                        Toast toast = Toast.makeText(context, "Administrator with id exists", Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+
+
                 }
             }
         });
