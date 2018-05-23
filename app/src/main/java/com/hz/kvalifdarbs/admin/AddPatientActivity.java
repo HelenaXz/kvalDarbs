@@ -74,7 +74,7 @@ public class AddPatientActivity extends AppCompatActivity {
         passRepeat = findViewById(R.id.passwordRepeat);
         dateOfBirth = findViewById(R.id.birthYear);
         roomNr = findViewById(R.id.roomNr);
-        Button submitForm = findViewById(R.id.submit);
+        Button submitForm = findViewById(R.id.submitBtn);
 
         dateOfBirth.setOnClickListener(new View.OnClickListener(){
             @Override

@@ -24,7 +24,6 @@ public class AddAdminActivity extends AppCompatActivity {
     EditText name, surname, id, phone, pass, passRepeat;
     String passEncrypt;
     Context context;
-    Button submitForm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +46,7 @@ public class AddAdminActivity extends AppCompatActivity {
         phone = findViewById(R.id.phone);
         pass = findViewById(R.id.password);
         passRepeat = findViewById(R.id.passwordRepeat);
-        submitForm = findViewById(R.id.submitBtn);
+        Button submitForm = findViewById(R.id.submitBtn);
 
         submitForm.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,25 +57,16 @@ public class AddAdminActivity extends AppCompatActivity {
                     String surnameString = surname.getText().toString();
                     String idString = id.getText().toString();
                     String phoneString = phone.getText().toString();
-                    Integer phoneNum = Integer.parseInt(phoneString);
                     passEncrypt = MethodHelper.sha1Hash(pass.getText().toString());
 
                     userRef = rootRef.child(idString);
-                    Admin newAdmin = new Admin(idString, nameString, passEncrypt, phoneNum, surnameString);
+                    Admin newAdmin = new Admin(idString, nameString, passEncrypt, phoneString, surnameString);
                     userRef.setValue(newAdmin);
 
                     Toast toast = Toast.makeText(context, "Administrator added to DB", Toast.LENGTH_SHORT);
                     toast.show();
                     //Clear Form
-                    name.setText(null);
-                    surname.setText(null);
-                    id.setText(null);
-                    phone.setText(null);
-                    pass.setText(null);
-                    passRepeat.setText(null);
-                    //Close keyboard
-                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                    clearForm(v);
                 }
             }
         });
@@ -119,8 +109,20 @@ public class AddAdminActivity extends AppCompatActivity {
             Toast toast = Toast.makeText(context, text, duration);
             toast.show();
         }
-        if (valid < 7) return true;
-        else return false;
+        if (valid < 7) return false;
+        else return true;
+    }
+
+    public void clearForm(View v){
+        name.setText(null);
+        surname.setText(null);
+        id.setText(null);
+        phone.setText(null);
+        pass.setText(null);
+        passRepeat.setText(null);
+        //Close keyboard
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
     }
 
 

@@ -52,6 +52,10 @@ public class PreferenceUtils {
         prefsEditor.apply();
         return true;
     }
+    public static String getUserName(Context context){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.getString(Constants.KEY_USER_NAME, "");
+    }
     public static boolean saveUserSurname(String userSurname, Context context){
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor prefsEditor = prefs.edit();
@@ -59,10 +63,7 @@ public class PreferenceUtils {
         prefsEditor.apply();
         return true;
     }
-    public static String getUserName(Context context){
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        return prefs.getString(Constants.KEY_USER_NAME, "");
-    }
+
     public static String getUserSurname(Context context){
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         return prefs.getString(Constants.KEY_USER_SURNAME, "");
@@ -74,12 +75,20 @@ public class PreferenceUtils {
         prefsEditor.apply();
         return true;
     }
+    public static String getBirthDate(Context context){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.getString(Constants.KEY_BIRTH_DATE, "");
+    }
     public static boolean savePhoneNum(String phoneString, Context context){
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor prefsEditor = prefs.edit();
         prefsEditor.putString(Constants.KEY_PHONE_NR, phoneString);
         prefsEditor.apply();
         return true;
+    }
+    public static String getPhoneNum(Context context){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.getString(Constants.KEY_PHONE_NR, "");
     }
     public static boolean saveRoomNum(String roomNumString, Context context){
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -88,6 +97,10 @@ public class PreferenceUtils {
         prefsEditor.apply();
         return true;
     }
+    public static String getRoomNum(Context context){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.getString(Constants.KEY_ROOM_NR, "");
+    }
     public static boolean saveAddedToSystem(String addedToSystem, Context context){
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor prefsEditor = prefs.edit();
@@ -95,25 +108,9 @@ public class PreferenceUtils {
         prefsEditor.apply();
         return true;
     }
-
-    public static String getBirthDate(Context context){
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        return prefs.getString(Constants.KEY_BIRTH_DATE, "");
-    }
-    public static String getPhoneNum(Context context){
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        return prefs.getString(Constants.KEY_PHONE_NR, "");
-    }
-    public static String getRoomNum(Context context){
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        return prefs.getString(Constants.KEY_ROOM_NR, "");
-    }
     public static String getAddedToSystem(Context context){
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         return prefs.getString(Constants.KEY_ADDED_TO_SYSTEM, "");
     }
 
-    public static boolean saveDoctorInfo(){
-        return true;
-    }
 }

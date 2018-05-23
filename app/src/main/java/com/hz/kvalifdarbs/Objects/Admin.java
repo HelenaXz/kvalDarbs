@@ -5,14 +5,14 @@ public class Admin {
     private String Id;
     private String name;
     private String password;
-    private Integer phone;
+    private String phone;
     private String surname;
 
 
     public Admin(){
     }
 
-    public Admin(String Id, String name, String password,  Integer phone, String surname ){
+    public Admin(String Id, String name, String password,  String phone, String surname ){
         setId(Id);
         setName(name);
         setPassword(password);
@@ -29,7 +29,7 @@ public class Admin {
     public String getId() {
         return Id;
     }
-    public Integer getPhone() {
+    public String getPhone() {
         return phone;
     }
     public String getPassword() {
@@ -44,7 +44,7 @@ public class Admin {
     public void setId(String id) {
         Id = id;
     }
-    public void setPhone(Integer phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
     public void setPassword(String password) {

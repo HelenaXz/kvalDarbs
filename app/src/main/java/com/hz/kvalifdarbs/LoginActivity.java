@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,6 +31,7 @@ public class LoginActivity extends AppCompatActivity {
     String passEncrypt, passFromDB;
     Context context;
     Intents intents;
+    CheckBox checkBox;
 
 
     @Override
@@ -40,6 +42,9 @@ public class LoginActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         intents = new Intents(this);
         context = getApplicationContext();
+
+        checkBox = (CheckBox) findViewById(R.id.checkRemeber);
+
 
         userIdView = findViewById(R.id.userId);
         userPassView = findViewById(R.id.userPass);
@@ -92,23 +97,24 @@ public class LoginActivity extends AppCompatActivity {
                     passEncrypt = MethodHelper.sha1Hash(userPassString);
 
                     if(passFromDB.equals(passEncrypt)){
+                        if(checkBox.isChecked()){
+                            PreferenceUtils.saveId(userIdString, context);
+                            PreferenceUtils.savePassword(passEncrypt, context);
+                            PreferenceUtils.saveUserType(thisUserType, context);
+                            PreferenceUtils.saveUserName(userName, context);
+                            PreferenceUtils.saveUserSurname(userSurname, context);
+                            PreferenceUtils.savePhoneNum(phoneString, context);
+                            if(thisUserType.equals("Patient")){
+                                addedToSystem = userRef.child("addedToSystem").getValue().toString();
+                                birthDate = userRef.child("birthDate").getValue().toString();
+                                roomString = userRef.child("room").getValue().toString();
+                                PreferenceUtils.saveBirthDate(birthDate, context);
+                                PreferenceUtils.saveAddedToSystem(addedToSystem, context);
+                                PreferenceUtils.saveRoomNum(roomString, context);
+                            }
+                        }
                         Toast toast = Toast.makeText(getApplicationContext(), "Login Successful", Toast.LENGTH_SHORT);
                         toast.show();
-
-                        PreferenceUtils.saveId(userIdString, context);
-                        PreferenceUtils.savePassword(passEncrypt, context);
-                        PreferenceUtils.saveUserType(thisUserType, context);
-                        PreferenceUtils.saveUserName(userName, context);
-                        PreferenceUtils.saveUserSurname(userSurname, context);
-                        PreferenceUtils.savePhoneNum(phoneString, context);
-                        if(thisUserType.equals("Patient")){
-                            addedToSystem = userRef.child("addedToSystem").getValue().toString();
-                            birthDate = userRef.child("birthDate").getValue().toString();
-                            roomString = userRef.child("room").getValue().toString();
-                            PreferenceUtils.saveBirthDate(birthDate, context);
-                            PreferenceUtils.saveAddedToSystem(addedToSystem, context);
-                            PreferenceUtils.saveRoomNum(roomString, context);
-                        }
 
                         Intent intent = userTypeMainMenu;
                         startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
