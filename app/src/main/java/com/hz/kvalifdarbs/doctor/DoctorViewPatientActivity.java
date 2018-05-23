@@ -82,8 +82,8 @@ public class DoctorViewPatientActivity extends AppCompatActivity {
         examinationsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                movementsBtn.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-                movementsBtn.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+                examinationsBtn.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+                movementsBtn.setBackgroundColor(getResources().getColor(R.color.colorPrimaryMediumLight));
                 valueType = "Examinations";
                 testAdapter.clear();
                 getChildren(valueType);
@@ -92,7 +92,7 @@ public class DoctorViewPatientActivity extends AppCompatActivity {
         movementsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                examinationsBtn.setBackgroundColor(getResources().getColor(R.color.colorPrimaryLight));
+                examinationsBtn.setBackgroundColor(getResources().getColor(R.color.colorPrimaryMediumLight));
                 movementsBtn.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
                 valueType = "Movements";
                 testAdapter.clear();

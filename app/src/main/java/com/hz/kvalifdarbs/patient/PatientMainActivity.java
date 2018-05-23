@@ -154,6 +154,7 @@ public class PatientMainActivity extends AppCompatActivity
             startActivity(intents.patientMainMenu.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
         } else if (id == R.id.nav_BT_device){
             //TODO
+            startActivity(intents.patientDeviceManage.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
         } else if (id == R.id.nav_logout) {
             MethodHelper.logOut(context, intents);
         }
