@@ -49,10 +49,7 @@ public class AllDoctorListActivity extends AppCompatActivity
 
         //Toolbar setup
         Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.inflateMenu(R.menu.menu_main);
-        toolbar.setNavigationIcon(R.drawable.ic_menu_white);
         toolbar.setTitle("All Doctors");
-
         //Strings
         userId  = PreferenceUtils.getId(context);
         userName = PreferenceUtils.getUserName(context);

@@ -82,8 +82,10 @@ public class ConnectDeviceActivity extends AppCompatActivity
             startActivity(intents.patientDoctorListView.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
         } else if (id == R.id.nav_pat_movements) {
             //TODO
+
         } else if (id == R.id.nav_pat_exams) {
             //TODO
+            startActivity(intents.patientExamListView.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
         } else if (id == R.id.nav_profile) {
             startActivity(intents.patientMainMenu.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
         } else if (id == R.id.nav_BT_device){

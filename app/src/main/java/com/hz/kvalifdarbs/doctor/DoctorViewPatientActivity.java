@@ -60,6 +60,7 @@ public class DoctorViewPatientActivity extends AppCompatActivity {
         valueType = "Examinations";
 
 
+
         Intent i = getIntent();
         thisPatient = (Patient)i.getSerializableExtra("thisPatient");
 
@@ -114,39 +115,11 @@ public class DoctorViewPatientActivity extends AppCompatActivity {
         testAdapter = new PatientExamAdapter(this);
         patientExamList.setAdapter(testAdapter);
 
-//        childRef.child(valueType).addChildEventListener(new ChildEventListener() {
-//            @Override
-//            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-//                Examination exam = dataSnapshot.getValue(Examination.class);
-//                testAdapter.insert(exam, 0);
-//                testAdapter.notifyDataSetChanged();
-//            }
-//
-//            @Override
-//            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-//
-//            }
-//
-//            @Override
-//            public void onChildRemoved(DataSnapshot dataSnapshot) {
-//
-//            }
-//
-//            @Override
-//            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
-
 
         emptyElement = findViewById(R.id.emptyElement);
         TextView emptyText = findViewById(android.R.id.empty);
         patientExamList.setEmptyView(emptyText);
+        getChildren(valueType);
 
         addExam.setOnClickListener(new View.OnClickListener() {
             @Override

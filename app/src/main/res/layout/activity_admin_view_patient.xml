@@ -21,7 +21,7 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <ScrollView
+    <LinearLayout
         android:id="@+id/scrollView2"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -31,7 +31,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:background="@color/colorAccentLight"
             android:orientation="vertical">
 
@@ -199,13 +199,22 @@
                 <Button
                     android:id="@+id/btnAddDoc"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
+                    android:layout_height="36dp"
                     android:layout_marginEnd="20dp"
                     android:layout_marginStart="20dp"
                     android:backgroundTint="@color/colorPrimaryMedium"
                     android:text="@string/addDoctor"
                     android:textColor="@color/white" />
+
+                <Button
+                    android:id="@+id/btnDeleteUser"
+                    android:layout_width="match_parent"
+                    android:layout_height="36dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginStart="20dp"
+                    android:backgroundTint="@color/urgent"
+                    android:text="@string/deleteUser"
+                    android:textSize="12sp" />
 
 
             </LinearLayout>
@@ -213,42 +222,53 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/colorAccentLight"
+                android:background="@color/colorPrimaryLight"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/textView5"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="3dp"
-                    android:layout_marginTop="3dp"
-                    android:gravity="center_horizontal"
-                    android:text="@string/exams" />
+                    android:layout_gravity="center_vertical|center_horizontal"
+                    android:background="@color/colorPrimaryDark"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:orientation="horizontal"
+                    android:paddingBottom="3dp">
 
-
-                <ScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <ListView
-                        android:id="@+id/patientExamList"
+                    <Button
+                        android:id="@+id/btnExamination"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-                </ScrollView>
+                        android:layout_height="32dp"
+                        android:layout_weight="1"
+                        android:background="@color/colorPrimaryDark"
+                        android:gravity="center_horizontal"
+                        android:paddingTop="6dp"
+                        android:text="@string/exams"
+                        android:textColor="@color/white" />
+
+                    <Button
+                        android:id="@+id/btnMovements"
+                        android:layout_width="match_parent"
+                        android:layout_height="32dp"
+                        android:layout_weight="1"
+                        android:background="@color/colorPrimaryMediumLight"
+                        android:gravity="center_horizontal"
+                        android:paddingTop="6dp"
+                        android:text="Movements"
+                        android:textColor="@color/white" />
+                </LinearLayout>
+
+
+                <ListView
+                    android:id="@+id/patientExamList"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:background="@color/white"
+                    android:elevation="5dp" />
 
             </LinearLayout>
-
-            <Button
-                android:id="@+id/btnDeleteUser"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="20dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="10dp"
-                android:backgroundTint="@color/urgent"
-                android:text="@string/deleteUser"
-                android:textSize="12sp" />
         </LinearLayout>
-    </ScrollView>
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

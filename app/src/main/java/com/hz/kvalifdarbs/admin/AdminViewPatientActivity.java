@@ -19,6 +19,8 @@ package com.hz.kvalifdarbs.admin;
         import com.google.firebase.database.DatabaseError;
         import com.google.firebase.database.DatabaseReference;
         import com.google.firebase.database.FirebaseDatabase;
+        import com.hz.kvalifdarbs.ListAdaptors.PatientExamAdapter;
+        import com.hz.kvalifdarbs.Objects.Examination;
         import com.hz.kvalifdarbs.Objects.smallDoctor;
         import com.hz.kvalifdarbs.utils.Intents;
         import com.hz.kvalifdarbs.Objects.Patient;
@@ -30,12 +32,16 @@ package com.hz.kvalifdarbs.admin;
 
 public class AdminViewPatientActivity extends AppCompatActivity {
     TextView name_surname, room, brought_in, birthDate, patientId;
-    ListView patientExams, patientDoctors;
-    Button addDoctorTo, deleteUser;
+    ListView patientDoctors;
+    Button addDoctorTo, deleteUser, examinationsBtn, movementsBtn;
     DatabaseReference rootRef, allDocRef, patientRef, doctorRef;
     PatientDoctorSmallAdapter testAdapter;
+    PatientExamAdapter testAdapter2;
     Context context;
     ArrayList<String> patientDocList;
+    ListView patientExamList;
+    TextView emptyElement;
+    String valueType;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,11 +56,12 @@ public class AdminViewPatientActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        valueType = "Examinations";
+
         //Firebase References
         rootRef = FirebaseDatabase.getInstance().getReference();
         allDocRef = rootRef.child("Doctors");
         patientRef = rootRef.child("Patients").child(thisPatient.getId());
-
 
         patientDocList = new ArrayList<>();
         //TextViews, ListViews, Buttons
@@ -65,7 +72,8 @@ public class AdminViewPatientActivity extends AppCompatActivity {
         patientId = findViewById(R.id.patientId_field);
         addDoctorTo = findViewById(R.id.btnAddDoc);
         deleteUser = findViewById(R.id.btnDeleteUser);
-        patientExams = findViewById(R.id.patientExamList);
+        examinationsBtn = findViewById(R.id.btnExamination);
+        movementsBtn = findViewById(R.id.btnMovements);
         patientDoctors = findViewById(R.id.patientDoctorList);
 
         //Fill TextViews
@@ -79,6 +87,38 @@ public class AdminViewPatientActivity extends AppCompatActivity {
         testAdapter = new PatientDoctorSmallAdapter(this);
         patientDoctors.setAdapter(testAdapter);
 
+        //Patient Examination list view setup
+        patientExamList = findViewById(R.id.patientExamList);
+
+        testAdapter2 = new PatientExamAdapter(this);
+        patientExamList.setAdapter(testAdapter2);
+
+
+        emptyElement = findViewById(R.id.emptyElement);
+        TextView emptyText = findViewById(android.R.id.empty);
+        patientExamList.setEmptyView(emptyText);
+        getChildren(valueType);
+
+        examinationsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                examinationsBtn.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+                movementsBtn.setBackgroundColor(getResources().getColor(R.color.colorPrimaryMediumLight));
+                valueType = "Examinations";
+                testAdapter2.clear();
+                getChildren(valueType);
+            }
+        });
+        movementsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                examinationsBtn.setBackgroundColor(getResources().getColor(R.color.colorPrimaryMediumLight));
+                movementsBtn.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+                valueType = "Movements";
+                testAdapter2.clear();
+                getChildren(valueType);
+            }
+        });
 
         addDoctorTo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -173,6 +213,36 @@ public class AdminViewPatientActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // perform whatever you want on back arrow click
                 startActivity(intents.allPatientList.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
+            }
+        });
+    }
+    public void getChildren(String valueType){
+        patientRef.child(valueType).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Examination exam = dataSnapshot.getValue(Examination.class);
+                testAdapter2.insert(exam, 0);
+                testAdapter2.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
             }
         });
     }

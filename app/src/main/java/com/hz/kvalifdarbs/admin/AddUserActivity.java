@@ -35,8 +35,6 @@ public class AddUserActivity extends AppCompatActivity
         //Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("Select User to Add");
-        toolbar.inflateMenu(R.menu.menu_main);
-        toolbar.setNavigationIcon(R.drawable.ic_menu_white);
 
 
         //Strings

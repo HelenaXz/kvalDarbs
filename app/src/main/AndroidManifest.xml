@@ -68,6 +68,7 @@
             android:label="Select User to add"/>
         <activity android:name=".patient.ConnectDeviceActivity" />
         <activity android:name=".patient.PatientDoctorListActivity" />
+        <activity android:name=".patient.PatientExamListActivity" />
     </application>
 
 </manifest>

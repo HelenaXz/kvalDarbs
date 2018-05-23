@@ -12,7 +12,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -22,11 +21,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.hz.kvalifdarbs.ListAdaptors.DoctorPatientAdapter;
 import com.hz.kvalifdarbs.ListAdaptors.PatientDoctorAdapter;
 import com.hz.kvalifdarbs.Objects.Doctor;
 import com.hz.kvalifdarbs.utils.Intents;
-import com.hz.kvalifdarbs.Objects.Patient;
 import com.hz.kvalifdarbs.R;
 import com.hz.kvalifdarbs.utils.MethodHelper;
 import com.hz.kvalifdarbs.utils.PreferenceUtils;
@@ -46,7 +43,7 @@ public class PatientDoctorListActivity extends AppCompatActivity
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_patient_doctor_list);
+        setContentView(R.layout.activity_patient_thing_list);
         context = getApplicationContext();
         final Intents intents = new Intents(this);
         //Toolbar
@@ -58,7 +55,7 @@ public class PatientDoctorListActivity extends AppCompatActivity
         userId  = PreferenceUtils.getId(context);
         userName = PreferenceUtils.getUserName(context);
         userSurname = PreferenceUtils.getUserSurname(context);
-        fullName = "Dr. " + userName + " " + userSurname;
+        fullName = userName + " " + userSurname;
 
         //Firebase references
         rootRef = FirebaseDatabase.getInstance().getReference();
@@ -69,13 +66,15 @@ public class PatientDoctorListActivity extends AppCompatActivity
 
         //Set up list
         emptyElement = findViewById(R.id.emptyElement);
-        doctorList = findViewById(R.id.doctorList);
+        doctorList = findViewById(R.id.thingList);
         patientDoctors = new ArrayList<>(); //list of doctor patient id's
         testAdapter = new PatientDoctorAdapter(this);
         doctorList.setAdapter(testAdapter);
 
         TextView emptyText = findViewById(android.R.id.empty);
         doctorList.setEmptyView(emptyText);
+
+
 
 
         //Drawer menu
@@ -172,10 +171,12 @@ public class PatientDoctorListActivity extends AppCompatActivity
             //TODO
         } else if (id == R.id.nav_pat_exams) {
             //TODO
+            startActivity(intents.patientExamListView.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
         } else if (id == R.id.nav_profile) {
             startActivity(intents.patientMainMenu.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
         } else if (id == R.id.nav_BT_device){
             //TODO
+            startActivity(intents.patientDeviceManage.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
         } else if (id == R.id.nav_logout) {
             MethodHelper.logOut(context, intents);
         }
@@ -184,5 +185,7 @@ public class PatientDoctorListActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+
 
 }

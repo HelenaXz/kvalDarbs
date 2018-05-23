@@ -40,8 +40,6 @@ public class AdminMainActivity extends AppCompatActivity
         //Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("Hello");
-        toolbar.inflateMenu(R.menu.menu_main);
-        toolbar.setNavigationIcon(R.drawable.ic_menu_white);
 
         //Strings
         userId  = PreferenceUtils.getId(context);
@@ -73,44 +71,6 @@ public class AdminMainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-
-                if(item.getItemId()==R.id.action_change_pass)
-                {
-                    final String currDbPassString = PreferenceUtils.getPassword(context);
-                    AlertDialog.Builder builder = new AlertDialog.Builder(AdminMainActivity.this);
-                    View mView = getLayoutInflater().inflate(R.layout.dialog_pass_change, null);
-                    final EditText currentPass, newPass, newPassRepeat;
-                    currentPass = mView.findViewById(R.id.oldPass);
-                    newPass = mView.findViewById(R.id.newPass);
-                    newPassRepeat = mView.findViewById(R.id.newPassRep);
-
-                    Button changePass = mView.findViewById(R.id.btnChangePass);
-                    Button cancel = mView.findViewById(R.id.btnCancel);
-
-                    builder.setView(mView);
-                    final AlertDialog changePassDialog = builder.create();
-                    changePassDialog.show();
-                    changePass.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            MethodHelper.changePassword(newPass, newPassRepeat, currentPass, currDbPassString, changePassDialog, context, userRef);
-                        }
-                    });
-                    cancel.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            changePassDialog.dismiss();
-                        }
-                    });
-                }
-
-                return false;
-            }
-        });
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
