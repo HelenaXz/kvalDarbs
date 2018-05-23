@@ -14,7 +14,7 @@ import com.hz.kvalifdarbs.utils.PreferenceUtils;
 public class UserSelectActivity extends AppCompatActivity {
     Button admin, doctor, patient;
     Context context;
-    String userId, userType;
+    String userId, userType, loggedIn;
     Intents intents;
 
     @Override
@@ -24,9 +24,10 @@ public class UserSelectActivity extends AppCompatActivity {
         context = getApplicationContext();
         userId = PreferenceUtils.getId(context);
         userType = PreferenceUtils.getUserType(context);
+        loggedIn = PreferenceUtils.getLoggedIn(context);
 
 
-        if (userId.equals("")) {
+        if (!loggedIn.equals("true")) {
             setContentView(R.layout.activity_user_select);
             admin = findViewById(R.id.adminBtn);
             doctor = findViewById(R.id.doctorBtn);

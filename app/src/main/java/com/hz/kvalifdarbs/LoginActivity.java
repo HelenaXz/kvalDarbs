@@ -98,20 +98,21 @@ public class LoginActivity extends AppCompatActivity {
 
                     if(passFromDB.equals(passEncrypt)){
                         if(checkBox.isChecked()){
-                            PreferenceUtils.saveId(userIdString, context);
-                            PreferenceUtils.savePassword(passEncrypt, context);
-                            PreferenceUtils.saveUserType(thisUserType, context);
-                            PreferenceUtils.saveUserName(userName, context);
-                            PreferenceUtils.saveUserSurname(userSurname, context);
-                            PreferenceUtils.savePhoneNum(phoneString, context);
-                            if(thisUserType.equals("Patient")){
-                                addedToSystem = userRef.child("addedToSystem").getValue().toString();
-                                birthDate = userRef.child("birthDate").getValue().toString();
-                                roomString = userRef.child("room").getValue().toString();
-                                PreferenceUtils.saveBirthDate(birthDate, context);
-                                PreferenceUtils.saveAddedToSystem(addedToSystem, context);
-                                PreferenceUtils.saveRoomNum(roomString, context);
+                            PreferenceUtils.saveLoggedIn("true", context);
                             }
+                        PreferenceUtils.saveId(userIdString, context);
+                        PreferenceUtils.savePassword(passEncrypt, context);
+                        PreferenceUtils.saveUserType(thisUserType, context);
+                        PreferenceUtils.saveUserName(userName, context);
+                        PreferenceUtils.saveUserSurname(userSurname, context);
+                        PreferenceUtils.savePhoneNum(phoneString, context);
+                        if(thisUserType.equals("Patient")){
+                            addedToSystem = userRef.child("addedToSystem").getValue().toString();
+                            birthDate = userRef.child("birthDate").getValue().toString();
+                            roomString = userRef.child("room").getValue().toString();
+                            PreferenceUtils.saveBirthDate(birthDate, context);
+                            PreferenceUtils.saveAddedToSystem(addedToSystem, context);
+                            PreferenceUtils.saveRoomNum(roomString, context);
                         }
                         Toast toast = Toast.makeText(getApplicationContext(), "Login Successful", Toast.LENGTH_SHORT);
                         toast.show();

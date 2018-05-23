@@ -112,5 +112,16 @@ public class PreferenceUtils {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         return prefs.getString(Constants.KEY_ADDED_TO_SYSTEM, "");
     }
+    public static boolean saveLoggedIn(String loggedIn, Context context){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor prefsEditor = prefs.edit();
+        prefsEditor.putString(Constants.KEY_LOGGED_IN, loggedIn);
+        prefsEditor.apply();
+        return true;
+    }
+    public static String getLoggedIn(Context context){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.getString(Constants.KEY_LOGGED_IN, "");
+    }
 
 }

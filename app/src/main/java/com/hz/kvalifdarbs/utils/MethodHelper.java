@@ -50,6 +50,7 @@ public class MethodHelper {
         PreferenceUtils.saveUserType("", context);
         PreferenceUtils.saveUserName("", context);
         PreferenceUtils.saveUserSurname("", context);
+        PreferenceUtils.saveLoggedIn("false", context);
         context.startActivity(intents.userSelect.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
     }
 

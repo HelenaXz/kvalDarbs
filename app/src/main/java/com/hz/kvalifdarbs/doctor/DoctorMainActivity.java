@@ -43,7 +43,7 @@ public class DoctorMainActivity extends AppCompatActivity
 
         userId  = PreferenceUtils.getId(context);
 
-        //firebase
+        //Firebase
         rootRef = FirebaseDatabase.getInstance().getReference();
         userRef = rootRef.child("Doctors").child(userId);
 
@@ -75,14 +75,15 @@ public class DoctorMainActivity extends AppCompatActivity
 
         navigationView.inflateHeaderView(R.layout.nav_header_main);
         navigationView.inflateMenu(R.menu.doctor_drawer);
+
         View headView = navigationView.getHeaderView(0);
         TextView headUserName = headView.findViewById(R.id.headFullName);
         TextView headUserId = headView.findViewById(R.id.headUserId);
 
-        navigationView.setNavigationItemSelectedListener(this);
-
         headUserId.setText(userId);
         headUserName.setText(fullName);
+
+        navigationView.setNavigationItemSelectedListener(this);
 
         changePassword.setOnClickListener(new View.OnClickListener() {
             @Override

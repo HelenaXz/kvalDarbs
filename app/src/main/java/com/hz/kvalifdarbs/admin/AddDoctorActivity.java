@@ -69,7 +69,7 @@ public class AddDoctorActivity extends AppCompatActivity {
                         userRef = rootRef.child(idString);
                         Doctor newDoctor = new Doctor(idString, nameString, passEncrypt, phoneNum, surnameString);
                         userRef.setValue(newDoctor);
-                        
+
                         Toast.makeText(context, "Doctor added to DB", Toast.LENGTH_SHORT).show();
                         clearForm(v);
                     } else {
