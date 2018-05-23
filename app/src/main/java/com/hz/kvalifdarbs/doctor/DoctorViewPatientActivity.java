@@ -10,29 +10,42 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.hz.kvalifdarbs.ListAdaptors.DoctorPatientAdapter;
+import com.hz.kvalifdarbs.ListAdaptors.PatientExamAdapter;
+import com.hz.kvalifdarbs.Objects.Doctor;
 import com.hz.kvalifdarbs.Objects.Examination;
 import com.hz.kvalifdarbs.utils.Intents;
 import com.hz.kvalifdarbs.Objects.Patient;
 import com.hz.kvalifdarbs.R;
-import com.hz.kvalifdarbs.utils.MethodHelper;
 import com.hz.kvalifdarbs.utils.PreferenceUtils;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 
 
 public class DoctorViewPatientActivity extends AppCompatActivity {
     TextView name_surname, room, brought_in, birthDate, patientId, patientRoom;
-    String userId, patientIdString;
+    String userId;
     Patient thisPatient;
     Context context;
     Button addExam;
+    PatientExamAdapter testAdapter;
+    DatabaseReference rootRef, childRef;
+    ListView patientExamList;
+    TextView emptyElement;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,6 +62,10 @@ public class DoctorViewPatientActivity extends AppCompatActivity {
         Intent i = getIntent();
         thisPatient = (Patient)i.getSerializableExtra("thisPatient");
 
+        //Firebase reference
+        rootRef = FirebaseDatabase.getInstance().getReference();
+        childRef = rootRef.child("Patients").child(thisPatient.getId());
+
         //TextViews, Buttons
         userId = PreferenceUtils.getId(context);
         name_surname = findViewById(R.id.name_surname);
@@ -56,7 +73,7 @@ public class DoctorViewPatientActivity extends AppCompatActivity {
         patientRoom = findViewById(R.id.patientRoom);
         birthDate = findViewById(R.id.birthDate);
         brought_in = findViewById(R.id.brought_in);
-        
+
         addExam = findViewById(R.id.addExamBtn);
 
         //Set TextViews
@@ -68,6 +85,45 @@ public class DoctorViewPatientActivity extends AppCompatActivity {
         brought_in.append(thisPatient.getAddedToSystem());
 
         //TODO set up exam list
+        //Set up ListView
+        patientExamList = findViewById(R.id.patientExamList);
+
+        testAdapter = new PatientExamAdapter(this);
+        patientExamList.setAdapter(testAdapter);
+
+        childRef.child("Examinations").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Examination exam = dataSnapshot.getValue(Examination.class);
+                testAdapter.insert(exam, 0);
+                testAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+        emptyElement = findViewById(R.id.emptyElement);
+        TextView emptyText = findViewById(android.R.id.empty);
+        patientExamList.setEmptyView(emptyText);
 
         addExam.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,6 +183,8 @@ public class DoctorViewPatientActivity extends AppCompatActivity {
                 startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
             }
         });
+
+
 
     }
 }

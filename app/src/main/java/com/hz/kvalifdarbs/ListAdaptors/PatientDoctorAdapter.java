@@ -8,7 +8,11 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.hz.kvalifdarbs.Objects.Doctor;
+import com.hz.kvalifdarbs.Objects.Examination;
 import com.hz.kvalifdarbs.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PatientDoctorAdapter extends ArrayAdapter<Doctor> {
 
