@@ -36,9 +36,11 @@ public class DoctorMainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_doctor_main_menu);
+        context = getApplicationContext();
+        //Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        context = getApplicationContext();
+
         userId  = PreferenceUtils.getId(context);
 
         //firebase
@@ -50,7 +52,6 @@ public class DoctorMainActivity extends AppCompatActivity
         userName = PreferenceUtils.getUserName(context);
         userSurname = PreferenceUtils.getUserSurname(context);
         fullName = "Dr. " + userName + " " + userSurname;
-
 
         //Text Views, Buttons
         fullNameTV = findViewById(R.id.fullName);
@@ -79,7 +80,6 @@ public class DoctorMainActivity extends AppCompatActivity
         TextView headUserId = headView.findViewById(R.id.headUserId);
 
         navigationView.setNavigationItemSelectedListener(this);
-
 
         headUserId.setText(userId);
         headUserName.setText(fullName);

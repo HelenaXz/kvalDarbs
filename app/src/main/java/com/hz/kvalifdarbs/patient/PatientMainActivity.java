@@ -26,8 +26,7 @@ import com.hz.kvalifdarbs.R;
 import com.hz.kvalifdarbs.utils.PreferenceUtils;
 
 public class PatientMainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener
-{
+        implements NavigationView.OnNavigationItemSelectedListener {
     DatabaseReference rootRef, userRef;
     String userId, userName, userSurname, fullName, birthDate, roomNum, addedToSystem;
     Context context;
@@ -39,17 +38,16 @@ public class PatientMainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_main);
+        context = getApplicationContext();
+        //Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        context = getApplicationContext();
 
-        context = getApplicationContext();
+        //Strings
         userId  = PreferenceUtils.getId(context);
         userName = PreferenceUtils.getUserName(context);
         userSurname = PreferenceUtils.getUserSurname(context);
         fullName = userName + " " + userSurname;
-        rootRef = FirebaseDatabase.getInstance().getReference();
-        userRef = rootRef.child("Patients").child(userId);
         birthDate = PreferenceUtils.getBirthDate(context);
         roomNum = PreferenceUtils.getRoomNum(context);
         addedToSystem = PreferenceUtils.getAddedToSystem(context);
@@ -73,6 +71,26 @@ public class PatientMainActivity extends AppCompatActivity
         patientRoomTV.append(roomNum);
         addedToSystemTV.append(addedToSystem);
 
+        //Drawer menu
+        final DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        final ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        navigationView.inflateHeaderView(R.layout.nav_header_main);
+        navigationView.inflateMenu(R.menu.patient_drawer);
+        View headView = navigationView.getHeaderView(0);
+        TextView headUserName = headView.findViewById(R.id.headFullName);
+        TextView headUserId = headView.findViewById(R.id.headUserId);
+
+        navigationView.setNavigationItemSelectedListener(this);
+
+        headUserId.setText(userId);
+        headUserName.setText(fullName);
 
 
         changePassword.setOnClickListener(new View.OnClickListener() {
@@ -108,26 +126,7 @@ public class PatientMainActivity extends AppCompatActivity
         });
 
 
-        //Drawer menu
-        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        final ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
-        navigationView.inflateHeaderView(R.layout.nav_header_main);
-        navigationView.inflateMenu(R.menu.patient_drawer);
-        View headView = navigationView.getHeaderView(0);
-        TextView headUserName = headView.findViewById(R.id.headFullName);
-        TextView headUserId = headView.findViewById(R.id.headUserId);
-
-        navigationView.setNavigationItemSelectedListener(this);
-
-        headUserId.setText(userId);
-        headUserName.setText(fullName);
 
 
 
@@ -138,7 +137,7 @@ public class PatientMainActivity extends AppCompatActivity
             }
         });
 
-    }//End of OnCreate
+    }
 
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
@@ -147,7 +146,6 @@ public class PatientMainActivity extends AppCompatActivity
 
         if (id == R.id.nav_my_doctors) {
             startActivity(intents.patientDoctorListView.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
-            //TODO
         } else if (id == R.id.nav_pat_movements) {
             //TODO
         } else if (id == R.id.nav_pat_exams) {
@@ -164,10 +162,6 @@ public class PatientMainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
-
-
-
 
 
 }

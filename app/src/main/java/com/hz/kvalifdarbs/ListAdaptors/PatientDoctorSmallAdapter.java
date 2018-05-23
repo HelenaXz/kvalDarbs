@@ -12,26 +12,22 @@ import com.hz.kvalifdarbs.Objects.smallDoctor;
 import com.hz.kvalifdarbs.R;
 
 public class PatientDoctorSmallAdapter extends ArrayAdapter<smallDoctor> {
-    TextView doctorIdtv;
 
     public PatientDoctorSmallAdapter(Context context) {
         super(context, 0);
-
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         smallDoctor doctor = getItem(position);
+
         if (convertView == null){
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.patient_doctor_list_small_adaptor, parent, false);
         }
 
-        doctorIdtv = convertView.findViewById(R.id.doctorIdList);
+        TextView doctorIdtv = convertView.findViewById(R.id.doctorIdList);
         doctorIdtv.setText(doctor.getName());
 
-
         return convertView;
-
     }
-
 }

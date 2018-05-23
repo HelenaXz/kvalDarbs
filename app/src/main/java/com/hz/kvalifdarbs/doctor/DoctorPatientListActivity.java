@@ -44,16 +44,17 @@ public class DoctorPatientListActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_doctor_patient_list);
+        context = getApplicationContext();
+        final Intents intents = new Intents(this);
+        //Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        final Intents intents = new Intents(this);
-        context = getApplicationContext();
-        rootRef = FirebaseDatabase.getInstance().getReference();
 
         userId  = PreferenceUtils.getId(context);
+        //Firebase reference
+        rootRef = FirebaseDatabase.getInstance().getReference();
         childRef = rootRef.child("Doctors").child(userId);
-        emptyElement = findViewById(R.id.emptyElement);
 
 
         //Strings
@@ -61,12 +62,14 @@ public class DoctorPatientListActivity extends AppCompatActivity
         userSurname = PreferenceUtils.getUserSurname(context);
         fullName = "Dr. " + userName + " " + userSurname;
 
+
+        //Set up ListView
         patientList = findViewById(R.id.patientList);
         doctorPatients = new ArrayList<>(); //list of doctor patient id's
         testAdapter = new DoctorPatientAdapter(this);
         patientList.setAdapter(testAdapter);
 
-
+        emptyElement = findViewById(R.id.emptyElement);
         TextView emptyText = findViewById(android.R.id.empty);
         patientList.setEmptyView(emptyText);
 
@@ -156,16 +159,6 @@ public class DoctorPatientListActivity extends AppCompatActivity
             }
         });
 
-//        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                // perform whatever you want on back arrow click
-//                Intent intent = intents.doctorMainMenu;
-//                startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
-//                finish();
-//            }
-//        });
-
     }
 
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -183,7 +176,7 @@ public class DoctorPatientListActivity extends AppCompatActivity
             MethodHelper.logOut(context, intents);
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

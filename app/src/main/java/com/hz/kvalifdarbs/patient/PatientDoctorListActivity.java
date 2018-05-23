@@ -47,25 +47,32 @@ public class PatientDoctorListActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_doctor_list);
+        context = getApplicationContext();
+        final Intents intents = new Intents(this);
+        //Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        final Intents intents = new Intents(this);
-        context = getApplicationContext();
-        rootRef = FirebaseDatabase.getInstance().getReference();
+
+        //Strings
         userId  = PreferenceUtils.getId(context);
         userName = PreferenceUtils.getUserName(context);
         userSurname = PreferenceUtils.getUserSurname(context);
         fullName = "Dr. " + userName + " " + userSurname;
+
+        //Firebase references
+        rootRef = FirebaseDatabase.getInstance().getReference();
         childRef = rootRef.child("Patients").child(userId);
+
+
+
+
+        //Set up list
         emptyElement = findViewById(R.id.emptyElement);
-
-
         doctorList = findViewById(R.id.doctorList);
         patientDoctors = new ArrayList<>(); //list of doctor patient id's
         testAdapter = new PatientDoctorAdapter(this);
         doctorList.setAdapter(testAdapter);
-
 
         TextView emptyText = findViewById(android.R.id.empty);
         doctorList.setEmptyView(emptyText);
@@ -83,15 +90,14 @@ public class PatientDoctorListActivity extends AppCompatActivity
 
         navigationView.inflateHeaderView(R.layout.nav_header_main);
         navigationView.inflateMenu(R.menu.patient_drawer);
+
         View headView = navigationView.getHeaderView(0);
         TextView headUserName = headView.findViewById(R.id.headFullName);
         TextView headUserId = headView.findViewById(R.id.headUserId);
-
-        navigationView.setNavigationItemSelectedListener(this);
-
         headUserId.setText(userId);
         headUserName.setText(fullName);
 
+        navigationView.setNavigationItemSelectedListener(this);
 
         childRef.child("Doctors").addValueEventListener(new ValueEventListener() {
             @Override
@@ -162,7 +168,6 @@ public class PatientDoctorListActivity extends AppCompatActivity
 
         if (id == R.id.nav_my_doctors) {
             startActivity(intents.patientDoctorListView.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
-            //TODO
         } else if (id == R.id.nav_pat_movements) {
             //TODO
         } else if (id == R.id.nav_pat_exams) {

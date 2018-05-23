@@ -33,6 +33,8 @@ public class DoctorViewPatientActivity extends AppCompatActivity {
 
         Intent i = getIntent();
         thisPatient = (Patient)i.getSerializableExtra("thisPatient");
+
+        //TextViews, Buttons
         userId = PreferenceUtils.getId(context);
         name_surname = findViewById(R.id.name_surname);
         room = findViewById(R.id.room);
@@ -40,8 +42,9 @@ public class DoctorViewPatientActivity extends AppCompatActivity {
         birthDate = findViewById(R.id.birthDate);
         patientId = findViewById(R.id.patientId_field);
         patientRoom = findViewById(R.id.patientRoom);
+        //TODO Add new Examination button setup and onClick action
 
-
+        //Set TextViews
         name_surname.setText(thisPatient.getFullName());
         brought_in.setText(thisPatient.getAddedToSystem());
         birthDate.setText(thisPatient.getBirthDate());

@@ -38,18 +38,19 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        context = getApplicationContext();
+        intents = new Intents(this);
+        //Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        intents = new Intents(this);
-        context = getApplicationContext();
-
-        checkBox = (CheckBox) findViewById(R.id.checkRemeber);
 
 
+
+        userType = findViewById(R.id.userTypeLogin);
         userIdView = findViewById(R.id.userId);
         userPassView = findViewById(R.id.userPass);
         Button login = findViewById(R.id.loginBtn);
-        userType = findViewById(R.id.userTypeLogin);
+        checkBox = (CheckBox) findViewById(R.id.checkRemeber);
 
 
         Intent i = getIntent();
@@ -90,9 +91,8 @@ public class LoginActivity extends AppCompatActivity {
                     passFromDB = userRef.child("password").getValue().toString();
                     String userName = userRef.child("name").getValue().toString();
                     String userSurname = userRef.child("surname").getValue().toString();
-                    String addedToSystem, birthDate, roomString;
                     String phoneString = userRef.child("phone").getValue().toString();
-
+                    String addedToSystem, birthDate, roomString;
 
                     passEncrypt = MethodHelper.sha1Hash(userPassString);
 

@@ -52,7 +52,7 @@ public class UserSelectActivity extends AppCompatActivity {
             });
 
         } else {
-            loggedIn();
+            loggedIn(PreferenceUtils.getUserType(context));
         }
     }
 
@@ -62,16 +62,16 @@ public class UserSelectActivity extends AppCompatActivity {
     }
 
 
-    public void loggedIn() {
+    public void loggedIn(String userType) {
         if (userType.equals("Administrator")) {
             startActivity(intents.adminMainMenu);
         }
-        if (PreferenceUtils.getUserType(context).equals("Doctor")) {
+        if (userType.equals("Doctor")) {
             Intent intent = intents.doctorMainMenu;
             intent.putExtra("userId", userId);
             startActivity(intent);
         }
-        if (PreferenceUtils.getUserType(context).equals("Patient")) {
+        if (userType.equals("Patient")) {
             Intent intent = intents.patientMainMenu;
             intent.putExtra("userId", userId);
             startActivity(intent);

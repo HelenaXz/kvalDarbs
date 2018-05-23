@@ -11,7 +11,6 @@ import com.hz.kvalifdarbs.Objects.Doctor;
 import com.hz.kvalifdarbs.R;
 
 public class PatientDoctorAdapter extends ArrayAdapter<Doctor> {
-    TextView doctorName;
 
     public PatientDoctorAdapter(Context context) {
         super(context, 0);
@@ -21,16 +20,14 @@ public class PatientDoctorAdapter extends ArrayAdapter<Doctor> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         Doctor thisDoctor = getItem(position);
+
         if (convertView == null){
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.patient_doctor_list_adaptor, parent, false);
         }
 
-        doctorName = convertView.findViewById(R.id.doctorName);
+        TextView doctorName = convertView.findViewById(R.id.doctorName);
 
         doctorName.setText(thisDoctor.getFullName());
-
-
-
 
         return convertView;
 

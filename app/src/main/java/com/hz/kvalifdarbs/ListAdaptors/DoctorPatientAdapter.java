@@ -12,7 +12,6 @@ import com.hz.kvalifdarbs.R;
 
 
 public class DoctorPatientAdapter extends ArrayAdapter<Object> {
-    TextView patientId, patientName;
 
     public DoctorPatientAdapter(Context context) {
         super(context, 0);
@@ -25,9 +24,8 @@ public class DoctorPatientAdapter extends ArrayAdapter<Object> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.doctor_patient_list_adaptor, parent, false);
         }
 
-
-        patientId = convertView.findViewById(R.id.patientId);
-        patientName = convertView.findViewById(R.id.fullName);
+        TextView patientId = convertView.findViewById(R.id.patientId);
+        TextView patientName = convertView.findViewById(R.id.fullName);
 
         patientId.setText(patient.getId());
         patientName.setText(patient.getFullName());
