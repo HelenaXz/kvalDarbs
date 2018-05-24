@@ -9,7 +9,6 @@ public class Doctor implements Serializable {
     private String password;
     private Integer phone;
     private String surname;
-    private String gender;
 
 
     public Doctor(){

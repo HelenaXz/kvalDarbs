@@ -19,7 +19,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.hz.kvalifdarbs.ListAdaptors.PatientDoctorAdapter;
 import com.hz.kvalifdarbs.ListAdaptors.PatientExamAdapter;
 import com.hz.kvalifdarbs.Objects.Examination;
 import com.hz.kvalifdarbs.R;
@@ -43,10 +42,10 @@ public class PatientExamListActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_thing_list);
         context = getApplicationContext();
-        final Intents intents = new Intents(this);
         //Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        toolbar.setTitle("Patient Examinations");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //Strings
@@ -85,7 +84,7 @@ public class PatientExamListActivity extends AppCompatActivity
 
         Integer testAdapterSize = testAdapter.getCount();
         if(testAdapterSize==0){
-            String emptyTextString = "You have no examinations.";
+            String emptyTextString = "This patient has no examinations.";
             emptyElement.setText(emptyTextString);
             examList.setEmptyView(emptyElement);
         }
@@ -128,14 +127,12 @@ public class PatientExamListActivity extends AppCompatActivity
         if (id == R.id.nav_my_doctors) {
             startActivity(intents.patientDoctorListView.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
         } else if (id == R.id.nav_pat_movements) {
-            //TODO
+            startActivity(intents.patientMovementListView.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
         } else if (id == R.id.nav_pat_exams) {
-            //TODO
             startActivity(intents.patientExamListView.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
         } else if (id == R.id.nav_profile) {
             startActivity(intents.patientMainMenu.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
         } else if (id == R.id.nav_BT_device){
-            //TODO
             startActivity(intents.patientDeviceManage.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
         } else if (id == R.id.nav_logout) {
             MethodHelper.logOut(context, intents);

@@ -70,11 +70,9 @@ public class AddDoctorActivity extends AppCompatActivity {
                         Doctor newDoctor = new Doctor(idString, nameString, passEncrypt, phoneNum, surnameString);
                         userRef.setValue(newDoctor);
 
-                        Toast.makeText(context, "Doctor added to DB", Toast.LENGTH_SHORT).show();
-                        clearForm(v);
+                        MethodHelper.showToast(context, "Doctor added to DB");
                     } else {
-                        Toast toast = Toast.makeText(context, "Doctor with id exists", Toast.LENGTH_SHORT);
-                        toast.show();
+                        MethodHelper.showToast(context, "Doctor with id exists");
                     }
                 }
             }
@@ -111,11 +109,7 @@ public class AddDoctorActivity extends AppCompatActivity {
         if(pass.getText().toString().equals(passRepeat.getText().toString())) {
             valid = valid + 1;
         } else {
-            Context context = getApplicationContext();
-            CharSequence text = "Passwords don't match!";
-            int duration = Toast.LENGTH_SHORT;
-            Toast toast = Toast.makeText(context, text, duration);
-            toast.show();
+            MethodHelper.showToast(getApplicationContext(), "Passwords don't match!");
         }
         if(valid < 7) return false;
         else { return true; }

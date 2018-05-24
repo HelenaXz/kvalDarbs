@@ -50,6 +50,9 @@ public class AdminViewDoctorActivity extends AppCompatActivity {
         docRef = rootRef.child("Doctors").child(thisDoctor.getId());
         allPatientRef = rootRef.child("Patients");
 
+        //Strings
+        String phoneString = thisDoctor.getPhone().toString();
+
         //TextViews, Buttons
         name = findViewById(R.id.name);
         surname = findViewById(R.id.surname);
@@ -61,7 +64,7 @@ public class AdminViewDoctorActivity extends AppCompatActivity {
         //Fill text views
         name.setText(thisDoctor.getName());
         surname.setText(thisDoctor.getSurname());
-        String phoneString = thisDoctor.getPhone().toString();
+
         phone.setText(phoneString);
 
         deleteUser.setOnClickListener(new View.OnClickListener() {

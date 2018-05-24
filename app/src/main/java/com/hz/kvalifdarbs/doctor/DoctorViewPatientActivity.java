@@ -12,42 +12,34 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.hz.kvalifdarbs.ListAdaptors.DoctorPatientAdapter;
 import com.hz.kvalifdarbs.ListAdaptors.PatientExamAdapter;
-import com.hz.kvalifdarbs.Objects.Doctor;
 import com.hz.kvalifdarbs.Objects.Examination;
 import com.hz.kvalifdarbs.utils.Intents;
 import com.hz.kvalifdarbs.Objects.Patient;
 import com.hz.kvalifdarbs.R;
+import com.hz.kvalifdarbs.utils.MethodHelper;
 import com.hz.kvalifdarbs.utils.PreferenceUtils;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
-import java.util.PropertyResourceBundle;
 
 
 public class DoctorViewPatientActivity extends AppCompatActivity {
-    TextView name_surname, brought_in, birthDate, patientId, patientRoom;
-    String userId;
+    TextView name_surname, brought_in, birthDate, patientId, patientRoom, emptyElement;
+    String userId, valueType;
     Patient thisPatient;
     Context context;
     Button addExam, examinationsBtn, movementsBtn;
     PatientExamAdapter testAdapter;
     DatabaseReference rootRef, childRef;
     ListView patientExamList;
-    TextView emptyElement;
-    String valueType;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -158,8 +150,7 @@ public class DoctorViewPatientActivity extends AppCompatActivity {
 
                         DatabaseReference thisPatientRef = FirebaseDatabase.getInstance().getReference().child("Patients").child(thisPatient.getId()).child("Examinations");
                         thisPatientRef.child(time).setValue(newExam);
-                        Toast toast = Toast.makeText(getApplicationContext(), "Examination added", Toast.LENGTH_SHORT);
-                        toast.show();
+                        MethodHelper.showToast(getApplicationContext(), "Examination added");
                         addExamDialog.dismiss();
                     }
                 });

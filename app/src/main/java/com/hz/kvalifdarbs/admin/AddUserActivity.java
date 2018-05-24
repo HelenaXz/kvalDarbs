@@ -36,7 +36,6 @@ public class AddUserActivity extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("Select User to Add");
 
-
         //Strings
         userType = PreferenceUtils.getUserType(context);
         userId  = PreferenceUtils.getId(context);

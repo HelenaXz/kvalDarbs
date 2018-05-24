@@ -11,9 +11,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -74,21 +72,18 @@ public class ConnectDeviceActivity extends AppCompatActivity
         if (id == R.id.nav_my_doctors) {
             startActivity(intents.patientDoctorListView.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
         } else if (id == R.id.nav_pat_movements) {
-            //TODO
-
+            startActivity(intents.patientMovementListView.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
         } else if (id == R.id.nav_pat_exams) {
-            //TODO
             startActivity(intents.patientExamListView.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
         } else if (id == R.id.nav_profile) {
             startActivity(intents.patientMainMenu.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
         } else if (id == R.id.nav_BT_device){
-            //TODO
             startActivity(intents.patientDeviceManage.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
         } else if (id == R.id.nav_logout) {
             MethodHelper.logOut(context, intents);
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

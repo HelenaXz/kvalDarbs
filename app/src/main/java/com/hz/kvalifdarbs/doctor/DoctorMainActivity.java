@@ -116,8 +116,7 @@ public class DoctorMainActivity extends AppCompatActivity
         final Intents intents = new Intents(this);
 
         if (id == R.id.nav_my_patients) {
-            Intent intent = intents.doctorPatientList;
-            startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
+            startActivity(intents.doctorPatientList.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
 
         } else if (id == R.id.nav_profile) {
             startActivity(intents.doctorMainMenu.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));

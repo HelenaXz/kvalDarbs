@@ -23,6 +23,7 @@ import com.hz.kvalifdarbs.patient.PatientDoctorListActivity;
 import com.hz.kvalifdarbs.patient.PatientExamListActivity;
 import com.hz.kvalifdarbs.patient.PatientMainActivity;
 import com.hz.kvalifdarbs.UserSelectActivity;
+import com.hz.kvalifdarbs.patient.PatientMovementListActivity;
 
 public class Intents extends AppCompatActivity {
     public Intent adminMainMenu, doctorMainMenu, patientMainMenu;
@@ -36,6 +37,7 @@ public class Intents extends AppCompatActivity {
     public Intent patientDoctorListView;
     public Intent patientDeviceManage;
     public Intent patientExamListView;
+    public Intent patientMovementListView;
 
     public Intent loginView;
     public Intent userSelect;
@@ -61,5 +63,6 @@ public class Intents extends AppCompatActivity {
         this.patientDoctorListView = new Intent(thisContext, PatientDoctorListActivity.class);
         this.patientDeviceManage = new Intent(thisContext, ConnectDeviceActivity.class);
         this.patientExamListView = new Intent(thisContext, PatientExamListActivity.class);
+        this.patientMovementListView = new Intent(thisContext, PatientMovementListActivity.class);
     }
 }

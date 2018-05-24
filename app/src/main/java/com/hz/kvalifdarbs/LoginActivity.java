@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -27,12 +26,10 @@ public class LoginActivity extends AppCompatActivity {
     TextView userType;
     DatabaseReference rootRef, childRef;
     DataSnapshot userRef;
-    String userIdString, userPassString, thisUserType;
-    String passEncrypt, passFromDB;
+    String userIdString, userPassString, thisUserType, passEncrypt, passFromDB;
     Context context;
     Intents intents;
     CheckBox checkBox;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,14 +41,11 @@ public class LoginActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
-
         userType = findViewById(R.id.userTypeLogin);
         userIdView = findViewById(R.id.userId);
         userPassView = findViewById(R.id.userPass);
         Button login = findViewById(R.id.loginBtn);
         checkBox = (CheckBox) findViewById(R.id.checkRemeber);
-
 
         Intent i = getIntent();
         thisUserType = i.getStringExtra("UserType");
@@ -114,22 +108,18 @@ public class LoginActivity extends AppCompatActivity {
                             PreferenceUtils.saveAddedToSystem(addedToSystem, context);
                             PreferenceUtils.saveRoomNum(roomString, context);
                         }
-                        Toast toast = Toast.makeText(getApplicationContext(), "Login Successful", Toast.LENGTH_SHORT);
-                        toast.show();
+                        MethodHelper.showToast(getApplicationContext(), "Login Successful");
 
                         Intent intent = userTypeMainMenu;
                         startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
                     } else {
-                        Toast toast = Toast.makeText(getApplicationContext(), "Password incorrect!", Toast.LENGTH_SHORT);
-                        toast.show();
+                        MethodHelper.showToast(getApplicationContext(), "Password incorrect!");
                     }
                 } else {
                     if(userIdString.isEmpty()){
-                        Toast toast = Toast.makeText(getApplicationContext(), "Enter user ID", Toast.LENGTH_SHORT);
-                        toast.show();
+                        MethodHelper.showToast(getApplicationContext(), "Enter user ID");
                     } else {
-                        Toast toast = Toast.makeText(getApplicationContext(), userTypeString + "not found!", Toast.LENGTH_SHORT);
-                        toast.show();
+                        MethodHelper.showToast(getApplicationContext(), userTypeString + "not found!");
                     }
                 }
             }

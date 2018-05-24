@@ -137,21 +137,18 @@ public class PatientMainActivity extends AppCompatActivity
         if (id == R.id.nav_my_doctors) {
             startActivity(intents.patientDoctorListView.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
         } else if (id == R.id.nav_pat_movements) {
-            //TODO
-
+            startActivity(intents.patientMovementListView.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
         } else if (id == R.id.nav_pat_exams) {
-            //TODO
             startActivity(intents.patientExamListView.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
         } else if (id == R.id.nav_profile) {
             startActivity(intents.patientMainMenu.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
         } else if (id == R.id.nav_BT_device){
-            //TODO
             startActivity(intents.patientDeviceManage.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
         } else if (id == R.id.nav_logout) {
             MethodHelper.logOut(context, intents);
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

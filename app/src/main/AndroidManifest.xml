@@ -69,6 +69,7 @@
         <activity android:name=".patient.ConnectDeviceActivity" />
         <activity android:name=".patient.PatientDoctorListActivity" />
         <activity android:name=".patient.PatientExamListActivity" />
+        <activity android:name=".patient.PatientMovementListActivity" />
     </application>
 
 </manifest>

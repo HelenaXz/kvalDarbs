@@ -14,7 +14,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.hz.kvalifdarbs.R;
 
 import java.io.UnsupportedEncodingException;
@@ -37,14 +36,10 @@ public class MethodHelper {
                 PreferenceUtils.savePassword(newPassInt.toString(), context);
                 changePassDialog.dismiss();
             } else {
-                String text = "New passwords do not match!";
-                Toast toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
-                toast.show();
+                MethodHelper.showToast(context, "New passwords do not match!");
             }
         } else {
-            String text = "Current password does not match Database";
-            Toast toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
-            toast.show();
+            MethodHelper.showToast(context, "Current password does not match Database");
         }
     }
 
@@ -143,6 +138,10 @@ public class MethodHelper {
         TextView headUserId = headView.findViewById(R.id.headUserId);
         headUserId.setText(userId);
         headUserName.setText(fullName);
+    }
 
+    public static void showToast(Context context, String text){
+        Toast toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
+        toast.show();
     }
 }

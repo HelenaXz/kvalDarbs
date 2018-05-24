@@ -127,7 +127,7 @@ public class AddPatientActivity extends AppCompatActivity {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 timeSave = (hourOfDay < 10 ? "0" : "") + hourOfDay + ":" +(minute < 10 ? "0" : "")+ minute;
-                String timeString = "Move every " + hourOfDay + " h " + minute + "min";
+                String timeString = "Move every " + hourOfDay + "h " + minute + "min";
                 hour = hourOfDay;
                 minute1 = minute;
                 moveMinTime.setText(timeString);
@@ -156,12 +156,10 @@ public class AddPatientActivity extends AppCompatActivity {
                         Patient newPatient = new Patient(nameString, surnameString, idString, genderString, passEncrypt, phoneNum, birthDate, roomString, timeSave);
                         userRef.setValue(newPatient);
 
-                        Toast toast = Toast.makeText(context, "Patient added to DB", Toast.LENGTH_SHORT);
-                        toast.show();
+                        MethodHelper.showToast(context, "Patient added to DB");
                         clearForm(v);
                     } else {
-                        Toast toast = Toast.makeText(context, "Patient with id exists", Toast.LENGTH_SHORT);
-                        toast.show();
+                        MethodHelper.showToast(context, "Patient with id exists");
                     }
                 }
             }
@@ -201,11 +199,8 @@ public class AddPatientActivity extends AppCompatActivity {
         if(pass.getText().toString().equals(passRepeat.getText().toString())){
             valid = valid + 1;
         } else {
-            Context context = getApplicationContext();
-            CharSequence text = "Passwords don't match!";
-            int duration = Toast.LENGTH_SHORT;
-            Toast toast = Toast.makeText(context, text, duration);
-            toast.show();
+
+            MethodHelper.showToast(getApplicationContext(), "Passwords don't match!");
         }
         if(valid < 8){ return false; } else { return true; }
     }

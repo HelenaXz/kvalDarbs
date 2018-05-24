@@ -1,76 +1,73 @@
 package com.hz.kvalifdarbs.patient;
 
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.TextView;
+        import android.content.Intent;
+        import android.os.Bundle;
+        import android.support.design.widget.NavigationView;
+        import android.support.v4.view.GravityCompat;
+        import android.support.v4.widget.DrawerLayout;
+        import android.support.v7.app.ActionBarDrawerToggle;
+        import android.support.v7.app.AppCompatActivity;
+        import android.support.v7.widget.Toolbar;
+        import android.view.MenuItem;
+        import android.view.View;
+        import android.widget.ListView;
+        import android.widget.TextView;
 
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.hz.kvalifdarbs.ListAdaptors.PatientDoctorAdapter;
-import com.hz.kvalifdarbs.Objects.Doctor;
-import com.hz.kvalifdarbs.utils.Intents;
-import com.hz.kvalifdarbs.R;
-import com.hz.kvalifdarbs.utils.MethodHelper;
-import com.hz.kvalifdarbs.utils.PreferenceUtils;
+        import com.google.firebase.database.ChildEventListener;
+        import com.google.firebase.database.DataSnapshot;
+        import com.google.firebase.database.DatabaseError;
+        import com.google.firebase.database.DatabaseReference;
+        import com.google.firebase.database.FirebaseDatabase;
+        import com.hz.kvalifdarbs.ListAdaptors.PatientMovementAdapter;
+        import com.hz.kvalifdarbs.Objects.Movement;
+        import com.hz.kvalifdarbs.R;
+        import com.hz.kvalifdarbs.utils.Intents;
+        import com.hz.kvalifdarbs.utils.MethodHelper;
+        import com.hz.kvalifdarbs.utils.PreferenceUtils;
 
-import java.util.ArrayList;
+        import java.util.ArrayList;
 
-public class PatientDoctorListActivity extends AppCompatActivity
+public class PatientMovementListActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener
 {
-    ListView doctorList;
-    ArrayList<String> patientDoctors;
-    PatientDoctorAdapter testAdapter;
     Context context;
-    DatabaseReference rootRef, childRef;
-    String userId, fullName, userName, userSurname, userType;
+    String userId, userName, userSurname, fullName, userType;
+    DatabaseReference rootRef, userRef;
     TextView emptyElement;
-
+    ListView movementList;
+    ArrayList<String> patientExams;
+    PatientMovementAdapter testAdapter;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_thing_list);
         context = getApplicationContext();
         //Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("Patient Movements");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //Strings
-        userType = PreferenceUtils.getUserType(context);
         userId  = PreferenceUtils.getId(context);
         userName = PreferenceUtils.getUserName(context);
         userSurname = PreferenceUtils.getUserSurname(context);
+        userType = PreferenceUtils.getUserType(context);
         fullName = userName + " " + userSurname;
 
         //Firebase references
         rootRef = FirebaseDatabase.getInstance().getReference();
-        childRef = rootRef.child("Patients").child(userId);
-
+        userRef = rootRef.child("Patients").child(userId);
 
         //Set up list
         emptyElement = findViewById(R.id.emptyElement);
-        doctorList = findViewById(R.id.thingList);
-        patientDoctors = new ArrayList<>(); //list of doctor patient id's
-        testAdapter = new PatientDoctorAdapter(this);
-        doctorList.setAdapter(testAdapter);
+        movementList = findViewById(R.id.thingList);
+        patientExams = new ArrayList<>(); //list of doctor patient id's
+        testAdapter = new PatientMovementAdapter(this);
+        movementList.setAdapter(testAdapter);
 
         TextView emptyText = findViewById(android.R.id.empty);
-        doctorList.setEmptyView(emptyText);
+        movementList.setEmptyView(emptyText);
 
 
         //Drawer menu
@@ -81,42 +78,23 @@ public class PatientDoctorListActivity extends AppCompatActivity
         toggle.syncState();
 
         NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
         MethodHelper.setUpNavigationMenu(navigationView, userId, fullName, userType);
 
         navigationView.setNavigationItemSelectedListener(this);
 
-        childRef.child("Doctors").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+        Integer testAdapterSize = testAdapter.getCount();
+        if(testAdapterSize==0){
+            String emptyTextString = "This patient has no movements";
+            emptyElement.setText(emptyTextString);
+            movementList.setEmptyView(emptyElement);
+        }
 
-                for(DataSnapshot uniqueKeySnapshot : dataSnapshot.getChildren()){
-                    //Loop 1 to go through all the child nodes of users
-                    String doctorId = uniqueKeySnapshot.getKey();
-                    patientDoctors.add(doctorId);
-                }
-                Integer testAdapterSize = patientDoctors.size();
-                if(testAdapterSize==0){
-                    String emptyText = "There are no doctors assigned to you.";
-                    emptyElement.setText(emptyText);
-                    doctorList.setEmptyView(emptyElement);
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-
-        rootRef.child("Doctors").addChildEventListener(new ChildEventListener() {
+        userRef.child("Movements").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                for (String curr : patientDoctors) if (curr.equals(dataSnapshot.getKey())){
-                    Doctor doctor = dataSnapshot.getValue(Doctor.class);
-                    testAdapter.add(doctor);
-                }
+                Movement movement = dataSnapshot.getValue(Movement.class);
+                testAdapter.insert(movement, 0);
+                testAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -137,13 +115,6 @@ public class PatientDoctorListActivity extends AppCompatActivity
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
-
-        doctorList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //TODO
             }
         });
     }
@@ -172,5 +143,19 @@ public class PatientDoctorListActivity extends AppCompatActivity
         return true;
     }
 
+    public void setUpNavigationMenu(NavigationView navigationView){
+        navigationView.inflateHeaderView(R.layout.nav_header_main);
+        navigationView.inflateMenu(R.menu.patient_drawer);
+
+        View headView = navigationView.getHeaderView(0);
+        TextView headUserName = headView.findViewById(R.id.headFullName);
+        TextView headUserId = headView.findViewById(R.id.headUserId);
+        headUserId.setText(userId);
+        headUserName.setText(fullName);
+
+        navigationView.setNavigationItemSelectedListener(this);
+    }
+
 
 }
+
