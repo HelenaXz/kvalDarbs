@@ -16,6 +16,7 @@ public class Patient implements Serializable {
     private String password;
     private String room;
     private String gender;
+    private String moveEveryTime;
 
 
 
@@ -24,7 +25,7 @@ public class Patient implements Serializable {
     }
     //TODO Pievienot field nosacījumi, cik bieži jākustina
 
-    public Patient(String name, String surname, String Id, String gender, String password, Integer phone, String birthDate, String room){
+    public Patient(String name, String surname, String Id, String gender, String password, Integer phone, String birthDate, String room, String moveEveryTime){
         setName(name);
         setSurname(surname);
         setId(Id);
@@ -34,6 +35,7 @@ public class Patient implements Serializable {
         setPassword(password);
         setRoom(room);
         setGender(gender);
+        setMoveEveryTime(moveEveryTime);
     }
 
     public void setName(String name){
@@ -94,5 +96,10 @@ public class Patient implements Serializable {
     public void setGender(String gender){
         this.gender = gender;
     }
-
+    public String getMoveEveryTime(){
+        return this.moveEveryTime;
+    }
+    public void setMoveEveryTime(String moveEveryTime){
+        this.moveEveryTime = moveEveryTime;
+    }
 }

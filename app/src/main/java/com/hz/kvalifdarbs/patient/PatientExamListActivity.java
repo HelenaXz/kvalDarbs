@@ -91,6 +91,13 @@ public class PatientExamListActivity extends AppCompatActivity
 
         navigationView.setNavigationItemSelectedListener(this);
 
+        Integer testAdapterSize = testAdapter.getCount();
+        if(testAdapterSize==0){
+            String emptyTextString = "You have no examinations.";
+            emptyElement.setText(emptyTextString);
+            examList.setEmptyView(emptyElement);
+        }
+
         userRef.child("Examinations").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
