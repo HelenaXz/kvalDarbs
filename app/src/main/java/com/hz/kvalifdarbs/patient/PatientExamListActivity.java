@@ -33,7 +33,7 @@ public class PatientExamListActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener
 {
     Context context;
-    String userId, userName, userSurname, fullName;
+    String userId, userName, userSurname, fullName, userType;
     DatabaseReference rootRef, userRef;
     TextView emptyElement;
     ListView examList;
@@ -53,6 +53,7 @@ public class PatientExamListActivity extends AppCompatActivity
         userId  = PreferenceUtils.getId(context);
         userName = PreferenceUtils.getUserName(context);
         userSurname = PreferenceUtils.getUserSurname(context);
+        userType = PreferenceUtils.getUserType(context);
         fullName = userName + " " + userSurname;
 
         //Firebase references
@@ -78,16 +79,7 @@ public class PatientExamListActivity extends AppCompatActivity
         toggle.syncState();
 
         NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
-        navigationView.inflateHeaderView(R.layout.nav_header_main);
-        navigationView.inflateMenu(R.menu.patient_drawer);
-
-        View headView = navigationView.getHeaderView(0);
-        TextView headUserName = headView.findViewById(R.id.headFullName);
-        TextView headUserId = headView.findViewById(R.id.headUserId);
-        headUserId.setText(userId);
-        headUserName.setText(fullName);
+        MethodHelper.setUpNavigationMenu(navigationView, userId, fullName, userType);
 
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -154,7 +146,18 @@ public class PatientExamListActivity extends AppCompatActivity
         return true;
     }
 
+    public void setUpNavigationMenu(NavigationView navigationView){
+        navigationView.inflateHeaderView(R.layout.nav_header_main);
+        navigationView.inflateMenu(R.menu.patient_drawer);
 
+        View headView = navigationView.getHeaderView(0);
+        TextView headUserName = headView.findViewById(R.id.headFullName);
+        TextView headUserId = headView.findViewById(R.id.headUserId);
+        headUserId.setText(userId);
+        headUserName.setText(fullName);
+
+        navigationView.setNavigationItemSelectedListener(this);
+    }
 
 
 }

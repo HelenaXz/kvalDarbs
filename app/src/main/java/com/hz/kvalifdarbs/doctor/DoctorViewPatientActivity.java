@@ -34,10 +34,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.PropertyResourceBundle;
 
 
 public class DoctorViewPatientActivity extends AppCompatActivity {
-    TextView name_surname, room, brought_in, birthDate, patientId, patientRoom;
+    TextView name_surname, brought_in, birthDate, patientId, patientRoom;
     String userId;
     Patient thisPatient;
     Context context;
@@ -57,8 +58,10 @@ public class DoctorViewPatientActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         context = getApplicationContext();
         final Intents intents = new Intents(this);
-        valueType = "Examinations";
 
+        //Strings
+        userId = PreferenceUtils.getId(context);
+        valueType = "Examinations";
 
 
         Intent i = getIntent();
@@ -69,7 +72,6 @@ public class DoctorViewPatientActivity extends AppCompatActivity {
         childRef = rootRef.child("Patients").child(thisPatient.getId());
 
         //TextViews, Buttons
-        userId = PreferenceUtils.getId(context);
         name_surname = findViewById(R.id.name_surname);
         patientId = findViewById(R.id.patientId_field);
         patientRoom = findViewById(R.id.patientRoom);
@@ -115,10 +117,10 @@ public class DoctorViewPatientActivity extends AppCompatActivity {
         testAdapter = new PatientExamAdapter(this);
         patientExamList.setAdapter(testAdapter);
 
-
         emptyElement = findViewById(R.id.emptyElement);
         TextView emptyText = findViewById(android.R.id.empty);
         patientExamList.setEmptyView(emptyText);
+
         getChildren(valueType);
 
         addExam.setOnClickListener(new View.OnClickListener() {

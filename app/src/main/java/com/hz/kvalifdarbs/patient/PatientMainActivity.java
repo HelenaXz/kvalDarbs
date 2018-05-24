@@ -28,7 +28,7 @@ import com.hz.kvalifdarbs.utils.PreferenceUtils;
 public class PatientMainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     DatabaseReference rootRef, userRef;
-    String userId, userName, userSurname, fullName, birthDate, roomNum, addedToSystem;
+    String userId, userName, userSurname, fullName, birthDate, roomNum, addedToSystem, userType;
     Context context;
     Button changePassword;
     TextView fullNameTV, userIdTV, patientRoomTV, addedToSystemTV, birthDateTV;
@@ -44,6 +44,7 @@ public class PatientMainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         //Strings
+        userType = PreferenceUtils.getUserType(context);
         userId  = PreferenceUtils.getId(context);
         userName = PreferenceUtils.getUserName(context);
         userSurname = PreferenceUtils.getUserSurname(context);
@@ -79,18 +80,10 @@ public class PatientMainActivity extends AppCompatActivity
         toggle.syncState();
 
         NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
 
-        navigationView.inflateHeaderView(R.layout.nav_header_main);
-        navigationView.inflateMenu(R.menu.patient_drawer);
-        View headView = navigationView.getHeaderView(0);
-        TextView headUserName = headView.findViewById(R.id.headFullName);
-        TextView headUserId = headView.findViewById(R.id.headUserId);
+        MethodHelper.setUpNavigationMenu(navigationView, userId, fullName, userType);
 
         navigationView.setNavigationItemSelectedListener(this);
-
-        headUserId.setText(userId);
-        headUserName.setText(fullName);
 
 
         changePassword.setOnClickListener(new View.OnClickListener() {
@@ -124,9 +117,6 @@ public class PatientMainActivity extends AppCompatActivity
                 });
             }
         });
-
-
-
 
 
 

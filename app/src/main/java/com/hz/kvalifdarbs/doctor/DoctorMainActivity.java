@@ -28,7 +28,7 @@ public class DoctorMainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener
 {
     Context context;
-    String userId, userName, userSurname, fullName, phoneNum;
+    String userId, userName, userSurname, fullName, phoneNum, userType;
     DatabaseReference rootRef, userRef;
     TextView fullNameTV, userIdTV, phoneNumTV;
     Button changePassword;
@@ -48,6 +48,7 @@ public class DoctorMainActivity extends AppCompatActivity
         userRef = rootRef.child("Doctors").child(userId);
 
         //Strings
+        userType = PreferenceUtils.getUserType(context);
         phoneNum = PreferenceUtils.getPhoneNum(context);
         userName = PreferenceUtils.getUserName(context);
         userSurname = PreferenceUtils.getUserSurname(context);
@@ -64,24 +65,14 @@ public class DoctorMainActivity extends AppCompatActivity
         phoneNumTV.append(phoneNum);
 
         //Drawer menu
-        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        final DrawerLayout drawer = findViewById(R.id.drawer_layout);
         final ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
-        navigationView.inflateHeaderView(R.layout.nav_header_main);
-        navigationView.inflateMenu(R.menu.doctor_drawer);
-
-        View headView = navigationView.getHeaderView(0);
-        TextView headUserName = headView.findViewById(R.id.headFullName);
-        TextView headUserId = headView.findViewById(R.id.headUserId);
-
-        headUserId.setText(userId);
-        headUserName.setText(fullName);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        MethodHelper.setUpNavigationMenu(navigationView, userId, fullName, userType);
 
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -134,7 +125,7 @@ public class DoctorMainActivity extends AppCompatActivity
             MethodHelper.logOut(context, intents);
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

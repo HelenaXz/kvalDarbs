@@ -24,7 +24,7 @@ import com.hz.kvalifdarbs.utils.PreferenceUtils;
 
 public class ConnectDeviceActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    String userId, userName, userSurname, fullName;
+    String userId, userName, userSurname, fullName, userType;
     DatabaseReference rootRef, userRef;
     Context context;
     @Override
@@ -37,6 +37,7 @@ public class ConnectDeviceActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         //Strings
+        userType = PreferenceUtils.getUserType(context);
         userId  = PreferenceUtils.getId(context);
         userName = PreferenceUtils.getUserName(context);
         userSurname = PreferenceUtils.getUserSurname(context);
@@ -58,18 +59,10 @@ public class ConnectDeviceActivity extends AppCompatActivity
         toggle.syncState();
 
         NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
 
-        navigationView.inflateHeaderView(R.layout.nav_header_main);
-        navigationView.inflateMenu(R.menu.patient_drawer);
-        View headView = navigationView.getHeaderView(0);
-        TextView headUserName = headView.findViewById(R.id.headFullName);
-        TextView headUserId = headView.findViewById(R.id.headUserId);
+        MethodHelper.setUpNavigationMenu(navigationView, userId, fullName, userType);
 
         navigationView.setNavigationItemSelectedListener(this);
-
-        headUserId.setText(userId);
-        headUserName.setText(fullName);
         
     }
 

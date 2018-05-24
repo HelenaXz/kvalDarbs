@@ -38,7 +38,7 @@ public class PatientDoctorListActivity extends AppCompatActivity
     PatientDoctorAdapter testAdapter;
     Context context;
     DatabaseReference rootRef, childRef;
-    String userId, fullName, userName, userSurname;
+    String userId, fullName, userName, userSurname, userType;
     TextView emptyElement;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +52,7 @@ public class PatientDoctorListActivity extends AppCompatActivity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //Strings
+        userType = PreferenceUtils.getUserType(context);
         userId  = PreferenceUtils.getId(context);
         userName = PreferenceUtils.getUserName(context);
         userSurname = PreferenceUtils.getUserSurname(context);
@@ -86,15 +87,7 @@ public class PatientDoctorListActivity extends AppCompatActivity
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-        navigationView.inflateHeaderView(R.layout.nav_header_main);
-        navigationView.inflateMenu(R.menu.patient_drawer);
-
-        View headView = navigationView.getHeaderView(0);
-        TextView headUserName = headView.findViewById(R.id.headFullName);
-        TextView headUserId = headView.findViewById(R.id.headUserId);
-        headUserId.setText(userId);
-        headUserName.setText(fullName);
+        MethodHelper.setUpNavigationMenu(navigationView, userId, fullName, userType);
 
         navigationView.setNavigationItemSelectedListener(this);
 

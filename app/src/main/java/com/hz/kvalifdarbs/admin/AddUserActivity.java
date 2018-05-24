@@ -23,7 +23,7 @@ public class AddUserActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener
 {
     Context context;
-    String userId, userName, userSurname, fullName;
+    String userId, userName, userSurname, fullName, userType;
     Button addDoctorBtn, addPatientBtn, addAdminBtn;
 
     @Override
@@ -38,6 +38,7 @@ public class AddUserActivity extends AppCompatActivity
 
 
         //Strings
+        userType = PreferenceUtils.getUserType(context);
         userId  = PreferenceUtils.getId(context);
         userName = PreferenceUtils.getUserName(context);
         userSurname = PreferenceUtils.getUserSurname(context);
@@ -51,17 +52,7 @@ public class AddUserActivity extends AppCompatActivity
         toggle.syncState();
 
         NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
-        navigationView.inflateHeaderView(R.layout.nav_header_main);
-        navigationView.inflateMenu(R.menu.admin_drawer);
-        //Header of drawer nav.
-        View headView = navigationView.getHeaderView(0);
-        TextView headUserId = headView.findViewById(R.id.headUserId);
-        TextView headUserName = headView.findViewById(R.id.headFullName);
-        headUserId.setText(userId);
-        headUserName.setText(fullName);
-
+        MethodHelper.setUpNavigationMenu(navigationView, userId, fullName, userType);
 
         navigationView.setNavigationItemSelectedListener(this);
 

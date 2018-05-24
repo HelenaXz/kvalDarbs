@@ -24,12 +24,14 @@ import com.hz.kvalifdarbs.utils.MethodHelper;
 import com.hz.kvalifdarbs.R;
 import com.hz.kvalifdarbs.utils.PreferenceUtils;
 
+import java.util.PropertyResourceBundle;
+
 
 public class AdminMainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
         DatabaseReference rootRef, userRef;
         Context context;
-        String userId, userName, userSurname, fullName;
+        String userId, userName, userSurname, fullName, userType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +44,7 @@ public class AdminMainActivity extends AppCompatActivity
         toolbar.setTitle("Hello");
 
         //Strings
+        userType = PreferenceUtils.getUserType(context);
         userId  = PreferenceUtils.getId(context);
         userName = PreferenceUtils.getUserName(context);
         userSurname = PreferenceUtils.getUserSurname(context);
@@ -50,27 +53,16 @@ public class AdminMainActivity extends AppCompatActivity
         userRef = rootRef.child("Patients").child(userId);
 
         //Drawer menu
-        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        final DrawerLayout drawer = findViewById(R.id.drawer_layout);
         final ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
-        navigationView.inflateHeaderView(R.layout.nav_header_main);
-        navigationView.inflateMenu(R.menu.admin_drawer);
-        View headView = navigationView.getHeaderView(0);
-
-        TextView headUserName = headView.findViewById(R.id.headFullName);
-        TextView headUserId = headView.findViewById(R.id.headUserId);
-        headUserId.setText(userId);
-        headUserName.setText(fullName);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        MethodHelper.setUpNavigationMenu(navigationView, userId, fullName, userType);
 
         navigationView.setNavigationItemSelectedListener(this);
-
-
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
