@@ -113,9 +113,12 @@ public class PatientDoctorListActivity extends AppCompatActivity
         rootRef.child("Doctors").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                for (String curr : patientDoctors) if (curr.equals(dataSnapshot.getKey())){
-                    Doctor doctor = dataSnapshot.getValue(Doctor.class);
-                    testAdapter.add(doctor);
+                for (String curr : patientDoctors) {
+                    if (curr.equals(dataSnapshot.getKey())){
+                        Doctor doctor = dataSnapshot.getValue(Doctor.class);
+                        testAdapter.add(doctor);
+                    }
+
                 }
             }
 

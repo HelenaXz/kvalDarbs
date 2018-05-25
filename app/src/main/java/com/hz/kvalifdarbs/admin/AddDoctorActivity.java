@@ -74,6 +74,7 @@ public class AddDoctorActivity extends AppCompatActivity {
                     } else {
                         MethodHelper.showToast(context, "Doctor with id exists");
                     }
+                    clearForm(v);
                 }
             }
         });

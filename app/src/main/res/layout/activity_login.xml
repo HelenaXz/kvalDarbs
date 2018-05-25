@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/mainLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,6 +13,7 @@
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="top"
             android:theme="@style/AppTheme.AppBarOverlay">
 
             <android.support.v7.widget.Toolbar
@@ -26,11 +28,15 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="10dp"
-            android:layout_marginStart="10dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="110dp"
+            android:background="@color/paleWhite"
             android:gravity="center_vertical"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="12dp"
+            android:paddingEnd="10dp"
+            android:paddingStart="10dp"
+            android:paddingTop="12dp">
 
             <TextView
                 android:id="@+id/textView11"
@@ -53,6 +59,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
                 android:layout_marginStart="10dp"
+                android:backgroundTint="@color/colorPrimaryDark"
                 android:ems="10"
                 android:hint="@string/id"
                 android:inputType="textPersonName"
@@ -65,6 +72,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
                 android:layout_marginStart="10dp"
+                android:backgroundTint="@color/colorPrimaryDark"
                 android:ems="10"
                 android:hint="@string/password"
                 android:inputType="textPassword"
@@ -79,13 +87,18 @@
                 android:layout_marginEnd="20dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="5dp"
-                android:text="Remember me" />
+                android:backgroundTint="@color/colorAccent"
+                android:buttonTint="@color/colorAccentDark"
+                android:text="Remember me"
+                android:textColorLink="@color/colorAccentDark" />
 
             <Button
                 android:id="@+id/loginBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/colorPrimaryMedium"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:backgroundTint="@color/colorPrimary"
                 android:text="@string/login"
                 android:textColor="@color/white" />
         </LinearLayout>

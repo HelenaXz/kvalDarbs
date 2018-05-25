@@ -1,11 +1,16 @@
 package com.hz.kvalifdarbs;
 
+import android.animation.ArgbEvaluator;
+import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.animation.Animation;
 import android.widget.Button;
 
 import com.hz.kvalifdarbs.utils.Intents;
@@ -17,6 +22,7 @@ public class UserSelectActivity extends AppCompatActivity {
     String userId, userType, loggedIn;
     Intents intents;
 
+    @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,6 +31,7 @@ public class UserSelectActivity extends AppCompatActivity {
         userId = PreferenceUtils.getId(context);
         userType = PreferenceUtils.getUserType(context);
         loggedIn = PreferenceUtils.getLoggedIn(context);
+
 
 
         if (!loggedIn.equals("true")) {
@@ -55,6 +62,9 @@ public class UserSelectActivity extends AppCompatActivity {
         } else {
             loggedIn(PreferenceUtils.getUserType(context));
         }
+
+
+
     }
 
     private void startUser(Intent intent, String userType) {

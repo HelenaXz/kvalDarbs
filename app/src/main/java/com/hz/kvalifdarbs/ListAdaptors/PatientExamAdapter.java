@@ -34,11 +34,11 @@ public class PatientExamAdapter extends ArrayAdapter<Examination> {
         TextView doctorName = convertView.findViewById(R.id.examDoctor);
         TextView examComment = convertView.findViewById(R.id.examComment);
 
-        String s = "Time: " + thisExam.getAddDateTime();
+        String s =  thisExam.getAddDateTime();
         examTime.setText(s);
-        s = "Doctor: " + thisExam.getDoctorName();
+        s =  thisExam.getDoctorName();
         doctorName.setText(s);
-        s = "Comment: " + thisExam.getComment();
+        s = thisExam.getComment();
         examComment.setText(s);
 
         return convertView;

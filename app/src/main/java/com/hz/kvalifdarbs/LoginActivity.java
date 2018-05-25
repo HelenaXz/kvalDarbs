@@ -1,11 +1,16 @@
 package com.hz.kvalifdarbs;
 
+import android.animation.ArgbEvaluator;
+import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -30,7 +35,9 @@ public class LoginActivity extends AppCompatActivity {
     Context context;
     Intents intents;
     CheckBox checkBox;
+    ConstraintLayout mainLayout;
 
+    @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +53,7 @@ public class LoginActivity extends AppCompatActivity {
         userPassView = findViewById(R.id.userPass);
         Button login = findViewById(R.id.loginBtn);
         checkBox = (CheckBox) findViewById(R.id.checkRemeber);
+        mainLayout = findViewById(R.id.mainLayout);
 
         Intent i = getIntent();
         thisUserType = i.getStringExtra("UserType");
@@ -74,6 +82,21 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+        int colorFrom = getResources().getColor(R.color.white);
+        int colorTo = getResources().getColor(R.color.colorPrimaryLight);
+        ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
+        colorAnimation.setDuration(5000); // milliseconds
+        colorAnimation.setRepeatMode(Animation.REVERSE);
+        colorAnimation.setRepeatCount(Animation.INFINITE);
+        colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+
+            @Override
+            public void onAnimationUpdate(ValueAnimator animator) {
+                mainLayout.setBackgroundColor((int) animator.getAnimatedValue());
+            }
+
+        });
+        colorAnimation.start();
     }
 
     public void attemptLogin(final String userTypeString, final Intent userTypeMainMenu){

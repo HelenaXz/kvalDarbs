@@ -196,8 +196,18 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:background="@color/white"
-                android:elevation="5dp" />
+                android:elevation="5dp" >
+
+
+            </ListView>
+            <TextView
+                android:id="@+id/emptyElement"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:gravity="center_vertical|center_horizontal" />
 
         </LinearLayout>
+
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

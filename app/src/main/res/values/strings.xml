@@ -16,7 +16,7 @@
 
     <string name="gender">Gender</string>
     <string name="room">Room number</string>
-    <string name="broughtIn">Brought in on</string>
+    <string name="broughtIn">Brought in on: </string>
 
 
     <string name="generalInfo">General information</string>

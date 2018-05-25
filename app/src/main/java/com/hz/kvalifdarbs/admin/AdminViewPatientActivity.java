@@ -26,8 +26,9 @@ import android.content.Context;
         import com.hz.kvalifdarbs.Objects.Patient;
         import com.hz.kvalifdarbs.ListAdaptors.PatientDoctorSmallAdapter;
         import com.hz.kvalifdarbs.R;
+import com.hz.kvalifdarbs.utils.MethodHelper;
 
-        import java.util.ArrayList;
+import java.util.ArrayList;
 
 
 public class AdminViewPatientActivity extends AppCompatActivity {
@@ -78,10 +79,10 @@ public class AdminViewPatientActivity extends AppCompatActivity {
 
         //Fill TextViews
         name_surname.setText(thisPatient.getFullName());
-        brought_in.setText(thisPatient.getAddedToSystem());
-        birthDate.setText(thisPatient.getBirthDate());
+        brought_in.append(thisPatient.getAddedToSystem());
+        birthDate.append(thisPatient.getBirthDate());
         patientId.append(thisPatient.getId());
-        room.setText(thisPatient.getRoom());
+        room.append(thisPatient.getRoom());
 
         //ArrayAdapter for small doctor list
         testAdapter = new PatientDoctorSmallAdapter(this);
@@ -103,7 +104,7 @@ public class AdminViewPatientActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 examinationsBtn.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-                movementsBtn.setBackgroundColor(getResources().getColor(R.color.colorPrimaryMediumLight));
+                movementsBtn.setBackgroundColor(getResources().getColor(R.color.colorPrimaryLight));
                 valueType = "Examinations";
                 testAdapter2.clear();
                 getChildren(valueType);
@@ -112,7 +113,7 @@ public class AdminViewPatientActivity extends AppCompatActivity {
         movementsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                examinationsBtn.setBackgroundColor(getResources().getColor(R.color.colorPrimaryMediumLight));
+                examinationsBtn.setBackgroundColor(getResources().getColor(R.color.colorPrimaryLight));
                 movementsBtn.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
                 valueType = "Movements";
                 testAdapter2.clear();
@@ -145,6 +146,7 @@ public class AdminViewPatientActivity extends AppCompatActivity {
                         doctorRef.child("Patients").child(thisPatient.getId()).removeValue();
                         testAdapter.remove(testAdapter.getItem(position));
                         testAdapter.notifyDataSetChanged();
+                        MethodHelper.showToast(context, "Doctor removed from patient");
                     }
                 }).setNegativeButton("Cancel", null);
 
@@ -166,6 +168,7 @@ public class AdminViewPatientActivity extends AppCompatActivity {
                         }
                         patientRef.removeValue();
                         startActivity(intents.allPatientList.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
+                        MethodHelper.showToast(context, "User deleted");
 
                     }
                 }).setNegativeButton("Cancel", null);
