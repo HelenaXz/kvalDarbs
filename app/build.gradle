@@ -18,6 +18,8 @@ android {
     }
 }
 
+
+
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:27.1.1'
@@ -29,6 +31,17 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:15.0.0'
     implementation 'com.google.firebase:firebase-core:15.0.0'
     implementation 'com.android.support:appcompat-v7:27.1.1'
+    // RxAndroidBle
+    implementation 'com.polidea.rxandroidble:rxandroidble:1.4.3'
+    implementation 'io.reactivex:rxandroid:1.2.1'
+    // Movesense .aar lib
+    implementation(name: 'mdslib', version: '1.13.0(1)-release', ext: 'aar')
+
+    // RxAndroidBle
+    compile 'com.polidea.rxandroidble:rxandroidble:1.4.3'
+    compile 'io.reactivex:rxandroid:1.2.1'
+
 }
 
 apply plugin: 'com.google.gms.google-services'
+
