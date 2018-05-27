@@ -50,8 +50,11 @@ dependencies {
     implementation(name: 'mdslib', version: '1.13.0(1)-release', ext: 'aar')
 
     // RxAndroidBle
-    compile 'com.polidea.rxandroidble:rxandroidble:1.4.3'
-    compile 'io.reactivex:rxandroid:1.2.1'
+    implementation 'com.polidea.rxandroidble:rxandroidble:1.4.3'
+    implementation 'io.reactivex:rxandroid:1.2.1'
+
+    // GSON
+    implementation 'com.google.code.gson:gson:2.8.0'
 
 }
 

@@ -18,6 +18,7 @@ import com.hz.kvalifdarbs.doctor.DoctorMainActivity;
 import com.hz.kvalifdarbs.doctor.DoctorPatientListActivity;
 import com.hz.kvalifdarbs.doctor.DoctorViewPatientActivity;
 import com.hz.kvalifdarbs.LoginActivity;
+import com.hz.kvalifdarbs.patient.ConnectDeviceActivity;
 import com.hz.kvalifdarbs.patient.PatientDoctorListActivity;
 import com.hz.kvalifdarbs.patient.PatientExamListActivity;
 import com.hz.kvalifdarbs.patient.PatientMainActivity;
@@ -35,6 +36,8 @@ public class Intents extends AppCompatActivity {
     public Intent patientDoctorListView;
     public Intent patientDeviceManage;
     public Intent patientExamListView;
+    public Intent connectBluetoothDevice;
+
     public Intent loginView;
     public Intent userSelect;
 
@@ -59,5 +62,6 @@ public class Intents extends AppCompatActivity {
         this.patientDoctorListView = new Intent(thisContext, PatientDoctorListActivity.class);
         this.patientDeviceManage = new Intent(thisContext, ConnectDeviceActivity.class);
         this.patientExamListView = new Intent(thisContext, PatientExamListActivity.class);
+        this.connectBluetoothDevice = new Intent(thisContext, com.hz.kvalifdarbs.utils.ConnectDeviceActivity.class);
     }
 }
