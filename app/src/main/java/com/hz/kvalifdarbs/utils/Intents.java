@@ -18,7 +18,6 @@ import com.hz.kvalifdarbs.doctor.DoctorMainActivity;
 import com.hz.kvalifdarbs.doctor.DoctorPatientListActivity;
 import com.hz.kvalifdarbs.doctor.DoctorViewPatientActivity;
 import com.hz.kvalifdarbs.LoginActivity;
-import com.hz.kvalifdarbs.patient.ConnectDeviceActivity;
 import com.hz.kvalifdarbs.patient.PatientDoctorListActivity;
 import com.hz.kvalifdarbs.patient.PatientExamListActivity;
 import com.hz.kvalifdarbs.patient.PatientMainActivity;

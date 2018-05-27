@@ -11,8 +11,11 @@
     <color name="colorAccentLight">#f5e0d2</color>
 
     <color name="urgent">#c9444f</color>
+    <color name="urgentBright">#da2433</color>
+    <color name="urgentDark">#83111a</color>
     <color name="medium">#e9b346</color>
     <color name="ok">#88c980</color>
+    <color name="longTime"></color>
 
     <color name="white">#f7f7f7</color>
     <color name="paleWhite">#80ffffff</color>

@@ -50,7 +50,7 @@ public class ConnectDeviceActivity extends AppCompatActivity implements AdapterV
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_connect_device);
 
         // Init Scan UI
         mScanResultListView = (ListView)findViewById(R.id.listScanResult);

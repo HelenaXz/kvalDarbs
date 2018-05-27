@@ -1,6 +1,8 @@
 package com.hz.kvalifdarbs.Objects;
 
-public class Examination {
+import java.io.Serializable;
+
+public class Examination implements Serializable {
     private String doctorId;
     private String doctorName;
     private String addDateTime;
@@ -15,8 +17,6 @@ public class Examination {
         setComment(comment);
         setDoctorId(doctorId);
         setDoctorName(doctorName);
-
-
     }
 
     public void setDoctorName(String doctorName) {

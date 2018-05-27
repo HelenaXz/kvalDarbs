@@ -38,7 +38,7 @@ public class PatientDoctorListActivity extends AppCompatActivity
     PatientDoctorAdapter testAdapter;
     Context context;
     DatabaseReference rootRef, childRef;
-    String userId, fullName, userName, userSurname, userType;
+    String userType;
     TextView emptyElement;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,10 +52,10 @@ public class PatientDoctorListActivity extends AppCompatActivity
 
         //Strings
         userType = PreferenceUtils.getUserType(context);
-        userId  = PreferenceUtils.getId(context);
-        userName = PreferenceUtils.getUserName(context);
-        userSurname = PreferenceUtils.getUserSurname(context);
-        fullName = userName + " " + userSurname;
+        String userId  = PreferenceUtils.getId(context);
+        String userName = PreferenceUtils.getUserName(context);
+        String userSurname = PreferenceUtils.getUserSurname(context);
+        String fullName = userName + " " + userSurname;
 
         //Firebase references
         rootRef = FirebaseDatabase.getInstance().getReference();
@@ -86,6 +86,37 @@ public class PatientDoctorListActivity extends AppCompatActivity
 
         navigationView.setNavigationItemSelectedListener(this);
 
+        //
+        getPatientDoctors();
+        showPatientDoctors();
+
+    }
+
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+        final Intents intents = new Intents(this);
+
+        if (id == R.id.nav_my_doctors) {
+            startActivity(intents.patientDoctorListView.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
+        } else if (id == R.id.nav_pat_exams) {
+            startActivity(intents.patientExamListView.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
+        } else if (id == R.id.nav_pat_movements) {
+            //TODO
+        }else if (id == R.id.nav_profile) {
+            startActivity(intents.patientMainMenu.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
+        } else if (id == R.id.nav_BT_device){
+            startActivity(intents.patientDeviceManage.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
+        } else if (id == R.id.nav_logout) {
+            MethodHelper.logOut(context, intents);
+        }
+
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    public void getPatientDoctors(){
         childRef.child("Doctors").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -108,8 +139,9 @@ public class PatientDoctorListActivity extends AppCompatActivity
 
             }
         });
+    }
 
-
+    public void showPatientDoctors(){
         rootRef.child("Doctors").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -142,36 +174,6 @@ public class PatientDoctorListActivity extends AppCompatActivity
 
             }
         });
-
-        doctorList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //TODO
-            }
-        });
     }
-
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-        final Intents intents = new Intents(this);
-
-        if (id == R.id.nav_my_doctors) {
-            startActivity(intents.patientDoctorListView.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
-        } else if (id == R.id.nav_pat_exams) {
-            startActivity(intents.patientExamListView.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
-        } else if (id == R.id.nav_profile) {
-            startActivity(intents.patientMainMenu.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
-        } else if (id == R.id.nav_BT_device){
-            startActivity(intents.patientDeviceManage.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
-        } else if (id == R.id.nav_logout) {
-            MethodHelper.logOut(context, intents);
-        }
-
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
-
 
 }

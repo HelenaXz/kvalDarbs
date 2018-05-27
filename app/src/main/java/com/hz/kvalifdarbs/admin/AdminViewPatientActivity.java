@@ -68,6 +68,8 @@ public class AdminViewPatientActivity extends AppCompatActivity {
         TextView patientId = findViewById(R.id.patientId_field);
         Button addDoctorTo = findViewById(R.id.btnAddDoc);
         Button deleteUser = findViewById(R.id.btnDeleteUser);
+        Button examinationsBtn = findViewById(R.id.btnExamination);
+        Button movementsBtn = findViewById(R.id.btnMovements);
         ListView patientDoctors = findViewById(R.id.patientDoctorList);
         TextView moveEvery = findViewById(R.id.moveEvery);
 
@@ -96,6 +98,26 @@ public class AdminViewPatientActivity extends AppCompatActivity {
         getChildren(valueType);
 
 
+        examinationsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                examinationsBtn.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+                movementsBtn.setBackgroundColor(getResources().getColor(R.color.colorPrimaryLight));
+                valueType = "Examinations";
+                testAdapter2.clear();
+                getChildren(valueType);
+            }
+        });
+        movementsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                examinationsBtn.setBackgroundColor(getResources().getColor(R.color.colorPrimaryLight));
+                movementsBtn.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+                valueType = "Movements";
+                testAdapter2.clear();
+                getChildren(valueType);
+            }
+        });
 
         addDoctorTo.setOnClickListener(new View.OnClickListener() {
             @Override

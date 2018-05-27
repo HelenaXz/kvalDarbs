@@ -103,10 +103,10 @@ public class Patient implements Serializable {
     public void setMoveEveryTime(Integer moveEveryTime){
         this.moveEveryTime = moveEveryTime;
     }
-     public Examination getLastExam(){
+    public Examination getLastExam(){
         return this.lastExam;
      }
-     public void setLastExam(Examination exam){
+    public void setLastExam(Examination exam){
         this.lastExam = exam;
      }
 }

@@ -32,15 +32,11 @@ import java.util.Date;
 
 
 public class DoctorViewPatientActivity extends AppCompatActivity {
-    TextView name_surname, brought_in, birthDate, patientId, patientRoom, moveEvery, emptyElement;
-    String userId, valueType;
+    String valueType;
     Patient thisPatient;
     Context context;
-    Button addExam;
     PatientExamAdapter testAdapter;
     DatabaseReference rootRef, childRef;
-    ListView patientExamList;
-    Examination lastExam;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,7 +49,7 @@ public class DoctorViewPatientActivity extends AppCompatActivity {
         final Intents intents = new Intents(this);
 
         //Strings
-        userId = PreferenceUtils.getId(context);
+        String userId = PreferenceUtils.getId(context);
         valueType = "Examinations";
 
         Intent i = getIntent();
@@ -64,13 +60,15 @@ public class DoctorViewPatientActivity extends AppCompatActivity {
         childRef = rootRef.child("Patients").child(thisPatient.getId());
 
         //TextViews, Buttons
-        name_surname = findViewById(R.id.name_surname);
-        patientId = findViewById(R.id.patientId_field);
-        patientRoom = findViewById(R.id.patientRoom);
-        birthDate = findViewById(R.id.birthDate);
-        brought_in = findViewById(R.id.brought_in);
-        moveEvery = findViewById(R.id.moveEvery);
-        addExam = findViewById(R.id.addExamBtn);
+        TextView  name_surname = findViewById(R.id.name_surname);
+        TextView patientId = findViewById(R.id.patientId_field);
+        TextView patientRoom = findViewById(R.id.patientRoom);
+        TextView birthDate = findViewById(R.id.birthDate);
+        TextView brought_in = findViewById(R.id.brought_in);
+        TextView moveEvery = findViewById(R.id.moveEvery);
+        Button addExam = findViewById(R.id.addExamBtn);
+        Button examinationsBtn = findViewById(R.id.btnExamination);
+        Button movementsBtn = findViewById(R.id.btnMovements);
 
 
         //Set TextViews
@@ -83,18 +81,37 @@ public class DoctorViewPatientActivity extends AppCompatActivity {
         moveEvery.append(String.valueOf(thisPatient.getMoveEveryTime()) + " mins");
 
         //ListView set up
-        patientExamList = findViewById(R.id.patientExamList);
+        ListView patientValueList = findViewById(R.id.patientExamList);
 
         testAdapter = new PatientExamAdapter(this);
-        patientExamList.setAdapter(testAdapter);
+        patientValueList.setAdapter(testAdapter);
 
-        emptyElement = findViewById(R.id.emptyElement);
+        TextView emptyElement = findViewById(R.id.emptyElement);
         TextView emptyText = findViewById(android.R.id.empty);
-        patientExamList.setEmptyView(emptyText);
+        patientValueList.setEmptyView(emptyText);
 
         getChildren(valueType);
 
-
+        examinationsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                examinationsBtn.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+                movementsBtn.setBackgroundColor(getResources().getColor(R.color.colorPrimaryLight));
+                valueType = "Examinations";
+                testAdapter.clear();
+                getChildren(valueType);
+            }
+        });
+        movementsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                examinationsBtn.setBackgroundColor(getResources().getColor(R.color.colorPrimaryLight));
+                movementsBtn.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+                valueType = "Movements";
+                testAdapter.clear();
+                getChildren(valueType);
+            }
+        });
 
         addExam.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,15 +141,7 @@ public class DoctorViewPatientActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         //Save new examination
-                        String doctorId = PreferenceUtils.getId(context);
-                        String doctorName = PreferenceUtils.getUserName(context) + " " + PreferenceUtils.getUserSurname(context);
-                        String commentString = examComment.getText().toString();
-                        Examination newExam = new Examination(doctorId, doctorName, time, commentString);
-
-                        DatabaseReference thisPatientRef = FirebaseDatabase.getInstance().getReference().child("Patients").child(thisPatient.getId());
-                        thisPatientRef.child("Examinations").child(time).setValue(newExam);
-                        thisPatientRef.child("lastExam").setValue(newExam);
-                        MethodHelper.showToast(getApplicationContext(), "Examination added");
+                        addExam(examComment, time);
                         addExamDialog.dismiss();
 
 
@@ -191,5 +200,18 @@ public class DoctorViewPatientActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    public void addExam(EditText examComment, String time ){
+        String doctorId = PreferenceUtils.getId(context);
+        String doctorName = PreferenceUtils.getUserName(context) + " " + PreferenceUtils.getUserSurname(context);
+        String commentString = examComment.getText().toString();
+        Examination newExam = new Examination(doctorId, doctorName, time, commentString);
+        thisPatient.setLastExam(newExam);
+
+        DatabaseReference thisPatientRef = FirebaseDatabase.getInstance().getReference().child("Patients").child(thisPatient.getId());
+        thisPatientRef.child("Examinations").child(time).setValue(newExam);
+        thisPatientRef.child("lastExam").setValue(newExam);
+        MethodHelper.showToast(getApplicationContext(), "Examination added");
     }
 }

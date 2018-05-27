@@ -1,10 +1,14 @@
 package com.hz.kvalifdarbs.ListAdaptors;
 
+import android.animation.ArgbEvaluator;
+import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
@@ -32,6 +36,7 @@ public class DoctorPatientAdapter extends ArrayAdapter<Object> {
         this.context = context;
     }
     String lastExamTime;
+    @SuppressLint("WrongConstant")
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
@@ -71,15 +76,33 @@ public class DoctorPatientAdapter extends ArrayAdapter<Object> {
             int lastTimeAllMins = lastTimeHour * 60 + lastTimeMin;
             int toNextMove = minTime-(curTimeAllMins - lastTimeAllMins);
             if(toNextMove>=60){
-                colorIndicator.setBackgroundColor(ContextCompat.getColor(context, R.color.ok));
+                colorIndicator.setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimaryLight));
             } else if (toNextMove < 60 && toNextMove > 20){
-                colorIndicator.setBackgroundColor(ContextCompat.getColor(context, R.color.medium));
+                colorIndicator.setBackgroundColor(ContextCompat.getColor(context, R.color.ok));
             } else {
-                colorIndicator.setBackgroundColor(ContextCompat.getColor(context, R.color.urgent));
+                colorIndicator.setBackgroundColor(ContextCompat.getColor(context, R.color.medium));
             }
 
             if(toNextMove < 0){
-                String t = String.valueOf(toNextMove);
+                int colorFrom = ContextCompat.getColor(context, R.color.urgentBright);
+                int colorTo = ContextCompat.getColor(context, R.color.urgentDark);
+                ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
+                colorAnimation.setDuration(2000); // milliseconds
+                colorAnimation.setRepeatMode(Animation.REVERSE);
+                colorAnimation.setRepeatCount(Animation.INFINITE);
+                colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+
+                    @Override
+                    public void onAnimationUpdate(ValueAnimator animator) {
+                        colorIndicator.setBackgroundColor((int) animator.getAnimatedValue());
+                    }
+
+                });
+                colorAnimation.start();
+
+
+
+                String t = String.valueOf(toNextMove*(-1));
                 String s = "Check now! Missed by " + t + " min";
                 patientCheck.setText(s);
             } else {

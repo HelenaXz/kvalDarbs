@@ -73,9 +73,6 @@
             android:name=".admin.AddUserActivity"
             android:label="Select User to add" />
         <activity
-            android:name=".patient.ConnectDeviceActivity"
-            android:label="Movement Device" />
-        <activity
             android:name=".patient.PatientDoctorListActivity"
             android:label="My Doctors" />
         <activity

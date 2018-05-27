@@ -200,6 +200,16 @@
                     android:paddingTop="6dp"
                     android:text="@string/exams"
                     android:textColor="@color/white" />
+                <Button
+                    android:id="@+id/btnMovements"
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"
+                    android:layout_weight="1"
+                    android:background="@color/colorPrimaryMediumLight"
+                    android:gravity="center_horizontal"
+                    android:paddingTop="6dp"
+                    android:text="Movements"
+                    android:textColor="@color/white" />
 
             </LinearLayout>
 
