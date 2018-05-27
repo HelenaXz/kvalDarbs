@@ -36,11 +36,13 @@
         <activity
             android:name=".doctor.DoctorViewPatientActivity"
             android:label="Patient"/>
-        <activity android:name=".admin.AllPatientListActivity"/>
-        <activity android:name=".admin.AllDoctorListActivity"/>
+        <activity android:name=".admin.AllPatientListActivity"
+            android:label="All Patients"/>
+        <activity android:name=".admin.AllDoctorListActivity"
+            android:label="All Doctors"/>
         <activity
             android:name=".admin.AdminMainActivity"
-            android:label="Hello"/>
+            android:label="Hello" />
         <activity
             android:name=".LoginActivity"
             android:label="Login" />
@@ -62,12 +64,15 @@
         <activity
             android:name=".doctor.DoctorPatientListActivity"
             android:label="My Patients"/>
-
         <activity
             android:name=".admin.AddUserActivity"
             android:label="Select User to add"/>
-        <activity android:name=".patient.ConnectDeviceActivity" />
-        <activity android:name=".patient.PatientDoctorListActivity" />
+        <activity android:name=".patient.ConnectDeviceActivity"
+            android:label="Movement Device"/>
+        <activity android:name=".patient.PatientDoctorListActivity"
+            android:label="My Doctors" />
+        <activity android:name=".patient.PatientExamListActivity"
+            android:label="Examinations"/>
     </application>
 
 </manifest>

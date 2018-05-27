@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/mainLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -41,22 +42,31 @@
             android:id="@+id/adminBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
             android:backgroundTint="@color/colorPrimary"
-            android:text="@string/admin" />
+            android:text="@string/admin"
+            android:textColor="@color/white" />
 
         <Button
             android:id="@+id/doctorBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
             android:backgroundTint="@color/colorPrimary"
-            android:text="@string/doctor" />
+            android:text="@string/doctor"
+            android:textColor="@color/white" />
 
         <Button
             android:id="@+id/patientBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
             android:backgroundTint="@color/colorPrimary"
-            android:text="@string/patient" />
+            android:text="@string/patient"
+            android:textColor="@color/white" />
 
     </LinearLayout>
 

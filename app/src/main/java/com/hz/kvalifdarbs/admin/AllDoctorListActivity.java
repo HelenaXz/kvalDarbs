@@ -14,7 +14,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -37,7 +36,7 @@ public class AllDoctorListActivity extends AppCompatActivity
     ArrayList<Doctor> allDoctors;
     AllDoctorAdapter testAdapter;
     Context context;
-    String userId, userName, userSurname, fullName;
+    String userId, userName, userSurname, fullName, userType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,11 +48,9 @@ public class AllDoctorListActivity extends AppCompatActivity
 
         //Toolbar setup
         Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.inflateMenu(R.menu.menu_main);
-        toolbar.setNavigationIcon(R.drawable.ic_menu_white);
         toolbar.setTitle("All Doctors");
-
         //Strings
+        userType = PreferenceUtils.getUserType(context);
         userId  = PreferenceUtils.getId(context);
         userName = PreferenceUtils.getUserName(context);
         userSurname = PreferenceUtils.getUserSurname(context);
@@ -67,19 +64,9 @@ public class AllDoctorListActivity extends AppCompatActivity
         toggle.syncState();
 
         NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
-        navigationView.inflateHeaderView(R.layout.nav_header_main);
-        navigationView.inflateMenu(R.menu.admin_drawer);
-        View headView2 = navigationView.getHeaderView(0);
-
-        TextView headUserName = headView2.findViewById(R.id.headFullName);
-        TextView headUserId = headView2.findViewById(R.id.headUserId);
-        headUserId.setText(userId);
-        headUserName.setText(fullName);
+        MethodHelper.setUpNavigationMenu(navigationView, userId, fullName, userType);
 
         navigationView.setNavigationItemSelectedListener(this);
-
 
         //ListView setup
         ListView listView = findViewById(R.id.allDoctors);

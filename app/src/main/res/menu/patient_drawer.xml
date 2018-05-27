@@ -9,10 +9,6 @@
             android:icon="@drawable/ic_people_white"
             android:title="My Doctors" />
         <item
-            android:id="@+id/nav_pat_movements"
-            android:icon="@drawable/ic_movement"
-            android:title="Movements" />
-        <item
             android:id="@+id/nav_pat_exams"
             android:icon="@drawable/ic_exams"
             android:title="Examinations" />

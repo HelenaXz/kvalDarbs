@@ -75,13 +75,11 @@ public class AddAdminActivity extends AppCompatActivity {
                         Admin newAdmin = new Admin(idString, nameString, passEncrypt, phoneString, surnameString);
                         userRef.setValue(newAdmin);
 
-                        Toast toast = Toast.makeText(context, "Administrator added to DB", Toast.LENGTH_SHORT);
-                        toast.show();
-                        //Clear Form
+                        MethodHelper.showToast(context, "Administrator added to DB");
                         clearForm(v);
                     } else {
-                        Toast toast = Toast.makeText(context, "Administrator with id exists", Toast.LENGTH_SHORT);
-                        toast.show();
+                        MethodHelper.showToast(context, "Administrator with id exists");
+
                     }
 
 
@@ -121,11 +119,7 @@ public class AddAdminActivity extends AppCompatActivity {
         if(pass.getText().toString().equals(passRepeat.getText().toString())) {
             valid = valid + 1;
         } else {
-            Context context = getApplicationContext();
-            CharSequence text = "Passwords don't match!";
-            int duration = Toast.LENGTH_SHORT;
-            Toast toast = Toast.makeText(context, text, duration);
-            toast.show();
+            MethodHelper.showToast(getApplicationContext(), "Passwords don't match!");
         }
         if (valid < 7) return false;
         else return true;

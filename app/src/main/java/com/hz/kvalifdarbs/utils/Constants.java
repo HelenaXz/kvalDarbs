@@ -11,4 +11,5 @@ public class Constants {
     public static String KEY_PHONE_NR = "phoneNumber";
     public static String KEY_ROOM_NR = "roomNr";
     public static String KEY_ADDED_TO_SYSTEM = "addedToSystem";
+    public static String KEY_MOVE_EVERY = "moveEvery";
 }

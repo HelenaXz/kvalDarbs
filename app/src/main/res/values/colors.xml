@@ -14,6 +14,7 @@
     <color name="medium">#e9b346</color>
     <color name="ok">#88c980</color>
 
-    <color name="white">#ffffff</color>
+    <color name="white">#f7f7f7</color>
+    <color name="paleWhite">#80ffffff</color>
     <color name="black">#000000</color>
 </resources>

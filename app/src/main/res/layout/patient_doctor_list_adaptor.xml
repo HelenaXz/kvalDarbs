@@ -7,32 +7,63 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/doctorName"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:paddingStart="32dp"
-                android:text="TextView"
-                android:textSize="16sp" />
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/doctorName"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_weight="0"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="4dp"
+                    android:paddingStart="32dp"
+                    android:text="TextView"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/doctorId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:gravity="center_vertical"
+                    android:paddingStart="32dp"
+                    android:text="ID: "
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/doctorPhone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:gravity="center_vertical"
+                    android:paddingStart="32dp"
+                    android:paddingTop="4dp"
+                    android:text="Phone: "
+                    android:textSize="14sp" />
+            </LinearLayout>
 
             <ImageView
                 android:id="@+id/imageView2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="2"
-                android:paddingBottom="5dp"
-                android:paddingTop="5dp"
+                android:paddingBottom="30dp"
+                android:paddingTop="4dp"
                 app:srcCompat="@drawable/ic_person_orange" />
 
         </LinearLayout>

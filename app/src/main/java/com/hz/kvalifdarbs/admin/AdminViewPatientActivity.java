@@ -1,6 +1,6 @@
 package com.hz.kvalifdarbs.admin;
 
-        import android.content.Context;
+import android.content.Context;
         import android.content.DialogInterface;
         import android.content.Intent;
         import android.os.Bundle;
@@ -19,23 +19,30 @@ package com.hz.kvalifdarbs.admin;
         import com.google.firebase.database.DatabaseError;
         import com.google.firebase.database.DatabaseReference;
         import com.google.firebase.database.FirebaseDatabase;
+        import com.hz.kvalifdarbs.ListAdaptors.PatientExamAdapter;
+        import com.hz.kvalifdarbs.Objects.Examination;
         import com.hz.kvalifdarbs.Objects.smallDoctor;
         import com.hz.kvalifdarbs.utils.Intents;
         import com.hz.kvalifdarbs.Objects.Patient;
         import com.hz.kvalifdarbs.ListAdaptors.PatientDoctorSmallAdapter;
         import com.hz.kvalifdarbs.R;
+import com.hz.kvalifdarbs.utils.MethodHelper;
 
-        import java.util.ArrayList;
+import java.util.ArrayList;
 
 
 public class AdminViewPatientActivity extends AppCompatActivity {
-    TextView name_surname, room, brought_in, birthDate, patientId;
-    ListView patientExams, patientDoctors;
+    TextView name_surname, room, brought_in, birthDate, patientId, moveEvery;
+    ListView patientDoctors;
     Button addDoctorTo, deleteUser;
     DatabaseReference rootRef, allDocRef, patientRef, doctorRef;
     PatientDoctorSmallAdapter testAdapter;
+    PatientExamAdapter testAdapter2;
     Context context;
     ArrayList<String> patientDocList;
+    ListView patientExamList;
+    TextView emptyElement;
+    String valueType;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,11 +57,12 @@ public class AdminViewPatientActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        valueType = "Examinations";
+
         //Firebase References
         rootRef = FirebaseDatabase.getInstance().getReference();
         allDocRef = rootRef.child("Doctors");
         patientRef = rootRef.child("Patients").child(thisPatient.getId());
-
 
         patientDocList = new ArrayList<>();
         //TextViews, ListViews, Buttons
@@ -65,19 +73,34 @@ public class AdminViewPatientActivity extends AppCompatActivity {
         patientId = findViewById(R.id.patientId_field);
         addDoctorTo = findViewById(R.id.btnAddDoc);
         deleteUser = findViewById(R.id.btnDeleteUser);
-        patientExams = findViewById(R.id.patientExamList);
         patientDoctors = findViewById(R.id.patientDoctorList);
+        moveEvery = findViewById(R.id.moveEvery);
+
 
         //Fill TextViews
         name_surname.setText(thisPatient.getFullName());
-        brought_in.setText(thisPatient.getAddedToSystem());
-        birthDate.setText(thisPatient.getBirthDate());
+        brought_in.append(thisPatient.getAddedToSystem());
+        birthDate.append(thisPatient.getBirthDate());
         patientId.append(thisPatient.getId());
-        room.setText(thisPatient.getRoom());
+        room.append(thisPatient.getRoom());
+        moveEvery.append(thisPatient.getMoveEveryTime() + " mins");
 
         //ArrayAdapter for small doctor list
         testAdapter = new PatientDoctorSmallAdapter(this);
         patientDoctors.setAdapter(testAdapter);
+
+        //Patient Examination list view setup
+        patientExamList = findViewById(R.id.patientExamList);
+
+        testAdapter2 = new PatientExamAdapter(this);
+        patientExamList.setAdapter(testAdapter2);
+
+
+        emptyElement = findViewById(R.id.emptyElement);
+        TextView emptyText = findViewById(android.R.id.empty);
+        patientExamList.setEmptyView(emptyText);
+        getChildren(valueType);
+
 
 
         addDoctorTo.setOnClickListener(new View.OnClickListener() {
@@ -105,6 +128,7 @@ public class AdminViewPatientActivity extends AppCompatActivity {
                         doctorRef.child("Patients").child(thisPatient.getId()).removeValue();
                         testAdapter.remove(testAdapter.getItem(position));
                         testAdapter.notifyDataSetChanged();
+                        MethodHelper.showToast(context, "Doctor removed from patient");
                     }
                 }).setNegativeButton("Cancel", null);
 
@@ -126,6 +150,7 @@ public class AdminViewPatientActivity extends AppCompatActivity {
                         }
                         patientRef.removeValue();
                         startActivity(intents.allPatientList.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
+                        MethodHelper.showToast(context, "User deleted");
 
                     }
                 }).setNegativeButton("Cancel", null);
@@ -173,6 +198,36 @@ public class AdminViewPatientActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // perform whatever you want on back arrow click
                 startActivity(intents.allPatientList.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
+            }
+        });
+    }
+    public void getChildren(String valueType){
+        patientRef.child(valueType).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Examination exam = dataSnapshot.getValue(Examination.class);
+                testAdapter2.insert(exam, 0);
+                testAdapter2.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
             }
         });
     }

@@ -2,8 +2,11 @@ package com.hz.kvalifdarbs.utils;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.design.widget.NavigationView;
 import android.support.v7.app.AlertDialog;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
@@ -11,7 +14,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.hz.kvalifdarbs.R;
 
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
@@ -33,14 +36,10 @@ public class MethodHelper {
                 PreferenceUtils.savePassword(newPassInt.toString(), context);
                 changePassDialog.dismiss();
             } else {
-                String text = "New passwords do not match!";
-                Toast toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
-                toast.show();
+                MethodHelper.showToast(context, "New passwords do not match!");
             }
         } else {
-            String text = "Current password does not match Database";
-            Toast toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
-            toast.show();
+            MethodHelper.showToast(context, "Current password does not match Database");
         }
     }
 
@@ -121,5 +120,28 @@ public class MethodHelper {
         });
         return users;
 
+    }
+    public static void setUpNavigationMenu(NavigationView navigationView, String userId, String fullName, String userType){
+        navigationView.inflateHeaderView(R.layout.nav_header_main);
+        if(userType.equals("Patient")){
+            navigationView.inflateMenu(R.menu.patient_drawer);
+        }
+        if(userType.equals("Doctor")){
+            navigationView.inflateMenu(R.menu.doctor_drawer);
+        }
+        if(userType.equals("Administrator")){
+            navigationView.inflateMenu(R.menu.admin_drawer);
+        }
+
+        View headView = navigationView.getHeaderView(0);
+        TextView headUserName = headView.findViewById(R.id.headFullName);
+        TextView headUserId = headView.findViewById(R.id.headUserId);
+        headUserId.setText(userId);
+        headUserName.setText(fullName);
+    }
+
+    public static void showToast(Context context, String text){
+        Toast toast = Toast.makeText(context, text, Toast.LENGTH_SHORT);
+        toast.show();
     }
 }

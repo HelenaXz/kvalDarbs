@@ -29,6 +29,7 @@ public class AllDoctorAdapter extends ArrayAdapter<Doctor> {
         TextView someInfo = convertView.findViewById(R.id.something);
 
         doctorName.setText(doctor.getFullName());
+        someInfo.setText(doctor.getId());
 
         // Return the completed view to render on screen
         return convertView;

@@ -11,6 +11,8 @@ import com.hz.kvalifdarbs.Objects.Doctor;
 import com.hz.kvalifdarbs.Objects.Examination;
 import com.hz.kvalifdarbs.R;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,8 +32,13 @@ public class PatientDoctorAdapter extends ArrayAdapter<Doctor> {
         }
 
         TextView doctorName = convertView.findViewById(R.id.doctorName);
+        TextView doctorId = convertView.findViewById(R.id.doctorId);
+        TextView doctorPhone = convertView.findViewById(R.id.doctorPhone);
 
         doctorName.setText(thisDoctor.getFullName());
+        doctorId.append(thisDoctor.getId());
+        doctorPhone.append(thisDoctor.getPhone().toString());
+
 
         return convertView;
 

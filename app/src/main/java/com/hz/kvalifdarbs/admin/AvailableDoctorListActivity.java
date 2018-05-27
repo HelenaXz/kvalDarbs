@@ -1,6 +1,6 @@
 package com.hz.kvalifdarbs.admin;
 
-        import android.content.Context;
+import android.content.Context;
         import android.content.Intent;
         import android.os.Bundle;
         import android.support.v7.app.AppCompatActivity;
@@ -8,7 +8,6 @@ package com.hz.kvalifdarbs.admin;
         import android.view.View;
         import android.widget.AdapterView;
         import android.widget.ListView;
-        import android.widget.Toast;
 
         import com.google.firebase.database.ChildEventListener;
         import com.google.firebase.database.DataSnapshot;
@@ -20,6 +19,7 @@ package com.hz.kvalifdarbs.admin;
         import com.hz.kvalifdarbs.Objects.Doctor;
         import com.hz.kvalifdarbs.Objects.Patient;
         import com.hz.kvalifdarbs.R;
+        import com.hz.kvalifdarbs.utils.MethodHelper;
 
         import java.util.ArrayList;
 
@@ -131,8 +131,7 @@ public class AvailableDoctorListActivity extends AppCompatActivity {
                 Intent patientView = intents.adminPatientView;
                 patientView.putExtra("thisPatient", thisPatient);
                 context.startActivity(patientView.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
-                Toast toast = Toast.makeText(context, "Doctor added to patient", Toast.LENGTH_SHORT);
-                toast.show();
+                MethodHelper.showToast(context, "Doctor added to patient");
                 finish();
 
             }

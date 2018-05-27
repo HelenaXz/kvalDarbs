@@ -1,16 +1,20 @@
 package com.hz.kvalifdarbs;
 
+import android.animation.ArgbEvaluator;
+import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -27,13 +31,13 @@ public class LoginActivity extends AppCompatActivity {
     TextView userType;
     DatabaseReference rootRef, childRef;
     DataSnapshot userRef;
-    String userIdString, userPassString, thisUserType;
-    String passEncrypt, passFromDB;
+    String userIdString, userPassString, thisUserType, passEncrypt, passFromDB, moveEveryString;
     Context context;
     Intents intents;
     CheckBox checkBox;
+    ConstraintLayout mainLayout;
 
-
+    @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,14 +48,12 @@ public class LoginActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
-
         userType = findViewById(R.id.userTypeLogin);
         userIdView = findViewById(R.id.userId);
         userPassView = findViewById(R.id.userPass);
         Button login = findViewById(R.id.loginBtn);
         checkBox = (CheckBox) findViewById(R.id.checkRemeber);
-
+        mainLayout = findViewById(R.id.mainLayout);
 
         Intent i = getIntent();
         thisUserType = i.getStringExtra("UserType");
@@ -80,6 +82,21 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+        int colorFrom = getResources().getColor(R.color.white);
+        int colorTo = getResources().getColor(R.color.colorPrimaryLight);
+        ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
+        colorAnimation.setDuration(5000); // milliseconds
+        colorAnimation.setRepeatMode(Animation.REVERSE);
+        colorAnimation.setRepeatCount(Animation.INFINITE);
+        colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+
+            @Override
+            public void onAnimationUpdate(ValueAnimator animator) {
+                mainLayout.setBackgroundColor((int) animator.getAnimatedValue());
+            }
+
+        });
+        colorAnimation.start();
     }
 
     public void attemptLogin(final String userTypeString, final Intent userTypeMainMenu){
@@ -110,26 +127,24 @@ public class LoginActivity extends AppCompatActivity {
                             addedToSystem = userRef.child("addedToSystem").getValue().toString();
                             birthDate = userRef.child("birthDate").getValue().toString();
                             roomString = userRef.child("room").getValue().toString();
+                            moveEveryString = userRef.child("moveEveryTime").getValue().toString();
                             PreferenceUtils.saveBirthDate(birthDate, context);
                             PreferenceUtils.saveAddedToSystem(addedToSystem, context);
                             PreferenceUtils.saveRoomNum(roomString, context);
+                            PreferenceUtils.saveMoveEvery(moveEveryString, context);
                         }
-                        Toast toast = Toast.makeText(getApplicationContext(), "Login Successful", Toast.LENGTH_SHORT);
-                        toast.show();
+                        MethodHelper.showToast(getApplicationContext(), "Login Successful");
 
                         Intent intent = userTypeMainMenu;
                         startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
                     } else {
-                        Toast toast = Toast.makeText(getApplicationContext(), "Password incorrect!", Toast.LENGTH_SHORT);
-                        toast.show();
+                        MethodHelper.showToast(getApplicationContext(), "Password incorrect!");
                     }
                 } else {
                     if(userIdString.isEmpty()){
-                        Toast toast = Toast.makeText(getApplicationContext(), "Enter user ID", Toast.LENGTH_SHORT);
-                        toast.show();
+                        MethodHelper.showToast(getApplicationContext(), "Enter user ID");
                     } else {
-                        Toast toast = Toast.makeText(getApplicationContext(), userTypeString + "not found!", Toast.LENGTH_SHORT);
-                        toast.show();
+                        MethodHelper.showToast(getApplicationContext(), userTypeString + "not found!");
                     }
                 }
             }

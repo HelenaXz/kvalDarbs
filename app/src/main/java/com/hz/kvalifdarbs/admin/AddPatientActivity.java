@@ -1,6 +1,7 @@
 package com.hz.kvalifdarbs.admin;
 
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -17,6 +18,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
@@ -36,11 +38,13 @@ public class AddPatientActivity extends AppCompatActivity {
     EditText name, surname, id, phone, pass, passRepeat, roomNr;
     String nameString, idString,surnameString, phoneString, birthDate, roomString, genderString, passEncrypt;
     Spinner genderSpinner;
-    TextView dateOfBirth;
+    TextView dateOfBirth, moveMinTime;
     Integer phoneNum;
     DatePickerDialog.OnDateSetListener mDataSetListener;
+    TimePickerDialog.OnTimeSetListener mTimeSetListener;
     Context context;
-    int year, month, day;
+    Integer timeSave;
+    int year, month, day, hour, minute1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +62,8 @@ public class AddPatientActivity extends AppCompatActivity {
         year = 1990;
         month = 0;
         day = 1;
+        hour = 0;
+        minute1 = 0;
 
         //set up spinners
         genderSpinner = findViewById(R.id.genderSpinner);
@@ -75,6 +81,8 @@ public class AddPatientActivity extends AppCompatActivity {
         passRepeat = findViewById(R.id.passwordRepeat);
         dateOfBirth = findViewById(R.id.birthYear);
         roomNr = findViewById(R.id.roomNr);
+        moveMinTime = findViewById(R.id.moveMinTime);
+
         Button submitForm = findViewById(R.id.submitBtn);
         final ArrayList<String> existingUsers = MethodHelper.userExisting("Patients");
 
@@ -104,10 +112,34 @@ public class AddPatientActivity extends AppCompatActivity {
             }
         };
 
+        moveMinTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TimePickerDialog dialog2 = new TimePickerDialog(AddPatientActivity.this,
+                        android.R.style.Theme_Holo_Dialog_MinWidth,
+                        mTimeSetListener, hour, minute1, true );
+                dialog2.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog2.show();
+            }
+        });
+
+        mTimeSetListener = new TimePickerDialog.OnTimeSetListener(){
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                timeSave = hourOfDay*60 + minute;
+                String timeString = "Move every " + hourOfDay + "h " + minute + "min";
+                hour = hourOfDay;
+                minute1 = minute;
+                moveMinTime.setText(timeString);
+            }
+        };
+
+
         submitForm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(validate()){
+                    //TODO Validate if moveTime and birthDate are set
                     idString = id.getText().toString();
                     if(!existingUsers.contains(idString)) {
                         nameString = name.getText().toString();
@@ -121,15 +153,13 @@ public class AddPatientActivity extends AppCompatActivity {
                         genderString = genderSpinner.getSelectedItem().toString();
 
                         userRef = rootRef.child(idString);
-                        Patient newPatient = new Patient(nameString, surnameString, idString, genderString, passEncrypt, phoneNum, birthDate, roomString);
+                        Patient newPatient = new Patient(nameString, surnameString, idString, genderString, passEncrypt, phoneNum, birthDate, roomString, timeSave);
                         userRef.setValue(newPatient);
 
-                        Toast toast = Toast.makeText(context, "Patient added to DB", Toast.LENGTH_SHORT);
-                        toast.show();
+                        MethodHelper.showToast(context, "Patient added to DB");
                         clearForm(v);
                     } else {
-                        Toast toast = Toast.makeText(context, "Patient with id exists", Toast.LENGTH_SHORT);
-                        toast.show();
+                        MethodHelper.showToast(context, "Patient with id exists");
                     }
                 }
             }
@@ -169,11 +199,8 @@ public class AddPatientActivity extends AppCompatActivity {
         if(pass.getText().toString().equals(passRepeat.getText().toString())){
             valid = valid + 1;
         } else {
-            Context context = getApplicationContext();
-            CharSequence text = "Passwords don't match!";
-            int duration = Toast.LENGTH_SHORT;
-            Toast toast = Toast.makeText(context, text, duration);
-            toast.show();
+
+            MethodHelper.showToast(getApplicationContext(), "Passwords don't match!");
         }
         if(valid < 8){ return false; } else { return true; }
     }
@@ -186,6 +213,7 @@ public class AddPatientActivity extends AppCompatActivity {
         pass.setText(null);
         passRepeat.setText(null);
         dateOfBirth.setText(null);
+        moveMinTime.setText(null);
         roomNr.setText(null);
         year = 1990;
         month = 0;

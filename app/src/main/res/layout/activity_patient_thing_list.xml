@@ -40,17 +40,10 @@
             android:elevation="3dp"
             android:orientation="vertical">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical|center_horizontal"
-                android:text="My Doctors"
-                android:textSize="24sp" />
-
             <ListView
-                android:id="@+id/doctorList"
+                android:id="@+id/thingList"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:elevation="3dp">
 
             </ListView>

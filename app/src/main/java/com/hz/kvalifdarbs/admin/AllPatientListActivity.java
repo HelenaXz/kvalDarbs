@@ -14,14 +14,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.hz.kvalifdarbs.ListAdaptors.AdminPatientAdapter;
+import com.hz.kvalifdarbs.ListAdaptors.AllPatientAdapter;
 import com.hz.kvalifdarbs.utils.Intents;
 import com.hz.kvalifdarbs.Objects.Patient;
 import com.hz.kvalifdarbs.R;
@@ -35,9 +34,9 @@ public class AllPatientListActivity extends AppCompatActivity
 {
     DatabaseReference rootRef, childRef;
     ArrayList<Patient> allPatients;
-    AdminPatientAdapter testAdapter;
+    AllPatientAdapter testAdapter;
     Context context;
-    String userId, userName, userSurname, fullName;
+    String userId, userName, userSurname, fullName, userType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,11 +47,10 @@ public class AllPatientListActivity extends AppCompatActivity
         rootRef = FirebaseDatabase.getInstance().getReference();
         //Toolbar setup
         Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.inflateMenu(R.menu.menu_main);
-        toolbar.setNavigationIcon(R.drawable.ic_menu_white);
         toolbar.setTitle("All Patients");
 
         //Strings
+        userType = PreferenceUtils.getUserType(context);
         userId  = PreferenceUtils.getId(context);
         userName = PreferenceUtils.getUserName(context);
         userSurname = PreferenceUtils.getUserSurname(context);
@@ -66,24 +64,14 @@ public class AllPatientListActivity extends AppCompatActivity
         toggle.syncState();
 
         NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
-        navigationView.inflateHeaderView(R.layout.nav_header_main);
-        navigationView.inflateMenu(R.menu.admin_drawer);
-        View headView2 = navigationView.getHeaderView(0);
-
-        TextView headUserName = headView2.findViewById(R.id.headFullName);
-        TextView headUserId = headView2.findViewById(R.id.headUserId);
-        headUserId.setText(userId);
-        headUserName.setText(fullName);
+        MethodHelper.setUpNavigationMenu(navigationView, userId, fullName, userType);
 
         navigationView.setNavigationItemSelectedListener(this);
-
 
         //ListView setup
         ListView listView = findViewById(R.id.allPatients);
         allPatients = new ArrayList<>();
-        testAdapter = new AdminPatientAdapter(this);
+        testAdapter = new AllPatientAdapter(this);
 
         rootRef.child("Patients").addChildEventListener(new ChildEventListener() {
             @Override
