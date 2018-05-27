@@ -12,6 +12,10 @@
             android:id="@+id/nav_pat_exams"
             android:icon="@drawable/ic_exams"
             android:title="Examinations" />
+        <item
+            android:id="@+id/nav_pat_movements"
+            android:icon="@drawable/ic_exams"
+            android:title="Movements" />
     </group>
 
     <item android:title="User">
