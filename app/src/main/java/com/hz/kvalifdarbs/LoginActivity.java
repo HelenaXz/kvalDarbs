@@ -31,7 +31,7 @@ public class LoginActivity extends AppCompatActivity {
     TextView userType;
     DatabaseReference rootRef, childRef;
     DataSnapshot userRef;
-    String userIdString, userPassString, thisUserType, passEncrypt, passFromDB;
+    String userIdString, userPassString, thisUserType, passEncrypt, passFromDB, moveEveryString;
     Context context;
     Intents intents;
     CheckBox checkBox;
@@ -127,9 +127,11 @@ public class LoginActivity extends AppCompatActivity {
                             addedToSystem = userRef.child("addedToSystem").getValue().toString();
                             birthDate = userRef.child("birthDate").getValue().toString();
                             roomString = userRef.child("room").getValue().toString();
+                            moveEveryString = userRef.child("moveEveryTime").getValue().toString();
                             PreferenceUtils.saveBirthDate(birthDate, context);
                             PreferenceUtils.saveAddedToSystem(addedToSystem, context);
                             PreferenceUtils.saveRoomNum(roomString, context);
+                            PreferenceUtils.saveMoveEvery(moveEveryString, context);
                         }
                         MethodHelper.showToast(getApplicationContext(), "Login Successful");
 

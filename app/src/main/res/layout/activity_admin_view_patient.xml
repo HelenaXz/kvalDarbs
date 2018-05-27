@@ -149,7 +149,35 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
-                    android:layout_marginStart="16dp">
+                    android:layout_marginStart="16dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginStart="20dp"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/imageView5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            app:srcCompat="@drawable/ic_movement" />
+
+                        <TextView
+                            android:id="@+id/moveEvery"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:paddingBottom="5dp"
+                            android:paddingStart="20dp"
+                            android:paddingTop="5dp"
+                            android:text="Move every:  "
+                            android:textSize="16sp" />
+                    </LinearLayout>
 
                     <TextView
                         android:id="@+id/brought_in"
@@ -162,6 +190,7 @@
                         android:textSize="12sp" />
 
                 </LinearLayout>
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -238,23 +267,12 @@
                         android:id="@+id/btnExamination"
                         android:layout_width="match_parent"
                         android:layout_height="32dp"
-                        android:layout_weight="1"
                         android:background="@color/colorPrimaryDark"
                         android:gravity="center_horizontal"
                         android:paddingTop="6dp"
                         android:text="@string/exams"
                         android:textColor="@color/white" />
 
-                    <Button
-                        android:id="@+id/btnMovements"
-                        android:layout_width="match_parent"
-                        android:layout_height="32dp"
-                        android:layout_weight="1"
-                        android:background="@color/colorPrimaryLight"
-                        android:gravity="center_horizontal"
-                        android:paddingTop="6dp"
-                        android:text="Movements"
-                        android:textColor="@color/white" />
                 </LinearLayout>
 
 

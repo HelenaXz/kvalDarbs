@@ -10,10 +10,10 @@ import android.widget.TextView;
 import com.hz.kvalifdarbs.Objects.Patient;
 import com.hz.kvalifdarbs.R;
 
-public class AdminPatientAdapter extends ArrayAdapter<Patient> {
+public class AllPatientAdapter extends ArrayAdapter<Patient> {
     TextView tvName, tvInfo;
 
-    public AdminPatientAdapter(Context context) {
+    public AllPatientAdapter(Context context) {
         super(context, 0);
     }
 

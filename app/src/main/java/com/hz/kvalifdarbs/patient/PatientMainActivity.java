@@ -28,10 +28,10 @@ import com.hz.kvalifdarbs.utils.PreferenceUtils;
 public class PatientMainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     DatabaseReference rootRef, userRef;
-    String userId, userName, userSurname, fullName, birthDate, roomNum, addedToSystem, userType;
+    String userId, userName, userSurname, fullName, birthDate, roomNum, addedToSystem, userType, moveEvery;
     Context context;
     Button changePassword;
-    TextView fullNameTV, userIdTV, patientRoomTV, addedToSystemTV, birthDateTV;
+    TextView fullNameTV, userIdTV, patientRoomTV, addedToSystemTV, birthDateTV, moveEveryTV;
 
 
     @Override
@@ -52,6 +52,7 @@ public class PatientMainActivity extends AppCompatActivity
         birthDate = PreferenceUtils.getBirthDate(context);
         roomNum = PreferenceUtils.getRoomNum(context);
         addedToSystem = PreferenceUtils.getAddedToSystem(context);
+        moveEvery = PreferenceUtils.getMoveEvery(context);
 
 
         //Firebase
@@ -65,12 +66,14 @@ public class PatientMainActivity extends AppCompatActivity
         patientRoomTV = findViewById(R.id.roomNr);
         addedToSystemTV = findViewById(R.id.addedToSystem);
         birthDateTV = findViewById(R.id.birthDate);
+        moveEveryTV = findViewById(R.id.moveEvery);
 
         fullNameTV.append(fullName);
         birthDateTV.append(birthDate);
         userIdTV.append(userId);
         patientRoomTV.append(roomNum);
         addedToSystemTV.append(addedToSystem);
+        moveEveryTV.append(moveEvery + " mins");
 
         //Drawer menu
         final DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -136,8 +139,6 @@ public class PatientMainActivity extends AppCompatActivity
 
         if (id == R.id.nav_my_doctors) {
             startActivity(intents.patientDoctorListView.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
-        } else if (id == R.id.nav_pat_movements) {
-            startActivity(intents.patientMovementListView.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
         } else if (id == R.id.nav_pat_exams) {
             startActivity(intents.patientExamListView.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
         } else if (id == R.id.nav_profile) {

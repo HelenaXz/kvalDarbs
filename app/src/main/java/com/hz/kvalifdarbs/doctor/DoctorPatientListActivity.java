@@ -3,6 +3,7 @@ package com.hz.kvalifdarbs.doctor;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -22,6 +23,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.hz.kvalifdarbs.ListAdaptors.DoctorPatientAdapter;
+import com.hz.kvalifdarbs.Objects.Examination;
 import com.hz.kvalifdarbs.utils.Intents;
 import com.hz.kvalifdarbs.Objects.Patient;
 import com.hz.kvalifdarbs.R;
@@ -46,6 +48,17 @@ public class DoctorPatientListActivity extends AppCompatActivity
         setContentView(R.layout.activity_doctor_patient_list);
         context = getApplicationContext();
         final Intents intents = new Intents(this);
+
+        final Handler handler = new Handler();
+        handler.postDelayed( new Runnable() {
+
+            @Override
+            public void run() {
+                testAdapter.notifyDataSetChanged();
+                handler.postDelayed( this, 30 * 1000 );
+            }
+        }, 30 * 1000 );
+
         //Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -116,9 +129,13 @@ public class DoctorPatientListActivity extends AppCompatActivity
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 for (String curr : doctorPatients) if (curr.equals(dataSnapshot.getKey())){
                     Patient patient = dataSnapshot.getValue(Patient.class);
+                    String key = dataSnapshot.getKey();
+                    DatabaseReference testRef = rootRef.child("Patients").child(key).child("Examinations");
+//                    getLastExam(testRef);
                     testAdapter.add(patient);
+                    }
+
                 }
-            }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
@@ -172,5 +189,6 @@ public class DoctorPatientListActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 
 }

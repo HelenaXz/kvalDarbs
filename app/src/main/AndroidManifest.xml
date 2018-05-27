@@ -73,8 +73,6 @@
             android:label="My Doctors" />
         <activity android:name=".patient.PatientExamListActivity"
             android:label="Examinations"/>
-        <activity android:name=".patient.PatientMovementListActivity"
-            android:label="Movements"/>
     </application>
 
 </manifest>

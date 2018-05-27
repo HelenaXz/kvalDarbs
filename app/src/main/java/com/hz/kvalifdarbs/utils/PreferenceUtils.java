@@ -123,5 +123,16 @@ public class PreferenceUtils {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         return prefs.getString(Constants.KEY_LOGGED_IN, "");
     }
+    public static boolean saveMoveEvery(String moveEvery, Context context){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor prefsEditor = prefs.edit();
+        prefsEditor.putString(Constants.KEY_MOVE_EVERY, moveEvery);
+        prefsEditor.apply();
+        return true;
+    }
+    public static String getMoveEvery(Context context){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.getString(Constants.KEY_MOVE_EVERY, "");
+    }
 
 }

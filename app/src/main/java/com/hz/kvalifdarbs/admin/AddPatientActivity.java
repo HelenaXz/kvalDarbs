@@ -43,7 +43,7 @@ public class AddPatientActivity extends AppCompatActivity {
     DatePickerDialog.OnDateSetListener mDataSetListener;
     TimePickerDialog.OnTimeSetListener mTimeSetListener;
     Context context;
-    String timeSave;
+    Integer timeSave;
     int year, month, day, hour, minute1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,7 +126,7 @@ public class AddPatientActivity extends AppCompatActivity {
         mTimeSetListener = new TimePickerDialog.OnTimeSetListener(){
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                timeSave = (hourOfDay < 10 ? "0" : "") + hourOfDay + ":" +(minute < 10 ? "0" : "")+ minute;
+                timeSave = hourOfDay*60 + minute;
                 String timeString = "Move every " + hourOfDay + "h " + minute + "min";
                 hour = hourOfDay;
                 minute1 = minute;

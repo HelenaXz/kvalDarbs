@@ -58,7 +58,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/communication/ic_call_black_24dp.xml" />
+                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/action/ic_swap_horiz_black_24dp.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -69,11 +69,9 @@
                         <option name="values">
                           <map>
                             <entry key="color" value="c75b39" />
-                            <entry key="height" value="40" />
-                            <entry key="outputName" value="ic_phone_orange" />
+                            <entry key="outputName" value="ic_movement" />
                             <entry key="overrideSize" value="true" />
                             <entry key="sourceFile" value="C:\Users\helena.zvirbule" />
-                            <entry key="width" value="40" />
                           </map>
                         </option>
                       </PersistentState>

@@ -20,7 +20,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.hz.kvalifdarbs.ListAdaptors.AdminPatientAdapter;
+import com.hz.kvalifdarbs.ListAdaptors.AllPatientAdapter;
 import com.hz.kvalifdarbs.utils.Intents;
 import com.hz.kvalifdarbs.Objects.Patient;
 import com.hz.kvalifdarbs.R;
@@ -34,7 +34,7 @@ public class AllPatientListActivity extends AppCompatActivity
 {
     DatabaseReference rootRef, childRef;
     ArrayList<Patient> allPatients;
-    AdminPatientAdapter testAdapter;
+    AllPatientAdapter testAdapter;
     Context context;
     String userId, userName, userSurname, fullName, userType;
 
@@ -71,7 +71,7 @@ public class AllPatientListActivity extends AppCompatActivity
         //ListView setup
         ListView listView = findViewById(R.id.allPatients);
         allPatients = new ArrayList<>();
-        testAdapter = new AdminPatientAdapter(this);
+        testAdapter = new AllPatientAdapter(this);
 
         rootRef.child("Patients").addChildEventListener(new ChildEventListener() {
             @Override

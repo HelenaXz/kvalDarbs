@@ -32,9 +32,9 @@ import java.util.ArrayList;
 
 
 public class AdminViewPatientActivity extends AppCompatActivity {
-    TextView name_surname, room, brought_in, birthDate, patientId;
+    TextView name_surname, room, brought_in, birthDate, patientId, moveEvery;
     ListView patientDoctors;
-    Button addDoctorTo, deleteUser, examinationsBtn, movementsBtn;
+    Button addDoctorTo, deleteUser;
     DatabaseReference rootRef, allDocRef, patientRef, doctorRef;
     PatientDoctorSmallAdapter testAdapter;
     PatientExamAdapter testAdapter2;
@@ -73,9 +73,9 @@ public class AdminViewPatientActivity extends AppCompatActivity {
         patientId = findViewById(R.id.patientId_field);
         addDoctorTo = findViewById(R.id.btnAddDoc);
         deleteUser = findViewById(R.id.btnDeleteUser);
-        examinationsBtn = findViewById(R.id.btnExamination);
-        movementsBtn = findViewById(R.id.btnMovements);
         patientDoctors = findViewById(R.id.patientDoctorList);
+        moveEvery = findViewById(R.id.moveEvery);
+
 
         //Fill TextViews
         name_surname.setText(thisPatient.getFullName());
@@ -83,6 +83,7 @@ public class AdminViewPatientActivity extends AppCompatActivity {
         birthDate.append(thisPatient.getBirthDate());
         patientId.append(thisPatient.getId());
         room.append(thisPatient.getRoom());
+        moveEvery.append(thisPatient.getMoveEveryTime() + " mins");
 
         //ArrayAdapter for small doctor list
         testAdapter = new PatientDoctorSmallAdapter(this);
@@ -100,26 +101,7 @@ public class AdminViewPatientActivity extends AppCompatActivity {
         patientExamList.setEmptyView(emptyText);
         getChildren(valueType);
 
-        examinationsBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                examinationsBtn.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-                movementsBtn.setBackgroundColor(getResources().getColor(R.color.colorPrimaryLight));
-                valueType = "Examinations";
-                testAdapter2.clear();
-                getChildren(valueType);
-            }
-        });
-        movementsBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                examinationsBtn.setBackgroundColor(getResources().getColor(R.color.colorPrimaryLight));
-                movementsBtn.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-                valueType = "Movements";
-                testAdapter2.clear();
-                getChildren(valueType);
-            }
-        });
+
 
         addDoctorTo.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -11,10 +11,12 @@ public class Examination {
     }
 
     public Examination(String doctorId, String doctorName, String addDateTime, String comment){
-        setDoctorId(doctorId);
-        setDoctorName(doctorName);
         setAddDateTime(addDateTime);
         setComment(comment);
+        setDoctorId(doctorId);
+        setDoctorName(doctorName);
+
+
     }
 
     public void setDoctorName(String doctorName) {

@@ -32,14 +32,15 @@ import java.util.Date;
 
 
 public class DoctorViewPatientActivity extends AppCompatActivity {
-    TextView name_surname, brought_in, birthDate, patientId, patientRoom, emptyElement;
+    TextView name_surname, brought_in, birthDate, patientId, patientRoom, moveEvery, emptyElement;
     String userId, valueType;
     Patient thisPatient;
     Context context;
-    Button addExam, examinationsBtn, movementsBtn;
+    Button addExam;
     PatientExamAdapter testAdapter;
     DatabaseReference rootRef, childRef;
     ListView patientExamList;
+    Examination lastExam;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,7 +56,6 @@ public class DoctorViewPatientActivity extends AppCompatActivity {
         userId = PreferenceUtils.getId(context);
         valueType = "Examinations";
 
-
         Intent i = getIntent();
         thisPatient = (Patient)i.getSerializableExtra("thisPatient");
 
@@ -69,31 +69,9 @@ public class DoctorViewPatientActivity extends AppCompatActivity {
         patientRoom = findViewById(R.id.patientRoom);
         birthDate = findViewById(R.id.birthDate);
         brought_in = findViewById(R.id.brought_in);
-
+        moveEvery = findViewById(R.id.moveEvery);
         addExam = findViewById(R.id.addExamBtn);
-        examinationsBtn = findViewById(R.id.btnExamination);
-        movementsBtn = findViewById(R.id.btnMovements);
 
-        examinationsBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                examinationsBtn.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-                movementsBtn.setBackgroundColor(getResources().getColor(R.color.colorPrimaryMediumLight));
-                valueType = "Examinations";
-                testAdapter.clear();
-                getChildren(valueType);
-            }
-        });
-        movementsBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                examinationsBtn.setBackgroundColor(getResources().getColor(R.color.colorPrimaryMediumLight));
-                movementsBtn.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-                valueType = "Movements";
-                testAdapter.clear();
-                getChildren(valueType);
-            }
-        });
 
         //Set TextViews
         name_surname.setText(thisPatient.getFullName());
@@ -102,6 +80,7 @@ public class DoctorViewPatientActivity extends AppCompatActivity {
         patientRoom.append(thisPatient.getRoom());
         birthDate.append(thisPatient.getBirthDate());
         brought_in.append(thisPatient.getAddedToSystem());
+        moveEvery.append(String.valueOf(thisPatient.getMoveEveryTime()) + " mins");
 
         //ListView set up
         patientExamList = findViewById(R.id.patientExamList);
@@ -114,6 +93,8 @@ public class DoctorViewPatientActivity extends AppCompatActivity {
         patientExamList.setEmptyView(emptyText);
 
         getChildren(valueType);
+
+
 
         addExam.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -148,10 +129,13 @@ public class DoctorViewPatientActivity extends AppCompatActivity {
                         String commentString = examComment.getText().toString();
                         Examination newExam = new Examination(doctorId, doctorName, time, commentString);
 
-                        DatabaseReference thisPatientRef = FirebaseDatabase.getInstance().getReference().child("Patients").child(thisPatient.getId()).child("Examinations");
-                        thisPatientRef.child(time).setValue(newExam);
+                        DatabaseReference thisPatientRef = FirebaseDatabase.getInstance().getReference().child("Patients").child(thisPatient.getId());
+                        thisPatientRef.child("Examinations").child(time).setValue(newExam);
+                        thisPatientRef.child("lastExam").setValue(newExam);
                         MethodHelper.showToast(getApplicationContext(), "Examination added");
                         addExamDialog.dismiss();
+
+
                     }
                 });
                 cancel.setOnClickListener(new View.OnClickListener() {
@@ -176,6 +160,7 @@ public class DoctorViewPatientActivity extends AppCompatActivity {
 
 
     }
+
 
     public void getChildren(String valueType){
         childRef.child(valueType).addChildEventListener(new ChildEventListener() {

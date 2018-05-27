@@ -39,6 +39,7 @@ public class PatientDoctorAdapter extends ArrayAdapter<Doctor> {
         doctorId.append(thisDoctor.getId());
         doctorPhone.append(thisDoctor.getPhone().toString());
 
+
         return convertView;
 
     }
