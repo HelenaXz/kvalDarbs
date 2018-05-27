@@ -40,7 +40,6 @@ public class DoctorPatientListActivity extends AppCompatActivity
     DoctorPatientAdapter testAdapter;
     Context context;
     DatabaseReference rootRef, childRef;
-    String userId, userName, userSurname, fullName, userType;
     TextView emptyElement;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,17 +63,17 @@ public class DoctorPatientListActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        userId  = PreferenceUtils.getId(context);
+        String userId  = PreferenceUtils.getId(context);
         //Firebase reference
         rootRef = FirebaseDatabase.getInstance().getReference();
         childRef = rootRef.child("Doctors").child(userId);
 
 
         //Strings
-        userType = PreferenceUtils.getUserType(context);
-        userName = PreferenceUtils.getUserName(context);
-        userSurname = PreferenceUtils.getUserSurname(context);
-        fullName = "Dr. " + userName + " " + userSurname;
+        String userType = PreferenceUtils.getUserType(context);
+        String userName = PreferenceUtils.getUserName(context);
+        String userSurname = PreferenceUtils.getUserSurname(context);
+        String fullName = "Dr. " + userName + " " + userSurname;
 
 
         //Set up ListView
@@ -100,42 +99,74 @@ public class DoctorPatientListActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
+        getDoctorPatients();
+
+        showDoctorPatients();
+
+        patientList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Patient clicked = ((Patient) parent.getItemAtPosition(position));
+                Intent seePatient = intents.doctorPatientView;
+                seePatient.putExtra("thisPatient", clicked);
+                startActivity(seePatient.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
+            }
+        });
+
+    }
+
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+        final Intents intents = new Intents(this);
+
+        if (id == R.id.nav_my_patients) {
+            startActivity(intents.doctorPatientList.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
+        } else if (id == R.id.nav_profile) {
+            startActivity(intents.doctorMainMenu.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
+        } else if (id == R.id.nav_logout) {
+            MethodHelper.logOut(context, intents);
+        }
+
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+    public void getDoctorPatients(){
         childRef.child("Patients").addValueEventListener(new ValueEventListener() {
-               @Override
-               public void onDataChange(DataSnapshot dataSnapshot) {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
 
-                   for(DataSnapshot uniqueKeySnapshot : dataSnapshot.getChildren()){
-                       //Loop 1 to go through all the child nodes of users
-                       String patientId = uniqueKeySnapshot.getKey();
-                       doctorPatients.add(patientId);
-                   }
-                   Integer testAdapterSize = doctorPatients.size();
-                   if(testAdapterSize==0){
-                       String emptyText = "There are no patients assigned to you.";
-                       emptyElement.setText(emptyText);
-                       patientList.setEmptyView(emptyElement);
-                   }
-               }
+                for(DataSnapshot uniqueKeySnapshot : dataSnapshot.getChildren()){
+                    //Loop 1 to go through all the child nodes of users
+                    String patientId = uniqueKeySnapshot.getKey();
+                    doctorPatients.add(patientId);
+                }
+                Integer testAdapterSize = doctorPatients.size();
+                if(testAdapterSize==0){
+                    String emptyText = "There are no patients assigned to you.";
+                    emptyElement.setText(emptyText);
+                    patientList.setEmptyView(emptyElement);
+                }
+            }
 
-               @Override
-               public void onCancelled(DatabaseError databaseError) {
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
 
-               }
-           });
+            }
+        });
+    }
 
-
+    public void showDoctorPatients(){
         rootRef.child("Patients").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 for (String curr : doctorPatients) if (curr.equals(dataSnapshot.getKey())){
                     Patient patient = dataSnapshot.getValue(Patient.class);
-                    String key = dataSnapshot.getKey();
-                    DatabaseReference testRef = rootRef.child("Patients").child(key).child("Examinations");
-//                    getLastExam(testRef);
                     testAdapter.add(patient);
-                    }
-
                 }
+
+            }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
@@ -157,37 +188,6 @@ public class DoctorPatientListActivity extends AppCompatActivity
 
             }
         });
-
-        patientList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Patient clicked = ((Patient) parent.getItemAtPosition(position));
-                Intent seePatient = intents.doctorPatientView;
-                seePatient.putExtra("thisPatient", clicked);
-                startActivity(seePatient.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
-            }
-        });
-
-    }
-
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-        final Intents intents = new Intents(this);
-
-        if (id == R.id.nav_my_patients) {
-            Intent intent = intents.doctorPatientList;
-            startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
-
-        } else if (id == R.id.nav_profile) {
-            startActivity(intents.doctorMainMenu.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
-        } else if (id == R.id.nav_logout) {
-            MethodHelper.logOut(context, intents);
-        }
-
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
     }
 
 

@@ -24,41 +24,61 @@ import android.content.Context;
         import java.util.ArrayList;
 
 public class AvailableDoctorListActivity extends AppCompatActivity {
-    DatabaseReference rootRef, childRef;
-    ArrayList<Doctor> allDoctors;
+    DatabaseReference rootRef;
     AvaiableDoctorAdapter testAdapter;
     DatabaseReference patientRef, doctorRef;
-    Patient thisPatient;
-    Context context;
-    Doctor doctor;
+    ArrayList<String> patientDoctors;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_doctor_list);
-        context  = getApplicationContext();
+        final Context context  = getApplicationContext();
         final Intents intents = new Intents(this);
         //Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         Intent i = getIntent();
-        thisPatient = (Patient)i.getSerializableExtra("thisPatient");
+        final Patient thisPatient = (Patient)i.getSerializableExtra("thisPatient");
         //Firebase references
         rootRef = FirebaseDatabase.getInstance().getReference();
         patientRef = rootRef.child("Patients").child(thisPatient.getId());
 
         //Set up listView
         ListView listView = findViewById(R.id.allDoctors);
-        allDoctors = new ArrayList<>();
-        testAdapter = new AvaiableDoctorAdapter(this, allDoctors);
+        testAdapter = new AvaiableDoctorAdapter(this);
 
-        final ArrayList<String> patientDoctors = new ArrayList();
+        patientDoctors = new ArrayList();
+        getPatientDoctors();
 
         listView.setAdapter(testAdapter);
         listView.setClickable(true);
 
 
+        getDoctorData();
+
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Doctor clicked = ((Doctor) parent.getItemAtPosition(position));
+                patientRef = rootRef.child("Patients").child(thisPatient.getId());
+                doctorRef = rootRef.child("Doctors").child(clicked.getId());
+                patientRef.child("Doctors").child(clicked.getId()).setValue(clicked.getFullName());
+                doctorRef.child("Patients").child(thisPatient.getId()).setValue(thisPatient.getId());
+                Intent patientView = intents.adminPatientView;
+                patientView.putExtra("thisPatient", thisPatient);
+                context.startActivity(patientView.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
+                MethodHelper.showToast(context, "Doctor added to patient");
+                finish();
+
+            }
+        });
+
+    }
+    public void getPatientDoctors(){
         patientRef.child("Doctors").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -84,14 +104,14 @@ public class AvailableDoctorListActivity extends AppCompatActivity {
 
             }
         });
-
-
+    }
+    public void getDoctorData(){
         rootRef.child("Doctors").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 if(!patientDoctors.contains(dataSnapshot.getKey())){
-                    doctor = dataSnapshot.getValue(Doctor.class);
-                    childRef = rootRef.child(dataSnapshot.getKey());
+                    Doctor doctor = dataSnapshot.getValue(Doctor.class);
+                    DatabaseReference childRef = rootRef.child(dataSnapshot.getKey());
                     testAdapter.add(doctor);
                     testAdapter.notifyDataSetChanged();
                 }
@@ -117,26 +137,6 @@ public class AvailableDoctorListActivity extends AppCompatActivity {
 
             }
         });
-
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                Doctor clicked = ((Doctor) parent.getItemAtPosition(position));
-                patientRef = rootRef.child("Patients").child(thisPatient.getId());
-                doctorRef = rootRef.child("Doctors").child(clicked.getId());
-                patientRef.child("Doctors").child(clicked.getId()).setValue(clicked.getFullName());
-                doctorRef.child("Patients").child(thisPatient.getId()).setValue(thisPatient.getId());
-                Intent patientView = intents.adminPatientView;
-                patientView.putExtra("thisPatient", thisPatient);
-                context.startActivity(patientView.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
-                MethodHelper.showToast(context, "Doctor added to patient");
-                finish();
-
-            }
-        });
-
     }
 
 

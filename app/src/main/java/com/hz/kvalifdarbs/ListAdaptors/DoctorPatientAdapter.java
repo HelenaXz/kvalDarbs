@@ -78,12 +78,23 @@ public class DoctorPatientAdapter extends ArrayAdapter<Object> {
                 colorIndicator.setBackgroundColor(ContextCompat.getColor(context, R.color.urgent));
             }
 
-            String t = String.valueOf(toNextMove);
-            String s = "Next chekcup in " + t + " min";
-            patientCheck.setText(s);
+            if(toNextMove < 0){
+                String t = String.valueOf(toNextMove);
+                String s = "Check now! Missed by " + t + " min";
+                patientCheck.setText(s);
+            } else {
+                String t = String.valueOf(toNextMove);
+                String s = "Next checkup in " + t + " min";
+                patientCheck.setText(s);
+            }
+
             lastExamTime=null;
+        } else {
+            colorIndicator.setBackgroundColor(ContextCompat.getColor(context, R.color.urgent));
+            String s = "No checkups made!";
+            patientCheck.setText(s);
         }
-        
+
         return convertView;
 
     }

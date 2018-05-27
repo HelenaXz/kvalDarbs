@@ -73,36 +73,7 @@ public class AllPatientListActivity extends AppCompatActivity
         allPatients = new ArrayList<>();
         testAdapter = new AllPatientAdapter(this);
 
-        rootRef.child("Patients").addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Patient patient = dataSnapshot.getValue(Patient.class);
-                childRef = rootRef.child(dataSnapshot.getKey());
-                testAdapter.add(patient);
-                testAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
+        getAllUsers();
 
         listView.setAdapter(testAdapter);
         listView.setClickable(true);
@@ -143,5 +114,37 @@ public class AllPatientListActivity extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void getAllUsers(){
+        rootRef.child("Patients").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Patient patient = dataSnapshot.getValue(Patient.class);
+                childRef = rootRef.child(dataSnapshot.getKey());
+                testAdapter.add(patient);
+                testAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 }

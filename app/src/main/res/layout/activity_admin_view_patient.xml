@@ -240,7 +240,7 @@
                         android:layout_height="40dp"
                         android:layout_weight="1"
                         android:backgroundTint="@color/colorPrimary"
-                        android:text="@string/addDoctor"
+                        android:text="Asign Doctor"
                         android:textColor="@color/white" />
 
                 </LinearLayout>

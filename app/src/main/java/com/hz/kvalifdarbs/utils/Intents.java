@@ -36,7 +36,6 @@ public class Intents extends AppCompatActivity {
     public Intent patientDoctorListView;
     public Intent patientDeviceManage;
     public Intent patientExamListView;
-
     public Intent loginView;
     public Intent userSelect;
 

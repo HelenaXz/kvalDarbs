@@ -17,8 +17,8 @@ import java.util.ArrayList;
 
 public class AvaiableDoctorAdapter extends ArrayAdapter<Doctor> {
 
-    public AvaiableDoctorAdapter(Context context, ArrayList<Doctor> allDoctors) {
-        super(context, 0, allDoctors);
+    public AvaiableDoctorAdapter(Context context) {
+        super(context, 0);
 
     }
 

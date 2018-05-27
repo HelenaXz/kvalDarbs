@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -31,8 +32,6 @@ import java.util.ArrayList;
 public class AdminViewDoctorActivity extends AppCompatActivity {
     Context context;
     DatabaseReference rootRef, docRef, allPatientRef, patientRef;
-    TextView name, phone, idTV;
-    Button deleteUser;
     ArrayList<String> doctorPatients;
     ListView patientList;
     DoctorPatientAdapter testAdapter;
@@ -45,6 +44,17 @@ public class AdminViewDoctorActivity extends AppCompatActivity {
         setContentView(R.layout.activity_admin_view_doctor);
         context = getApplicationContext();
         final Intents intents = new Intents(this);
+
+        final Handler handler = new Handler();
+        handler.postDelayed( new Runnable() {
+
+            @Override
+            public void run() {
+                testAdapter.notifyDataSetChanged();
+                handler.postDelayed( this, 30 * 1000 );
+            }
+        }, 30 * 1000 );
+
         //Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -62,10 +72,10 @@ public class AdminViewDoctorActivity extends AppCompatActivity {
         String phoneString = thisDoctor.getPhone().toString();
 
         //TextViews, Buttons
-        name = findViewById(R.id.name);
-        phone = findViewById(R.id.phone_number);
-        idTV = findViewById(R.id.doctorId_field);
-        deleteUser = findViewById(R.id.btnDeleteUser);
+        TextView name = findViewById(R.id.name);
+        TextView phone = findViewById(R.id.phone_number);
+        TextView idTV = findViewById(R.id.doctorId_field);
+        Button deleteUser = findViewById(R.id.btnDeleteUser);
 
         doctorPatients = new ArrayList<>();
 
@@ -77,7 +87,7 @@ public class AdminViewDoctorActivity extends AppCompatActivity {
         //Set up Patient ListView
         patientList = findViewById(R.id.doctorPatientList);
         doctorPatients = new ArrayList<>(); //list of doctor patient id's
-        testAdapter = new DoctorPatientAdapter(this);
+        DoctorPatientAdapter testAdapter = new DoctorPatientAdapter(this);
         patientList.setAdapter(testAdapter);
 
         emptyElement = findViewById(R.id.emptyElement);
@@ -87,24 +97,7 @@ public class AdminViewDoctorActivity extends AppCompatActivity {
         deleteUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(AdminViewDoctorActivity.this);
-                builder.setMessage("Delete doctor from system?").setPositiveButton("Delete", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        for(String patId : doctorPatients){
-                            patientRef = allPatientRef.child(patId);
-                            patientRef.child("Doctors").child(thisDoctor.getId()).removeValue();
-                        }
-                        docRef.removeValue();
-                        startActivity(intents.allDoctorList.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
-                        MethodHelper.showToast(context, "User deleted");
-
-                    }
-                }).setNegativeButton("Cancel", null);
-
-                AlertDialog deleteAlert = builder.create();
-                deleteAlert.show();
+                deleteUser(thisDoctor);
             }
         });
 
@@ -115,6 +108,13 @@ public class AdminViewDoctorActivity extends AppCompatActivity {
             }
         });
 
+
+        getDoctorPatients();
+        showDoctorPatients();
+
+
+    }
+    public void getDoctorPatients(){
         docRef.child("Patients").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -137,6 +137,9 @@ public class AdminViewDoctorActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    public void showDoctorPatients(){
         rootRef.child("Patients").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -166,9 +169,27 @@ public class AdminViewDoctorActivity extends AppCompatActivity {
 
             }
         });
+    }
 
+    public void deleteUser(final Doctor thisDoctor){
+        final Intents intents = new Intents(context);
+        AlertDialog.Builder builder = new AlertDialog.Builder(AdminViewDoctorActivity.this);
+        builder.setMessage("Delete doctor from system?").setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
 
+                for(String patId : doctorPatients){
+                    patientRef = allPatientRef.child(patId);
+                    patientRef.child("Doctors").child(thisDoctor.getId()).removeValue();
+                }
+                docRef.removeValue();
+                startActivity(intents.allDoctorList.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
+                MethodHelper.showToast(context, "User deleted");
 
+            }
+        }).setNegativeButton("Cancel", null);
 
+        AlertDialog deleteAlert = builder.create();
+        deleteAlert.show();
     }
 }

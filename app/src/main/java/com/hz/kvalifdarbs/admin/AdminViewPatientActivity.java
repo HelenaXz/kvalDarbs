@@ -32,16 +32,11 @@ import java.util.ArrayList;
 
 
 public class AdminViewPatientActivity extends AppCompatActivity {
-    TextView name_surname, room, brought_in, birthDate, patientId, moveEvery;
-    ListView patientDoctors;
-    Button addDoctorTo, deleteUser;
-    DatabaseReference rootRef, allDocRef, patientRef, doctorRef;
+    DatabaseReference allDocRef, patientRef, doctorRef;
     PatientDoctorSmallAdapter testAdapter;
     PatientExamAdapter testAdapter2;
     Context context;
     ArrayList<String> patientDocList;
-    ListView patientExamList;
-    TextView emptyElement;
     String valueType;
 
     @Override
@@ -60,21 +55,21 @@ public class AdminViewPatientActivity extends AppCompatActivity {
         valueType = "Examinations";
 
         //Firebase References
-        rootRef = FirebaseDatabase.getInstance().getReference();
+        final DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
         allDocRef = rootRef.child("Doctors");
         patientRef = rootRef.child("Patients").child(thisPatient.getId());
 
         patientDocList = new ArrayList<>();
         //TextViews, ListViews, Buttons
-        name_surname = findViewById(R.id.name_surname);
-        room = findViewById(R.id.room);
-        brought_in = findViewById(R.id.brought_in);
-        birthDate = findViewById(R.id.birthDate);
-        patientId = findViewById(R.id.patientId_field);
-        addDoctorTo = findViewById(R.id.btnAddDoc);
-        deleteUser = findViewById(R.id.btnDeleteUser);
-        patientDoctors = findViewById(R.id.patientDoctorList);
-        moveEvery = findViewById(R.id.moveEvery);
+        TextView name_surname = findViewById(R.id.name_surname);
+        TextView room = findViewById(R.id.room);
+        TextView brought_in = findViewById(R.id.brought_in);
+        TextView birthDate = findViewById(R.id.birthDate);
+        TextView patientId = findViewById(R.id.patientId_field);
+        Button addDoctorTo = findViewById(R.id.btnAddDoc);
+        Button deleteUser = findViewById(R.id.btnDeleteUser);
+        ListView patientDoctors = findViewById(R.id.patientDoctorList);
+        TextView moveEvery = findViewById(R.id.moveEvery);
 
 
         //Fill TextViews
@@ -90,13 +85,12 @@ public class AdminViewPatientActivity extends AppCompatActivity {
         patientDoctors.setAdapter(testAdapter);
 
         //Patient Examination list view setup
-        patientExamList = findViewById(R.id.patientExamList);
+        ListView patientExamList = findViewById(R.id.patientExamList);
 
         testAdapter2 = new PatientExamAdapter(this);
         patientExamList.setAdapter(testAdapter2);
 
 
-        emptyElement = findViewById(R.id.emptyElement);
         TextView emptyText = findViewById(android.R.id.empty);
         patientExamList.setEmptyView(emptyText);
         getChildren(valueType);
@@ -160,16 +154,23 @@ public class AdminViewPatientActivity extends AppCompatActivity {
             }
         });
 
-        patientRef.child("Doctors").addChildEventListener(new ChildEventListener() {
+        getPatientDoctors();
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // perform whatever you want on back arrow click
+                startActivity(intents.allPatientList.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
+            }
+        });
+    }
+    public void getChildren(String valueType){
+        patientRef.child(valueType).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                String doctorId = dataSnapshot.getKey();
-                String doctorName = dataSnapshot.getValue().toString();
-                smallDoctor newSmallDoc = new smallDoctor(doctorId, doctorName);
-
-                testAdapter.add(newSmallDoc);
-                patientDocList.add(newSmallDoc.getId());
-                testAdapter.notifyDataSetChanged();
+                Examination exam = dataSnapshot.getValue(Examination.class);
+                testAdapter2.insert(exam, 0);
+                testAdapter2.notifyDataSetChanged();
             }
 
             @Override
@@ -192,22 +193,18 @@ public class AdminViewPatientActivity extends AppCompatActivity {
 
             }
         });
-
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // perform whatever you want on back arrow click
-                startActivity(intents.allPatientList.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
-            }
-        });
     }
-    public void getChildren(String valueType){
-        patientRef.child(valueType).addChildEventListener(new ChildEventListener() {
+    public void getPatientDoctors(){
+        patientRef.child("Doctors").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Examination exam = dataSnapshot.getValue(Examination.class);
-                testAdapter2.insert(exam, 0);
-                testAdapter2.notifyDataSetChanged();
+                String doctorId = dataSnapshot.getKey();
+                String doctorName = dataSnapshot.getValue().toString();
+                smallDoctor newSmallDoc = new smallDoctor(doctorId, doctorName);
+
+                testAdapter.add(newSmallDoc);
+                patientDocList.add(newSmallDoc.getId());
+                testAdapter.notifyDataSetChanged();
             }
 
             @Override
