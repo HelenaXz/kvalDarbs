@@ -11,7 +11,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.widget.Button;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -46,7 +45,7 @@ public class ConnectDeviceActivity extends AppCompatActivity
         userRef = rootRef.child("Patients").child(userId);
 
         //TextViews, Buttons
-        Button connect = findViewById(R.id.button);
+//        Button connect = findViewById(R.id.button);
 
 
         //Drawer menu

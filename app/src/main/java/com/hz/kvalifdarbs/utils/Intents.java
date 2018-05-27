@@ -36,6 +36,7 @@ public class Intents extends AppCompatActivity {
     public Intent patientDoctorListView;
     public Intent patientDeviceManage;
     public Intent patientExamListView;
+    public Intent connectBluetoothDevice;
 
     public Intent loginView;
     public Intent userSelect;
@@ -61,5 +62,6 @@ public class Intents extends AppCompatActivity {
         this.patientDoctorListView = new Intent(thisContext, PatientDoctorListActivity.class);
         this.patientDeviceManage = new Intent(thisContext, ConnectDeviceActivity.class);
         this.patientExamListView = new Intent(thisContext, PatientExamListActivity.class);
+        this.connectBluetoothDevice = new Intent(thisContext, com.hz.kvalifdarbs.utils.ConnectDeviceActivity.class);
     }
 }

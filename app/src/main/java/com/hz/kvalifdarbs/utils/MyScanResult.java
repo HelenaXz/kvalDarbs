@@ -1,9 +1,7 @@
 package com.hz.kvalifdarbs.utils;
 
-
 import com.polidea.rxandroidble.RxBleDevice;
 import com.polidea.rxandroidble.scan.ScanResult;
-
 
 public class MyScanResult {
     public int rssi;

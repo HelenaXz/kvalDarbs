@@ -10,47 +10,69 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteY="8dp"
+        tools:layout_editor_absoluteX="8dp">
 
-        <android.support.design.widget.AppBarLayout
+        <TextView
+            android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:theme="@style/AppTheme.AppBarOverlay">
+            android:layout_margin="8dp"
+            android:text="This activity is to connect to MoveSense sensor node. Press on the list item to connect, ress once again to start receiving data" />
 
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="46dp"
-                android:background="@color/colorPrimary"
-                app:popupTheme="@style/AppTheme.PopupOverlay" />
+        <Button
+            android:id="@+id/buttonScan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onScanClicked"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:text="Scan"
+            android:visibility="visible" />
 
-        </android.support.design.widget.AppBarLayout>
+        <Button
+            android:id="@+id/buttonScanStop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onScanStopClicked"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:text="Stop Scan"
+            android:visibility="gone" />
 
         <LinearLayout
+            android:id="@+id/sensorUI"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
+            android:orientation="horizontal"
+            tools:layout_editor_absoluteY="8dp"
+            tools:layout_editor_absoluteX="8dp">
 
             <Button
-                android:id="@+id/button"
-                android:layout_width="match_parent"
+                android:id="@+id/buttonUnsubscribe"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Button" />
+                android:text="Unsubscribe"
+                android:onClick="onUnsubscribeClicked" />
+
+
+            <TextView
+                android:id="@+id/sensorMsg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
         </LinearLayout>
 
-
+        <ListView
+            android:id="@+id/listScanResult"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_weight="1" />
     </LinearLayout>
-
-    <android.support.design.widget.NavigationView
-        android:id="@+id/nav_view"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:fitsSystemWindows="true"
-        android:visibility="visible">
-
-    </android.support.design.widget.NavigationView>
 
 </android.support.v4.widget.DrawerLayout>

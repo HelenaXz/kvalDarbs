@@ -1,7 +1,6 @@
 package com.hz.kvalifdarbs.utils;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -13,12 +12,15 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.hz.kvalifdarbs.R;
 import com.movesense.mds.Mds;
 import com.movesense.mds.MdsConnectionListener;
 import com.movesense.mds.MdsException;
-import com.movesense.mds.MdsResponseListener;
+import com.movesense.mds.MdsNotificationListener;
+import com.movesense.mds.MdsSubscription;
 import com.polidea.rxandroidble.RxBleClient;
 import com.polidea.rxandroidble.RxBleDevice;
 import com.polidea.rxandroidble.scan.ScanSettings;
@@ -46,6 +48,11 @@ public class ConnectDeviceActivity extends AppCompatActivity implements AdapterV
     private ListView mScanResultListView;
     private ArrayList<MyScanResult> mScanResArrayList = new ArrayList<>();
     ArrayAdapter<MyScanResult> mScanResArrayAdapter;
+
+    // Sensor subscription
+    static private String URI_MEAS_ACC_13 = "/Meas/Acc/13";
+    private MdsSubscription mdsSubscription;
+    private String subscribedDeviceSerial;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,27 +159,6 @@ public class ConnectDeviceActivity extends AppCompatActivity implements AdapterV
         findViewById(R.id.buttonScanStop).setVisibility(View.GONE);
     }
 
-    void showDeviceInfo(final String serial) {
-        String uri = SCHEME_PREFIX + serial + "/Info";
-        final Context ctx = this;
-        mMds.get(uri, null, new MdsResponseListener() {
-            @Override
-            public void onSuccess(String s) {
-                Log.i(LOG_TAG, "Device " + serial + " /info request succesful: " + s);
-                // Display info in alert dialog
-                AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
-                builder.setTitle("Device info:")
-                        .setMessage(s)
-                        .show();
-            }
-
-            @Override
-            public void onError(MdsException e) {
-                Log.e(LOG_TAG, "Device " + serial + " /info returned error: " + e);
-            }
-        });
-    }
-
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (position < 0 || position >= mScanResArrayList.size())
@@ -188,8 +174,52 @@ public class ConnectDeviceActivity extends AppCompatActivity implements AdapterV
         }
         else {
             // Device is connected, trigger showing /Info
-            showDeviceInfo(device.connectedSerial);
+            subscribeToSensor(device.connectedSerial);
         }
+    }
+
+    private void subscribeToSensor(String connectedSerial) {
+        // Clean up existing subscription (if there is one)
+        if (mdsSubscription != null) {
+            unsubscribe();
+        }
+
+        // Build JSON doc that describes what resource and device to subscribe
+        // Here we subscribe to 13 hertz accelerometer data
+        StringBuilder sb = new StringBuilder();
+        String strContract = sb.append("{\"Uri\": \"").append(connectedSerial).append(URI_MEAS_ACC_13).append("\"}").toString();
+        Log.d(LOG_TAG, strContract);
+        final View sensorUI = findViewById(R.id.sensorUI);
+
+        subscribedDeviceSerial = connectedSerial;
+
+        mdsSubscription = mMds.builder().build(this).subscribe(URI_EVENTLISTENER,
+                strContract, new MdsNotificationListener() {
+                    @Override
+                    public void onNotification(String data) {
+                        Log.d(LOG_TAG, "onNotification(): " + data);
+
+                        // If UI not enabled, do it now
+                        if (sensorUI.getVisibility() == View.GONE)
+                            sensorUI.setVisibility(View.VISIBLE);
+
+                        AccDataResponse accResponse = new Gson().fromJson(data, AccDataResponse.class);
+                        if (accResponse != null && accResponse.body.array.length > 0) {
+
+                            String accStr =
+                                    String.format("%.02f, %.02f, %.02f", accResponse.body.array[0].x, accResponse.body.array[0].y, accResponse.body.array[0].z);
+
+                            ((TextView)findViewById(R.id.sensorMsg)).setText(accStr);
+                        }
+                    }
+
+                    @Override
+                    public void onError(MdsException error) {
+                        Log.e(LOG_TAG, "subscription onError(): ", error);
+                        unsubscribe();
+                    }
+                });
+
     }
 
     @Override
@@ -198,6 +228,11 @@ public class ConnectDeviceActivity extends AppCompatActivity implements AdapterV
             return false;
 
         MyScanResult device = mScanResArrayList.get(position);
+
+        // unsubscribe if there
+        Log.d(LOG_TAG, "onItemLongClick, " + device.connectedSerial + " vs " + subscribedDeviceSerial);
+        if (device.connectedSerial.equals(subscribedDeviceSerial))
+            unsubscribe();
 
         Log.i(LOG_TAG, "Disconnecting from BLE device: " + device.macAddress);
         mMds.disconnect(device.macAddress);
@@ -236,10 +271,17 @@ public class ConnectDeviceActivity extends AppCompatActivity implements AdapterV
 
             @Override
             public void onDisconnect(String bleAddress) {
+
                 Log.d(LOG_TAG, "onDisconnect: " + bleAddress);
                 for (MyScanResult sr : mScanResArrayList) {
                     if (bleAddress.equals(sr.macAddress))
+                    {
+                        // unsubscribe if was subscribed
+                        if (sr.connectedSerial != null && sr.connectedSerial.equals(subscribedDeviceSerial))
+                            unsubscribe();
+
                         sr.markDisconnected();
+                    }
                 }
                 mScanResArrayAdapter.notifyDataSetChanged();
             }
@@ -252,5 +294,23 @@ public class ConnectDeviceActivity extends AppCompatActivity implements AdapterV
                 .setMessage(e.getMessage());
 
         builder.create().show();
+    }
+
+    private void unsubscribe() {
+        if (mdsSubscription != null) {
+            mdsSubscription.unsubscribe();
+            mdsSubscription = null;
+        }
+
+        subscribedDeviceSerial = null;
+
+        // If UI not invisible, do it now
+        final View sensorUI = findViewById(R.id.sensorUI);
+        if (sensorUI.getVisibility() != View.GONE)
+            sensorUI.setVisibility(View.GONE);
+
+    }
+    public void onUnsubscribeClicked(View view) {
+        unsubscribe();
     }
 }
