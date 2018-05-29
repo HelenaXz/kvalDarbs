@@ -1,19 +1,29 @@
 package com.hz.kvalifdarbs.utils;
 
 import android.Manifest;
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
 import com.hz.kvalifdarbs.R;
 import com.movesense.mds.Mds;
@@ -29,11 +39,15 @@ import java.util.ArrayList;
 
 import rx.Subscription;
 
-public class ConnectDeviceActivity extends AppCompatActivity implements AdapterView.OnItemLongClickListener, AdapterView.OnItemClickListener {
+public class ConnectDeviceActivity extends AppCompatActivity implements AdapterView.OnItemLongClickListener, AdapterView.OnItemClickListener, NavigationView.OnNavigationItemSelectedListener  {
 
 
     private static final String LOG_TAG = ConnectDeviceActivity.class.getSimpleName();
     private static final int MY_PERMISSIONS_REQUEST_LOCATION = 1;
+
+    String userId, userName, userSurname, fullName, userType;
+    DatabaseReference rootRef, userRef;
+    Context context;
 
     // MDS
     private Mds mMds;
@@ -58,6 +72,38 @@ public class ConnectDeviceActivity extends AppCompatActivity implements AdapterV
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connect_device);
+
+        context = getApplicationContext();
+        //Toolbar
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        //Strings
+        userType = PreferenceUtils.getUserType(context);
+        userId  = PreferenceUtils.getId(context);
+        userName = PreferenceUtils.getUserName(context);
+        userSurname = PreferenceUtils.getUserSurname(context);
+        fullName = userName + " " + userSurname;
+
+        //Firebase
+        rootRef = FirebaseDatabase.getInstance().getReference();
+        userRef = rootRef.child("Patients").child(userId);
+
+        //TextViews, Buttons
+//        Button connect = findViewById(R.id.button);
+
+        //Drawer menu
+        final DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        final ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = findViewById(R.id.nav_view);
+
+        MethodHelper.setUpNavigationMenu(navigationView, userId, fullName, userType);
+
+        navigationView.setNavigationItemSelectedListener(this);
 
         // Init Scan UI
         mScanResultListView = (ListView)findViewById(R.id.listScanResult);
@@ -312,5 +358,27 @@ public class ConnectDeviceActivity extends AppCompatActivity implements AdapterV
     }
     public void onUnsubscribeClicked(View view) {
         unsubscribe();
+    }
+
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+        final Intents intents = new Intents(this);
+
+        if (id == R.id.nav_my_doctors) {
+            startActivity(intents.patientDoctorListView.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
+        } else if (id == R.id.nav_pat_exams) {
+            startActivity(intents.patientExamListView.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
+        } else if (id == R.id.nav_profile) {
+            startActivity(intents.patientMainMenu.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
+        } else if (id == R.id.nav_BT_device){
+            startActivity(intents.patientDeviceManage.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
+        } else if (id == R.id.nav_logout) {
+            MethodHelper.logOut(context, intents);
+        }
+
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 }

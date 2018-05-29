@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 
+import com.hz.kvalifdarbs.LoginActivity;
+import com.hz.kvalifdarbs.UserSelectActivity;
 import com.hz.kvalifdarbs.admin.AddAdminActivity;
 import com.hz.kvalifdarbs.admin.AddDoctorActivity;
 import com.hz.kvalifdarbs.admin.AddPatientActivity;
@@ -17,12 +19,9 @@ import com.hz.kvalifdarbs.admin.AvailableDoctorListActivity;
 import com.hz.kvalifdarbs.doctor.DoctorMainActivity;
 import com.hz.kvalifdarbs.doctor.DoctorPatientListActivity;
 import com.hz.kvalifdarbs.doctor.DoctorViewPatientActivity;
-import com.hz.kvalifdarbs.LoginActivity;
-import com.hz.kvalifdarbs.patient.ConnectDeviceActivity;
 import com.hz.kvalifdarbs.patient.PatientDoctorListActivity;
 import com.hz.kvalifdarbs.patient.PatientExamListActivity;
 import com.hz.kvalifdarbs.patient.PatientMainActivity;
-import com.hz.kvalifdarbs.UserSelectActivity;
 
 public class Intents extends AppCompatActivity {
     public Intent adminMainMenu, doctorMainMenu, patientMainMenu;
@@ -36,7 +35,6 @@ public class Intents extends AppCompatActivity {
     public Intent patientDoctorListView;
     public Intent patientDeviceManage;
     public Intent patientExamListView;
-    public Intent connectBluetoothDevice;
 
     public Intent loginView;
     public Intent userSelect;
@@ -60,8 +58,7 @@ public class Intents extends AppCompatActivity {
         this.userSelect = new Intent(thisContext, UserSelectActivity.class);
         this.addUser = new Intent(thisContext, AddUserActivity.class);
         this.patientDoctorListView = new Intent(thisContext, PatientDoctorListActivity.class);
-        this.patientDeviceManage = new Intent(thisContext, ConnectDeviceActivity.class);
+        this.patientDeviceManage = new Intent(thisContext, com.hz.kvalifdarbs.utils.ConnectDeviceActivity.class);
         this.patientExamListView = new Intent(thisContext, PatientExamListActivity.class);
-        this.connectBluetoothDevice = new Intent(thisContext, com.hz.kvalifdarbs.utils.ConnectDeviceActivity.class);
     }
 }
