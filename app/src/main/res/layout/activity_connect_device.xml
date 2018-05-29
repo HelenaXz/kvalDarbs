@@ -55,26 +55,49 @@
             android:text="Stop Scan"
             android:visibility="gone" />
 
+
         <LinearLayout
-            android:id="@+id/sensorUI"
-            android:visibility="gone"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            tools:layout_editor_absoluteY="8dp"
-            tools:layout_editor_absoluteX="8dp">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <Button
-                android:id="@+id/buttonUnsubscribe"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Unsubscribe"
-                android:onClick="onUnsubscribeClicked" />
+            <LinearLayout
+                android:id="@+id/sensorUI"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                tools:layout_editor_absoluteX="8dp"
+                tools:layout_editor_absoluteY="8dp">
 
+                <Button
+                    android:id="@+id/buttonUnsubscribe"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="onUnsubscribeClicked"
+                    android:text="Unsubscribe" />
+
+                <Button
+                    android:id="@+id/buttonCalibrate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:onClick="calibrate"
+                    android:text="Calibrate"
+                    android:visibility="visible" />
+
+
+                <TextView
+                    android:id="@+id/sensorMsg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
 
             <TextView
-                android:id="@+id/sensorMsg"
-                android:layout_width="wrap_content"
+                android:id="@+id/calibrationState"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
         </LinearLayout>

@@ -134,5 +134,17 @@ public class PreferenceUtils {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         return prefs.getString(Constants.KEY_MOVE_EVERY, "");
     }
+    public static boolean saveCalibration(String calibration, Context context){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor prefsEditor = prefs.edit();
+        prefsEditor.putString(Constants.KEY_CALIBRATION, calibration);
+        prefsEditor.apply();
+        return true;
+    }
+    public static String getCalibration(Context context){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.getString(Constants.KEY_CALIBRATION, "");
+    }
+
 
 }

@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -48,6 +49,8 @@ public class ConnectDeviceActivity extends AppCompatActivity implements AdapterV
     String userId, userName, userSurname, fullName, userType;
     DatabaseReference rootRef, userRef;
     Context context;
+    String accStr;
+    Double xd, yd, zd;
 
     // MDS
     private Mds mMds;
@@ -77,6 +80,7 @@ public class ConnectDeviceActivity extends AppCompatActivity implements AdapterV
         //Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        Button btnCalibrate = findViewById(R.id.buttonCalibrate);
 
         //Strings
         userType = PreferenceUtils.getUserType(context);
@@ -118,6 +122,13 @@ public class ConnectDeviceActivity extends AppCompatActivity implements AdapterV
 
         // Initialize Movesense MDS library
         initMds();
+
+        btnCalibrate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                calibrate(xd, yd, zd);
+            }
+        });
     }
 
     private RxBleClient getBleClient() {
@@ -252,7 +263,10 @@ public class ConnectDeviceActivity extends AppCompatActivity implements AdapterV
                         AccDataResponse accResponse = new Gson().fromJson(data, AccDataResponse.class);
                         if (accResponse != null && accResponse.body.array.length > 0) {
 
-                            String accStr =
+                            xd = accResponse.body.array[0].x;
+                            yd = accResponse.body.array[0].y;
+                            zd = accResponse.body.array[0].z;
+                            accStr =
                                     String.format("%.02f, %.02f, %.02f", accResponse.body.array[0].x, accResponse.body.array[0].y, accResponse.body.array[0].z);
 
                             ((TextView)findViewById(R.id.sensorMsg)).setText(accStr);
@@ -268,6 +282,17 @@ public class ConnectDeviceActivity extends AppCompatActivity implements AdapterV
 
     }
 
+    private void calibrate(Double xd, Double yd, Double zd){
+            Integer x, y, z;
+            x = xd.intValue();
+            y = yd.intValue();
+            z = zd.intValue();
+            String calibrationString = String.format("%d, %d, %d", x,y,z) ;
+            PreferenceUtils.saveCalibration(calibrationString, context);
+            String s = "calibration state at: " + calibrationString;
+        ((TextView)findViewById(R.id.calibrationState)).setText(s);
+
+    }
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
         if (position < 0 || position >= mScanResArrayList.size())
@@ -356,6 +381,8 @@ public class ConnectDeviceActivity extends AppCompatActivity implements AdapterV
             sensorUI.setVisibility(View.GONE);
 
     }
+
+
     public void onUnsubscribeClicked(View view) {
         unsubscribe();
     }
