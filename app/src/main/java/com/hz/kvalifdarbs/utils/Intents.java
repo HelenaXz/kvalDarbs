@@ -58,7 +58,7 @@ public class Intents extends AppCompatActivity {
         this.userSelect = new Intent(thisContext, UserSelectActivity.class);
         this.addUser = new Intent(thisContext, AddUserActivity.class);
         this.patientDoctorListView = new Intent(thisContext, PatientDoctorListActivity.class);
-        this.patientDeviceManage = new Intent(thisContext, com.hz.kvalifdarbs.utils.ConnectDeviceActivity.class);
+        this.patientDeviceManage = new Intent(thisContext, ConnectDeviceActivity.class);
         this.patientExamListView = new Intent(thisContext, PatientExamListActivity.class);
     }
 }

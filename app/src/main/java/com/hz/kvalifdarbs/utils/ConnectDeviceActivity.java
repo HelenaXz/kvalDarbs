@@ -131,7 +131,7 @@ public class ConnectDeviceActivity extends AppCompatActivity implements AdapterV
     }
 
     private void initMds() {
-        mMds = Mds.builder().build(this);
+        mMds = Mds.builder().build(ConnectDeviceActivity.this);
     }
 
     void requestNeededPermissions()
