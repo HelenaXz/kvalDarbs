@@ -8,78 +8,95 @@
     android:fitsSystemWindows="true"
     tools:openDrawer="start">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <android.support.design.widget.AppBarLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:theme="@style/AppTheme.AppBarOverlay">
-
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                app:popupTheme="@style/AppTheme.PopupOverlay"
-                android:layout_width="match_parent"
-                android:layout_height="46dp"
-                android:background="@color/colorPrimary" />
-
-
-        </android.support.design.widget.AppBarLayout>
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/floatingActionButton"
+            android:layout_width="53dp"
+            android:layout_height="55dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="27dp"
+            android:layout_marginEnd="36dp"
+            android:clickable="true"
+            app:srcCompat="@drawable/ic_refresh_white" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <android.support.design.widget.AppBarLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/AppTheme.AppBarOverlay">
+
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="46dp"
+                    android:background="@color/colorPrimary"
+                    app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+
+            </android.support.design.widget.AppBarLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/colorPrimaryMedium"
-                android:orientation="horizontal"
-                android:paddingEnd="1dp"
-                android:paddingStart="25dp">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorPrimaryMedium"
+                    android:orientation="horizontal"
+                    android:paddingEnd="1dp"
+                    android:paddingStart="25dp">
+
+                    <TextView
+                        android:id="@+id/textView17"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="0dp"
+                        android:layout_weight="2"
+                        android:paddingEnd="-20dp"
+                        android:paddingStart="1dp"
+                        android:text="@string/id"
+                        android:textColor="@color/white"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:paddingStart="8dp"
+                        android:text="Next checkup"
+                        android:textColor="@color/white"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <ListView
+                    android:id="@+id/patientList"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                </ListView>
 
                 <TextView
-                    android:id="@+id/textView17"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/emptyElement"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="0dp"
-                    android:layout_weight="2"
-                    android:paddingEnd="-20dp"
-                    android:paddingStart="1dp"
-                    android:text="@string/id"
-                    android:textColor="@color/white"
-                    android:textSize="16sp" />
+                    android:layout_marginTop="50dp"
+                    android:gravity="center_vertical|center_horizontal" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="3"
-                    android:paddingStart="8dp"
-                    android:text="Next checkup"
-                    android:textColor="@color/white"
-                    android:textSize="16sp" />
             </LinearLayout>
 
-            <ListView
-                android:id="@+id/patientList"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-            </ListView>
-
-            <TextView
-                android:id="@+id/emptyElement"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
-                android:gravity="center_vertical|center_horizontal" />
-
         </LinearLayout>
+    </RelativeLayout>
 
-    </LinearLayout>
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"

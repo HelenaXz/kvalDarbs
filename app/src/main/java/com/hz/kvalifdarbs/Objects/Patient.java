@@ -18,6 +18,7 @@ public class Patient implements Serializable {
     private String gender;
     private Integer moveEveryTime;
     private Examination lastExam;
+    private Movement lastMovement;
 
 
 
@@ -108,5 +109,9 @@ public class Patient implements Serializable {
      }
     public void setLastExam(Examination exam){
         this.lastExam = exam;
+     }
+     public Movement getLastMovement(){ return this.lastMovement;}
+     public  void setLastMovement(Movement move){
+         this.lastMovement = move;
      }
 }

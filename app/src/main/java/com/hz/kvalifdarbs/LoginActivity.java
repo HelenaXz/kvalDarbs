@@ -78,7 +78,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 if(thisUserType.equals("Administrator")){
                     childRef = rootRef.child("Admins");
-                    attemptLogin(thisUserType, intents.adminMainMenu);
+                    attemptLogin(thisUserType, intents.allPatientList);
                 }
             }
         });

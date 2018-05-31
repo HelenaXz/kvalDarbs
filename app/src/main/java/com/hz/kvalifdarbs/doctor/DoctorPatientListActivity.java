@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -13,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -41,6 +43,7 @@ public class DoctorPatientListActivity extends AppCompatActivity
     Context context;
     DatabaseReference rootRef, childRef;
     TextView emptyElement;
+    FloatingActionButton fab;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +65,20 @@ public class DoctorPatientListActivity extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        fab = findViewById(R.id.floatingActionButton);
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                testAdapter.clear();
+                patientList.setAdapter(testAdapter);
+
+                showDoctorPatients();
+                testAdapter.notifyDataSetChanged();
+                patientList.setAdapter(testAdapter);
+            }
+        });
 
         String userId  = PreferenceUtils.getId(context);
         //Firebase reference
@@ -164,6 +181,7 @@ public class DoctorPatientListActivity extends AppCompatActivity
                 for (String curr : doctorPatients) if (curr.equals(dataSnapshot.getKey())){
                     Patient patient = dataSnapshot.getValue(Patient.class);
                     testAdapter.add(patient);
+                    testAdapter.notifyDataSetChanged();
                 }
 
             }

@@ -1,43 +1,45 @@
 package com.hz.kvalifdarbs.patient;
 
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.ListView;
-import android.widget.TextView;
+        import android.content.Context;
+        import android.content.Intent;
+        import android.os.Bundle;
+        import android.support.design.widget.NavigationView;
+        import android.support.v4.view.GravityCompat;
+        import android.support.v4.widget.DrawerLayout;
+        import android.support.v7.app.ActionBarDrawerToggle;
+        import android.support.v7.app.AppCompatActivity;
+        import android.support.v7.widget.Toolbar;
+        import android.view.MenuItem;
+        import android.view.View;
+        import android.widget.ListView;
+        import android.widget.TextView;
 
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.hz.kvalifdarbs.ListAdaptors.PatientExamAdapter;
-import com.hz.kvalifdarbs.Objects.Examination;
-import com.hz.kvalifdarbs.R;
-import com.hz.kvalifdarbs.utils.Intents;
-import com.hz.kvalifdarbs.utils.MethodHelper;
-import com.hz.kvalifdarbs.utils.PreferenceUtils;
+        import com.google.firebase.database.ChildEventListener;
+        import com.google.firebase.database.DataSnapshot;
+        import com.google.firebase.database.DatabaseError;
+        import com.google.firebase.database.DatabaseReference;
+        import com.google.firebase.database.FirebaseDatabase;
+        import com.hz.kvalifdarbs.ListAdaptors.PatientExamAdapter;
+        import com.hz.kvalifdarbs.ListAdaptors.PatientMovementAdapter;
+        import com.hz.kvalifdarbs.Objects.Examination;
+        import com.hz.kvalifdarbs.Objects.Movement;
+        import com.hz.kvalifdarbs.R;
+        import com.hz.kvalifdarbs.utils.Intents;
+        import com.hz.kvalifdarbs.utils.MethodHelper;
+        import com.hz.kvalifdarbs.utils.PreferenceUtils;
 
-import java.util.ArrayList;
+        import java.util.ArrayList;
 
-public class PatientExamListActivity extends AppCompatActivity
+public class PatientMovementListActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener
 {
     Context context;
     String userId, userName, userSurname, fullName, userType;
     DatabaseReference rootRef, userRef;
     TextView emptyElement;
-    ListView examList;
+    ListView movementList;
     ArrayList<String> patientExams;
-    PatientExamAdapter testAdapter;
+    PatientMovementAdapter testAdapter;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_thing_list);
@@ -61,13 +63,13 @@ public class PatientExamListActivity extends AppCompatActivity
 
         //Set up list
         emptyElement = findViewById(R.id.emptyElement);
-        examList = findViewById(R.id.thingList);
+        movementList = findViewById(R.id.thingList);
         patientExams = new ArrayList<>(); //list of doctor patient id's
-        testAdapter = new PatientExamAdapter(this);
-        examList.setAdapter(testAdapter);
+        testAdapter = new PatientMovementAdapter(this);
+        movementList.setAdapter(testAdapter);
 
         TextView emptyText = findViewById(android.R.id.empty);
-        examList.setEmptyView(emptyText);
+        movementList.setEmptyView(emptyText);
 
 
         //Drawer menu
@@ -86,14 +88,14 @@ public class PatientExamListActivity extends AppCompatActivity
         if(testAdapterSize==0){
             String emptyTextString = "This patient has no examinations.";
             emptyElement.setText(emptyTextString);
-            examList.setEmptyView(emptyElement);
+            movementList.setEmptyView(emptyElement);
         }
 
-        userRef.child("Examinations").addChildEventListener(new ChildEventListener() {
+        userRef.child("Movements").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Examination exam = dataSnapshot.getValue(Examination.class);
-                testAdapter.insert(exam, 0);
+                Movement move = dataSnapshot.getValue(Movement.class);
+                testAdapter.insert(move, 0);
                 testAdapter.notifyDataSetChanged();
             }
 

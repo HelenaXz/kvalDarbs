@@ -23,9 +23,14 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
+import com.hz.kvalifdarbs.Objects.Examination;
+import com.hz.kvalifdarbs.Objects.Movement;
 import com.hz.kvalifdarbs.R;
 import com.movesense.mds.Mds;
 import com.movesense.mds.MdsConnectionListener;
@@ -36,7 +41,10 @@ import com.polidea.rxandroidble.RxBleClient;
 import com.polidea.rxandroidble.RxBleDevice;
 import com.polidea.rxandroidble.scan.ScanSettings;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import rx.Subscription;
 
@@ -45,12 +53,14 @@ public class ConnectDeviceActivity extends AppCompatActivity implements AdapterV
 
     private static final String LOG_TAG = ConnectDeviceActivity.class.getSimpleName();
     private static final int MY_PERMISSIONS_REQUEST_LOCATION = 1;
-
-    String userId, userName, userSurname, fullName, userType;
-    DatabaseReference rootRef, userRef;
     Context context;
-    String accStr;
+    Toolbar toolbar;
     Double xd, yd, zd;
+    Button btnCalibrate;
+    Movement lastMovement;
+    DatabaseReference rootRef, childRef;
+    DrawerLayout drawer;
+    Boolean calibrated;
 
     // MDS
     private Mds mMds;
@@ -75,29 +85,32 @@ public class ConnectDeviceActivity extends AppCompatActivity implements AdapterV
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connect_device);
-
         context = getApplicationContext();
-        //Toolbar
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        Button btnCalibrate = findViewById(R.id.buttonCalibrate);
+        calibrated = false;
 
-        //Strings
-        userType = PreferenceUtils.getUserType(context);
-        userId  = PreferenceUtils.getId(context);
-        userName = PreferenceUtils.getUserName(context);
-        userSurname = PreferenceUtils.getUserSurname(context);
-        fullName = userName + " " + userSurname;
 
-        //Firebase
         rootRef = FirebaseDatabase.getInstance().getReference();
-        userRef = rootRef.child("Patients").child(userId);
+        childRef = rootRef.child("Patients").child(PreferenceUtils.getId(context)).child("lastMovement");
+        childRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                lastMovement = dataSnapshot.getValue(Movement.class);
+            }
 
-        //TextViews, Buttons
-//        Button connect = findViewById(R.id.button);
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+
+        //Toolbar
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         //Drawer menu
-        final DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer = findViewById(R.id.drawer_layout);
         final ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -105,9 +118,22 @@ public class ConnectDeviceActivity extends AppCompatActivity implements AdapterV
 
         NavigationView navigationView = findViewById(R.id.nav_view);
 
+        String userId = PreferenceUtils.getId(context);
+        String fullName = PreferenceUtils.getUserName(context);
+        String userType = PreferenceUtils.getUserType(context);
         MethodHelper.setUpNavigationMenu(navigationView, userId, fullName, userType);
 
         navigationView.setNavigationItemSelectedListener(this);
+
+        btnCalibrate = findViewById(R.id.buttonCalibrate);
+
+        btnCalibrate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                calibrate(xd, yd, zd);
+
+            }
+        });
 
         // Init Scan UI
         mScanResultListView = (ListView)findViewById(R.id.listScanResult);
@@ -122,13 +148,6 @@ public class ConnectDeviceActivity extends AppCompatActivity implements AdapterV
 
         // Initialize Movesense MDS library
         initMds();
-
-        btnCalibrate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                calibrate(xd, yd, zd);
-            }
-        });
     }
 
     private RxBleClient getBleClient() {
@@ -142,7 +161,7 @@ public class ConnectDeviceActivity extends AppCompatActivity implements AdapterV
     }
 
     private void initMds() {
-        mMds = Mds.builder().build(ConnectDeviceActivity.this);
+        mMds = Mds.builder().build(this);
     }
 
     void requestNeededPermissions()
@@ -228,11 +247,40 @@ public class ConnectDeviceActivity extends AppCompatActivity implements AdapterV
 
             // And connect to the device
             connectBLEDevice(device);
+            toolbar.setVisibility(View.GONE);
+            drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         }
         else {
             // Device is connected, trigger showing /Info
             subscribeToSensor(device.connectedSerial);
         }
+    }
+
+    private void calibrate(Double xd, Double yd, Double zd){
+        calibrated = true;
+        Integer x, y, z;
+        x = xd.intValue();
+        y = yd.intValue();
+        z = zd.intValue();
+        String calibrationString = String.format("%d, %d, %d", x,y,z) ;
+        String s = "calibration state at: " + calibrationString;
+        ((TextView)findViewById(R.id.calibrationState)).setText(s);
+
+        //save calibration state as first movement in firebase
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date currentTime = Calendar.getInstance().getTime();
+        final String time  = sdf.format(currentTime);
+
+        Movement newMovement = new Movement(time, x, y, z);
+        String userId = PreferenceUtils.getId(context);
+        DatabaseReference thisPatientRef = FirebaseDatabase.getInstance().getReference().child("Patients").child(userId);
+        thisPatientRef.child("Movements").child(time).setValue(newMovement);
+        thisPatientRef.child("lastMovement").setValue(newMovement);
+        MethodHelper.showToast(getApplicationContext(), "Calibration done");
+        lastMovement = newMovement;
+
+        //disable this button after click
+        btnCalibrate.setEnabled(false);
     }
 
     private void subscribeToSensor(String connectedSerial) {
@@ -262,12 +310,33 @@ public class ConnectDeviceActivity extends AppCompatActivity implements AdapterV
 
                         AccDataResponse accResponse = new Gson().fromJson(data, AccDataResponse.class);
                         if (accResponse != null && accResponse.body.array.length > 0) {
-
                             xd = accResponse.body.array[0].x;
                             yd = accResponse.body.array[0].y;
                             zd = accResponse.body.array[0].z;
-                            accStr =
+                            String accStr =
                                     String.format("%.02f, %.02f, %.02f", accResponse.body.array[0].x, accResponse.body.array[0].y, accResponse.body.array[0].z);
+                        if(calibrated == true){
+                            if(lastMovement != null){
+                                Integer x = xd.intValue();
+                                Integer y = yd.intValue();
+                                Integer z = zd.intValue();
+
+                                if(z*(-1) == lastMovement.getZ()){
+                                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                    Date currentTime = Calendar.getInstance().getTime();
+                                    final String time  = sdf.format(currentTime);
+
+                                    Movement newMovement = new Movement(time, x, y, z);
+                                    String userId = PreferenceUtils.getId(context);
+                                    DatabaseReference thisPatientRef = FirebaseDatabase.getInstance().getReference().child("Patients").child(userId);
+                                    thisPatientRef.child("Movements").child(time).setValue(newMovement);
+                                    thisPatientRef.child("lastMovement").setValue(newMovement);
+                                    lastMovement = newMovement;
+                                }
+                            }
+                        }
+
+
 
                             ((TextView)findViewById(R.id.sensorMsg)).setText(accStr);
                         }
@@ -282,17 +351,6 @@ public class ConnectDeviceActivity extends AppCompatActivity implements AdapterV
 
     }
 
-    private void calibrate(Double xd, Double yd, Double zd){
-            Integer x, y, z;
-            x = xd.intValue();
-            y = yd.intValue();
-            z = zd.intValue();
-            String calibrationString = String.format("%d, %d, %d", x,y,z) ;
-            PreferenceUtils.saveCalibration(calibrationString, context);
-            String s = "calibration state at: " + calibrationString;
-        ((TextView)findViewById(R.id.calibrationState)).setText(s);
-
-    }
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
         if (position < 0 || position >= mScanResArrayList.size())
@@ -307,6 +365,10 @@ public class ConnectDeviceActivity extends AppCompatActivity implements AdapterV
 
         Log.i(LOG_TAG, "Disconnecting from BLE device: " + device.macAddress);
         mMds.disconnect(device.macAddress);
+        toolbar.setVisibility(View.VISIBLE);
+        drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+        ((TextView)findViewById(R.id.calibrationState)).setText(null);
+        btnCalibrate.setEnabled(true);
 
         return true;
     }
@@ -381,10 +443,11 @@ public class ConnectDeviceActivity extends AppCompatActivity implements AdapterV
             sensorUI.setVisibility(View.GONE);
 
     }
-
-
     public void onUnsubscribeClicked(View view) {
         unsubscribe();
+        toolbar.setVisibility(View.VISIBLE);
+        drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+
     }
 
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -396,6 +459,9 @@ public class ConnectDeviceActivity extends AppCompatActivity implements AdapterV
             startActivity(intents.patientDoctorListView.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
         } else if (id == R.id.nav_pat_exams) {
             startActivity(intents.patientExamListView.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
+        } else if (id == R.id.nav_pat_movements) {
+            //TODO
+            startActivity(intents.patientMovementListView.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
         } else if (id == R.id.nav_profile) {
             startActivity(intents.patientMainMenu.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
         } else if (id == R.id.nav_BT_device){
@@ -408,4 +474,5 @@ public class ConnectDeviceActivity extends AppCompatActivity implements AdapterV
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 }

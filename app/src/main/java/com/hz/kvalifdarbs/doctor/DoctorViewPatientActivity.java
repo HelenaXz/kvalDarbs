@@ -18,8 +18,11 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.hz.kvalifdarbs.ListAdaptors.PatientExamAdapter;
+import com.hz.kvalifdarbs.ListAdaptors.PatientMovementAdapter;
 import com.hz.kvalifdarbs.Objects.Examination;
+import com.hz.kvalifdarbs.Objects.Movement;
 import com.hz.kvalifdarbs.utils.Intents;
 import com.hz.kvalifdarbs.Objects.Patient;
 import com.hz.kvalifdarbs.R;
@@ -36,6 +39,7 @@ public class DoctorViewPatientActivity extends AppCompatActivity {
     Patient thisPatient;
     Context context;
     PatientExamAdapter testAdapter;
+    PatientMovementAdapter testAdapter2;
     DatabaseReference rootRef, childRef;
 
     @Override
@@ -48,9 +52,11 @@ public class DoctorViewPatientActivity extends AppCompatActivity {
         context = getApplicationContext();
         final Intents intents = new Intents(this);
 
+
+
+
         //Strings
         String userId = PreferenceUtils.getId(context);
-        valueType = "Examinations";
 
         Intent i = getIntent();
         thisPatient = (Patient)i.getSerializableExtra("thisPatient");
@@ -82,15 +88,18 @@ public class DoctorViewPatientActivity extends AppCompatActivity {
 
         //ListView set up
         ListView patientValueList = findViewById(R.id.patientExamList);
-
         testAdapter = new PatientExamAdapter(this);
+        testAdapter2 = new PatientMovementAdapter(this);
+        valueType = "Examinations";
+        getChildren(valueType);
         patientValueList.setAdapter(testAdapter);
+
+
 
         TextView emptyElement = findViewById(R.id.emptyElement);
         TextView emptyText = findViewById(android.R.id.empty);
         patientValueList.setEmptyView(emptyText);
 
-        getChildren(valueType);
 
         examinationsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,7 +108,9 @@ public class DoctorViewPatientActivity extends AppCompatActivity {
                 movementsBtn.setBackgroundColor(getResources().getColor(R.color.colorPrimaryLight));
                 valueType = "Examinations";
                 testAdapter.clear();
+                testAdapter2.clear();
                 getChildren(valueType);
+                patientValueList.setAdapter(testAdapter);
             }
         });
         movementsBtn.setOnClickListener(new View.OnClickListener() {
@@ -109,7 +120,9 @@ public class DoctorViewPatientActivity extends AppCompatActivity {
                 movementsBtn.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
                 valueType = "Movements";
                 testAdapter.clear();
+                testAdapter2.clear();
                 getChildren(valueType);
+                patientValueList.setAdapter(testAdapter2);
             }
         });
 
@@ -167,17 +180,23 @@ public class DoctorViewPatientActivity extends AppCompatActivity {
         });
 
 
-
     }
 
 
     public void getChildren(String valueType){
+
+
         childRef.child(valueType).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Examination exam = dataSnapshot.getValue(Examination.class);
-                testAdapter.insert(exam, 0);
-                testAdapter.notifyDataSetChanged();
+                if(valueType.equals("Examinations")){
+                    Examination exam = dataSnapshot.getValue(Examination.class);
+                    testAdapter.insert(exam, 0);
+                } else if(valueType.equals("Movements")) {
+                    Movement move = dataSnapshot.getValue(Movement.class);
+                    testAdapter2.insert(move, 0);
+                }
+
             }
 
             @Override

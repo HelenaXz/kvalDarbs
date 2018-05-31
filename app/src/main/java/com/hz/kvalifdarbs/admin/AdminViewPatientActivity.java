@@ -20,8 +20,10 @@ import android.content.Context;
         import com.google.firebase.database.DatabaseReference;
         import com.google.firebase.database.FirebaseDatabase;
         import com.hz.kvalifdarbs.ListAdaptors.PatientExamAdapter;
-        import com.hz.kvalifdarbs.Objects.Examination;
-        import com.hz.kvalifdarbs.Objects.smallDoctor;
+import com.hz.kvalifdarbs.ListAdaptors.PatientMovementAdapter;
+import com.hz.kvalifdarbs.Objects.Examination;
+import com.hz.kvalifdarbs.Objects.Movement;
+import com.hz.kvalifdarbs.Objects.smallDoctor;
         import com.hz.kvalifdarbs.utils.Intents;
         import com.hz.kvalifdarbs.Objects.Patient;
         import com.hz.kvalifdarbs.ListAdaptors.PatientDoctorSmallAdapter;
@@ -35,6 +37,7 @@ public class AdminViewPatientActivity extends AppCompatActivity {
     DatabaseReference allDocRef, patientRef, doctorRef;
     PatientDoctorSmallAdapter testAdapter;
     PatientExamAdapter testAdapter2;
+    PatientMovementAdapter testAdapter3;
     Context context;
     ArrayList<String> patientDocList;
     String valueType;
@@ -52,7 +55,7 @@ public class AdminViewPatientActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        valueType = "Examinations";
+
 
         //Firebase References
         final DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
@@ -87,15 +90,18 @@ public class AdminViewPatientActivity extends AppCompatActivity {
         patientDoctors.setAdapter(testAdapter);
 
         //Patient Examination list view setup
-        ListView patientExamList = findViewById(R.id.patientExamList);
+        ListView patientValueList = findViewById(R.id.patientExamList);
 
         testAdapter2 = new PatientExamAdapter(this);
-        patientExamList.setAdapter(testAdapter2);
+        testAdapter3 = new PatientMovementAdapter(this);
+        valueType = "Examinations";
+        getChildren(valueType);
+        patientValueList.setAdapter(testAdapter2);
 
 
         TextView emptyText = findViewById(android.R.id.empty);
-        patientExamList.setEmptyView(emptyText);
-        getChildren(valueType);
+        patientValueList.setEmptyView(emptyText);
+
 
 
         examinationsBtn.setOnClickListener(new View.OnClickListener() {
@@ -105,7 +111,9 @@ public class AdminViewPatientActivity extends AppCompatActivity {
                 movementsBtn.setBackgroundColor(getResources().getColor(R.color.colorPrimaryLight));
                 valueType = "Examinations";
                 testAdapter2.clear();
+                testAdapter3.clear();
                 getChildren(valueType);
+                patientValueList.setAdapter(testAdapter2);
             }
         });
         movementsBtn.setOnClickListener(new View.OnClickListener() {
@@ -115,7 +123,9 @@ public class AdminViewPatientActivity extends AppCompatActivity {
                 movementsBtn.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
                 valueType = "Movements";
                 testAdapter2.clear();
+                testAdapter3.clear();
                 getChildren(valueType);
+                patientValueList.setAdapter(testAdapter3);
             }
         });
 
@@ -190,9 +200,13 @@ public class AdminViewPatientActivity extends AppCompatActivity {
         patientRef.child(valueType).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Examination exam = dataSnapshot.getValue(Examination.class);
-                testAdapter2.insert(exam, 0);
-                testAdapter2.notifyDataSetChanged();
+                if(valueType.equals("Examinations")){
+                    Examination exam = dataSnapshot.getValue(Examination.class);
+                    testAdapter2.insert(exam, 0);
+                } else if(valueType.equals("Movements")) {
+                    Movement move = dataSnapshot.getValue(Movement.class);
+                    testAdapter3.insert(move, 0);
+                }
             }
 
             @Override

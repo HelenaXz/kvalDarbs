@@ -87,7 +87,7 @@ public class AdminViewDoctorActivity extends AppCompatActivity {
         //Set up Patient ListView
         patientList = findViewById(R.id.doctorPatientList);
         doctorPatients = new ArrayList<>(); //list of doctor patient id's
-        DoctorPatientAdapter testAdapter = new DoctorPatientAdapter(this);
+        testAdapter = new DoctorPatientAdapter(this);
         patientList.setAdapter(testAdapter);
 
         emptyElement = findViewById(R.id.emptyElement);

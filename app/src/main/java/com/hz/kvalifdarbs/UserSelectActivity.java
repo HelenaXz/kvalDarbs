@@ -75,7 +75,7 @@ public class UserSelectActivity extends AppCompatActivity {
 
     public void loggedIn(String userType) {
         if (userType.equals("Administrator")) {
-            startActivity(intents.adminMainMenu);
+            startActivity(intents.allPatientList);
         }
         if (userType.equals("Doctor")) {
             Intent intent = intents.doctorMainMenu;

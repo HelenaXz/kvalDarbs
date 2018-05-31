@@ -46,9 +46,6 @@
             android:name=".admin.AllDoctorListActivity"
             android:label="All Doctors" />
         <activity
-            android:name=".admin.AdminMainActivity"
-            android:label="Hello" />
-        <activity
             android:name=".LoginActivity"
             android:label="Login" />
         <activity
@@ -78,7 +75,13 @@
         <activity
             android:name=".patient.PatientExamListActivity"
             android:label="Examinations" />
-        <activity android:name=".utils.ConnectDeviceActivity"></activity>
+        <activity
+            android:name=".patient.PatientMovementListActivity"
+            android:label="Movements" />
+        <activity android:name=".utils.ConnectDeviceActivity"
+            android:label="Connect BT Device" />
+
+
     </application>
 
 </manifest>
